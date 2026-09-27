@@ -5,7 +5,7 @@
  * tools/guide-meta-build.js) and guide-settings.js (what every setting does). The
  * page's own <html lang> picks the language (guide-slides.html = ar, -en = en).
  *
- * Deck: cover (every tool's icon in orbit) · per category a divider + one slide per
+ * Deck: cover (every tool's icon in orbit) · contents (every category + tool) · per category a divider + one slide per
  * tool · the plain link shortcuts share one slide · then the settings chapter.
  *
  * ⛔ No innerHTML: text goes in with textContent. Icons are SVG strings from our own
@@ -34,7 +34,8 @@
     iconIs: 'أيقونتها في الشريط', inCat: 'في فئة', rail: 'الشريط',
     setTitle: 'الإعدادات', setSub: 'كل إعداد في الإضافة وماذا يفعل بالضبط.',
     setHow: 'أين تجد الإعدادات؟', where: 'المكان:', pinHint: 'كل رقم على الصورة يقابل شرحه هنا',
-    slide: 'شريحة', light: 'الوضع الفاتح', dark: 'الوضع الداكن'
+    slide: 'شريحة', light: 'الوضع الفاتح', dark: 'الوضع الداكن',
+    toc: 'الفهرس', tocSub: 'كل الفئات والأدوات في مكان واحد — انقر أيّ سطر لتذهب إلى شريحته، والرقم بجانبه هو رقم الشريحة.'
   } : {
     title: 'User guide', kick: 'SYF SHORTCUTS · YOUR BROWSER TOOLBOX',
     sub: 'Everything you need while browsing, in one bar at the edge of the screen. Meet every tool, its icon, the shortcut that opens it and the steps to use it — then tune the extension with a clear explanation of every setting.',
@@ -51,7 +52,8 @@
     iconIs: 'Its icon on the rail', inCat: 'in', rail: 'Rail',
     setTitle: 'Settings', setSub: 'Every setting in the extension and exactly what it does.',
     setHow: 'Where are the settings?', where: 'Where:', pinHint: 'Each number on the picture matches its explanation here',
-    slide: 'slide', light: 'Light mode', dark: 'Dark mode'
+    slide: 'slide', light: 'Light mode', dark: 'Dark mode',
+    toc: 'Contents', tocSub: 'Every category and tool in one place — click any line to jump to its slide; the number beside it is the slide number.'
   };
   function fmt(s) { var a = arguments; return s.replace(/\{(\d)\}/g, function (m, i) { return a[+i + 1]; }); }
   function el(tag, cls, text) {
@@ -184,6 +186,65 @@
   hero.appendChild(hin);
   cover.appendChild(hero);
   var og = el('option', null, UI.cover); og.value = 'cover'; jump.appendChild(og);
+
+  /* contents (v0.140.12): every category with its tools, like a book's index. The slide
+     numbers are filled in once the whole deck exists (tocNums), because the slides
+     they point to are built after this one. */
+  var tocNums = [];
+  var toc = slide('s-toc', 'toc', null, UI.toc);
+  delete toc.dataset.cat;
+  var tin = wash(toc, null);
+  var th = el('div', 's-list-h');
+  var tIc = el('span', 's-emoji', '☰');
+  tIc.setAttribute('aria-hidden', 'true');
+  th.appendChild(tIc);
+  th.appendChild(el('h2', null, UI.toc));
+  tin.appendChild(rise(th, 0));
+  tin.appendChild(rise(el('p', 's-what', UI.tocSub), 1));
+  var tcols = el('div', 's-toc-cols');
+  function tocRow(parent, cls, ic, label, id) {
+    var b = el('button', cls);
+    b.type = 'button';
+    b.title = label;               /* a long name is cut with … — the tooltip keeps it whole */
+    parent.appendChild(b);
+    if (ic) b.appendChild(ic);
+    b.appendChild(el('span', 's-toc-n', label));
+    b.appendChild(el('i', 's-toc-dots'));
+    var num = el('b', 's-toc-p');
+    b.appendChild(num);
+    tocNums.push([num, id]);
+    b.addEventListener('click', jumpTo(id));
+    return b;
+  }
+  var tn = 0;
+  CATS.forEach(function (cat) {
+    var mine = TOOLS.filter(function (t) { return t.cat === cat.id; });
+    if (!mine.length) return;
+    var box = el('div', 's-toc-cat');
+    box.style.setProperty('--i', tn++);
+    tocRow(box, 's-toc-h', icon((META.cats[cat.id] || {}).icon), cat[LANG] + ' · ' + mine.length, 'cat-' + cat.id);
+    /* the plain links share ONE slide, so they share one line here too */
+    var bareT = [];
+    mine.forEach(function (t) {
+      if (!t.img && !(t[LANG].s && t[LANG].s.length)) { bareT.push(t[LANG].n); return; }
+      tocRow(box, 's-toc-t', icon(tm(t.id).icon), t[LANG].n, 'tool-' + t.id);
+    });
+    if (bareT.length) {
+      var lr = tocRow(box, 's-toc-t', el('span', 'ic s-toc-emo', '🔗'), UI.shorts + ' · ' + bareT.length, 'cat-' + cat.id + '-links');
+      lr.title = bareT.join(' · ');
+    }
+    tcols.appendChild(box);
+  });
+  if (SETS.length) {
+    var sbox = el('div', 's-toc-cat');
+    sbox.style.setProperty('--i', tn);
+    var gIc = el('span', 'ic s-toc-emo', '⚙');
+    tocRow(sbox, 's-toc-h', gIc, UI.setTitle + ' · ' + SETS.length, 'settings');
+    SETS.forEach(function (g) { tocRow(sbox, 's-toc-t', el('span', 'ic s-toc-emo', g.icon), g[LANG].n, 'set-' + g.id); });
+    tcols.appendChild(sbox);
+  }
+  tin.appendChild(tcols);
+  var ot = el('option', null, UI.toc); ot.value = 'toc'; jump.appendChild(ot);
 
   /* ================= categories and tools ================= */
   CATS.forEach(function (cat) {
@@ -424,6 +485,8 @@
   }
 
   /* ================= navigation ================= */
+  tocNums.forEach(function (x) { if (byId[x[1]] != null) x[0].textContent = String(byId[x[1]] + 1); });
+
   var cur = -1;
   var pos = document.getElementById('s-pos');
   var bar = document.getElementById('s-bar-i');

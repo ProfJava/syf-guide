@@ -268,6 +268,33 @@ kbd {
 .s-stats b { color: #fff; font-family: 'SYF Head', sans-serif; font-size: 20px; margin-inline-end: 5px; }
 .s-hint { margin-top: 18px; font-size: 12px; color: rgba(238, 246, 242, .5); }
 
+/* ===== contents (v0.140.12): every category + its tools, with slide numbers =====
+   Newspaper columns so ~100 lines fit one screen; a category never splits across two. */
+.s-toc .s-in { padding-top: clamp(14px, 2vw, 26px); }
+.s-toc .s-list-h h2 { font-size: clamp(22px, 2.4vw, 32px); }
+.s-toc .s-emoji { width: 44px; height: 44px; font-size: 20px; border-radius: 14px; }
+.s-toc .s-what { font-size: 14px; margin: 0 0 12px; }
+.s-toc-cols { columns: 5 200px; column-gap: 12px; }
+.s-toc-cat {
+  break-inside: avoid; margin: 0 0 12px; padding: 6px; border-radius: 16px;
+  background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(6px);
+}
+.on .s-toc-cat { animation: s-rise .5s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(150ms + var(--i) * 50ms); }
+.s-toc-cat button {
+  font: inherit; color: var(--ink); cursor: pointer; width: 100%; display: flex; align-items: center; gap: 8px;
+  padding: 2px 6px; border: 0; border-radius: 8px; background: none; text-align: start; line-height: 1.45;
+}
+.s-toc-cat button:hover { background: color-mix(in oklab, var(--acc) 12%, transparent); color: var(--acc); }
+.s-toc-h { font-family: 'SYF Head', 'SYF Body', sans-serif; font-weight: 700; font-size: 14.5px; margin-bottom: 4px; }
+.s-toc-h .ic { width: 28px; height: 28px; padding: 6px; border-radius: 9px; background: var(--acc); color: #fff; }
+.s-toc-t { font-size: 12.5px; }
+.s-toc-t .ic { width: 18px; height: 18px; color: var(--acc); }
+.s-toc-cat .s-toc-emo { display: grid; place-items: center; padding: 0; font-size: 14px; line-height: 1; }
+.s-toc-h .s-toc-emo { font-size: 16px; }
+.s-toc-n { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.s-toc-dots { flex: 1; min-width: 12px; border-bottom: 1px dotted color-mix(in oklab, var(--mut) 55%, transparent); transform: translateY(-3px); }
+.s-toc-p { font-size: 12px; font-weight: 700; color: var(--mut); font-variant-numeric: tabular-nums; min-width: 2ch; text-align: end; }
+
 /* ===== category divider ===== */
 .s-div .s-in { display: grid; place-items: center; text-align: center; align-content: center; gap: 6px; }
 .s-big {
@@ -361,4 +388,9 @@ kbd {
   *, *::before, *::after { animation: none !important; }
   .s-shot { max-height: 170mm; }
   .s-shot img, .s-pinbox img { max-height: 150mm; }
+  .s-toc .s-in { padding: 10mm 12mm; }
+  .s-toc-cols { columns: 5; column-gap: 8px; }
+  .s-toc-cat { margin-bottom: 8px; padding: 4px; }
+  .s-toc-cat button { padding: 0 4px; line-height: 1.35; }
+  .s-toc-t { font-size: 10px; }
 }
