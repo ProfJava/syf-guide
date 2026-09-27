@@ -1,0 +1,364 @@
+/* guide-slides.css — the illustrated guide as a slide deck, v0.140.2.
+ *
+ * One sheet for guide-slides.html (ar, RTL) and guide-slides-en.html (en, LTR): every
+ * directional property is LOGICAL. Colours are tokens; dark mode redefines tokens only.
+ * Each slide carries data-cat, which sets --acc (the category's own colour) — that is
+ * the whole theming of a slide. Fonts are the extension's bundled OFL files (fonts/),
+ * so the deck works offline like every other extension page.
+ * Print = one landscape page per slide, so «Print» is also «save as PDF». */
+
+@font-face { font-family: 'SYF Head'; font-weight: 700; font-display: swap; src: url(../fonts/alexandria-arabic-700.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+FB50-FDFF, U+FE70-FEFC; }
+@font-face { font-family: 'SYF Head'; font-weight: 700; font-display: swap; src: url(../fonts/alexandria-latin-700.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF, U+2212; }
+@font-face { font-family: 'SYF Body'; font-weight: 400; font-display: swap; src: url(../fonts/readexpro-arabic-400.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+FB50-FDFF, U+FE70-FEFC; }
+@font-face { font-family: 'SYF Body'; font-weight: 700; font-display: swap; src: url(../fonts/readexpro-arabic-700.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+FB50-FDFF, U+FE70-FEFC; }
+@font-face { font-family: 'SYF Body'; font-weight: 400; font-display: swap; src: url(../fonts/readexpro-latin-400.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF, U+2212; }
+@font-face { font-family: 'SYF Body'; font-weight: 700; font-display: swap; src: url(../fonts/readexpro-latin-700.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF, U+2212; }
+
+:root {
+  --brand: #457364; --brand-2: #2f5a4d; --gold: #c9a45c;
+  --ink: #16202a; --mut: #5f6b7a; --line: #e3e8ef;
+  --bg: #f4f6f8; --card: #ffffff; --glass: rgba(255, 255, 255, .72);
+  --shadow: 0 24px 60px -24px rgba(22, 32, 42, .35), 0 8px 20px -12px rgba(22, 32, 42, .18);
+  --hero-1: #0d2621; --hero-2: #1e4a3e; --hero-ink: #eef6f2;
+  --key-bg: #ffffff; --key-edge: #cfd6df;
+  --acc: var(--brand);
+  color-scheme: light;
+}
+/* ⚠️ light is the default whatever the OS says (project rule); dark only on the toggle */
+:root[data-theme="dark"] {
+  --ink: #e8edf3; --mut: #9aa6b4; --line: #2a333e;
+  --bg: #0f1419; --card: #171e26; --glass: rgba(23, 30, 38, .72);
+  --shadow: 0 24px 60px -24px rgba(0, 0, 0, .7), 0 8px 20px -12px rgba(0, 0, 0, .5);
+  --key-bg: #1f2833; --key-edge: #36414e;
+  color-scheme: dark;
+}
+
+/* ⚠️ v0.140.4 — ONE colour for every category: the extension's own green (user's
+   choice; per-category colours were tried in 0.140.3 and dropped). data-cat stays on
+   each slide, so a future accent per category is one rule here, not a JS change. */
+
+html[data-lang-gate] body { visibility: hidden; }
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  font-family: 'SYF Body', var(--syfs-font, system-ui), -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink); background: var(--bg); line-height: 1.75;
+  display: flex; flex-direction: column;
+}
+h1, h2, h3 { font-family: 'SYF Head', 'SYF Body', system-ui, sans-serif; font-weight: 700; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.ic { display: inline-block; flex: none; }
+.ic svg { width: 100%; height: 100%; display: block; }
+
+/* ===== top strip ===== */
+.s-top {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 10px 18px; background: var(--glass); backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+}
+.s-brand { display: flex; align-items: center; gap: 10px; margin-inline-end: auto; font-family: 'SYF Head', sans-serif; font-weight: 700; font-size: 15px; }
+.s-logo {
+  width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; font-size: 15px;
+  box-shadow: 0 6px 14px -6px var(--brand);
+}
+.s-top a, .s-top button, .s-top select {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--card);
+  border: 1px solid var(--line); border-radius: 10px; padding: 6px 12px; min-height: 34px;
+  text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+}
+.s-top select { max-width: 220px; }
+.s-top a:hover, .s-top button:hover { border-color: var(--acc); color: var(--acc); }
+
+/* ===== stage ===== */
+.s-stage { flex: 1; min-height: 0; position: relative; overflow: hidden; }
+.s-slide { position: absolute; inset: 0; display: none; overflow: hidden; isolation: isolate; }
+.s-slide.on { display: block; }
+.s-in { position: relative; z-index: 1; height: 100%; overflow: auto; padding: clamp(18px, 3.2vw, 44px) clamp(16px, 4.5vw, 64px); }
+
+/* the soft wash + blobs every content slide sits on */
+.s-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(60% 70% at 0% 0%, color-mix(in oklab, var(--acc) 16%, transparent), transparent 70%),
+    radial-gradient(50% 60% at 100% 100%, color-mix(in oklab, var(--acc) 12%, transparent), transparent 70%),
+    var(--bg);
+}
+.s-bg::after {                     /* dotted paper */
+  content: ''; position: absolute; inset: 0; opacity: .5;
+  background-image: radial-gradient(color-mix(in oklab, var(--acc) 22%, transparent) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); mask-image: linear-gradient(to bottom, #000, transparent 85%);
+}
+.s-mark {                          /* the tool's own icon, huge and faint, behind everything */
+  position: absolute; width: min(62vmin, 560px); aspect-ratio: 1; inset-inline-end: -8vmin; bottom: -12vmin;
+  color: var(--acc); opacity: .07; transform: rotate(-12deg);
+}
+.on .s-mark { animation: s-drift 18s ease-in-out infinite alternate; }
+@keyframes s-drift { to { transform: rotate(-4deg) translateY(-3vmin) scale(1.04); } }
+
+/* entrance: children of .s-in rise in, staggered by --d */
+.on .s-rise { animation: s-rise .6s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--d, 0) * 70ms); }
+@keyframes s-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* ===== tool slide ===== */
+.s-tool { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(20px, 3.4vw, 52px); align-items: center; min-height: 100%; }
+.s-shot {
+  position: relative; display: grid; place-items: center; min-height: 260px;
+  max-height: calc(100vh - 190px); padding: clamp(14px, 2.4vw, 30px); border-radius: 26px;
+  background: linear-gradient(145deg, color-mix(in oklab, var(--acc) 22%, var(--card)), color-mix(in oklab, var(--acc) 6%, var(--card)));
+  border: 1px solid color-mix(in oklab, var(--acc) 25%, var(--line)); box-shadow: var(--shadow);
+}
+.s-shot::before {                  /* a glow under the window */
+  content: ''; position: absolute; inset: 18% 14%; border-radius: 50%;
+  background: color-mix(in oklab, var(--acc) 45%, transparent); filter: blur(48px); opacity: .55; z-index: 0;
+}
+.s-shot img {
+  position: relative; z-index: 1; max-width: 100%; max-height: calc(100vh - 250px); object-fit: contain; display: block;
+  border-radius: 14px; box-shadow: 0 30px 60px -28px rgba(0, 0, 0, .55);
+}
+.on .s-shot img { animation: s-float 6s ease-in-out 1s infinite alternate; }
+@keyframes s-float { to { transform: translateY(-8px); } }
+.s-solo { display: grid; justify-items: center; gap: 16px; position: relative; z-index: 1; text-align: center; color: var(--mut); }
+.s-solo .s-tile { width: 120px; height: 120px; border-radius: 34px; padding: 28px; }
+.s-solo .s-tile::after { content: ''; position: absolute; inset: -14px; border-radius: 44px; border: 2px solid color-mix(in oklab, var(--acc) 40%, transparent); animation: s-pulse 2.4s ease-out infinite; }
+@keyframes s-pulse { from { transform: scale(.9); opacity: 1; } to { transform: scale(1.25); opacity: 0; } }
+
+.s-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mut); background: var(--glass); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px 4px 6px; backdrop-filter: blur(8px); }
+.s-crumb .ic { width: 22px; height: 22px; padding: 4px; border-radius: 7px; background: var(--acc); color: #fff; }
+.s-crumb b { color: var(--acc); font-weight: 700; }
+
+.s-head { display: flex; align-items: center; gap: 16px; margin: 16px 0 6px; }
+.s-tile {
+  position: relative; flex: none; width: 68px; height: 68px; padding: 16px; border-radius: 20px; color: #fff;
+  background: linear-gradient(140deg, color-mix(in oklab, var(--acc) 80%, #fff), var(--acc) 55%, color-mix(in oklab, var(--acc) 70%, #000));
+  box-shadow: 0 14px 28px -12px var(--acc), inset 0 1px 0 rgba(255, 255, 255, .35);
+}
+.s-head h2 { font-size: clamp(26px, 3.1vw, 40px); line-height: 1.25; margin: 0; }
+.s-tag { font-size: 12.5px; color: var(--mut); display: block; margin-top: 2px; }
+.s-what { font-size: clamp(15px, 1.45vw, 19px); color: var(--mut); margin: 8px 0 18px; max-width: 60ch; }
+
+.s-steps { margin: 0 0 18px; padding: 0; list-style: none; counter-reset: st; display: grid; gap: 10px; }
+.s-steps li {
+  counter-increment: st; position: relative; font-size: clamp(14px, 1.22vw, 16.5px); line-height: 1.7;
+  padding: 10px 14px; padding-inline-start: 52px; border-radius: 14px;
+  background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(6px);
+}
+.s-steps li::before {
+  content: counter(st); position: absolute; inset-inline-start: 12px; top: 10px;
+  width: 28px; height: 28px; border-radius: 9px; background: var(--acc); color: #fff;
+  font-size: 13px; font-weight: 700; display: grid; place-items: center;
+}
+
+/* ===== settings slide: the screen with numbered pins (v0.140.11) =====
+   The box shrinks to the picture so a pin's % lands on the same spot at any size. */
+.s-pinbox { position: relative; z-index: 1; display: inline-block; line-height: 0; border-radius: 14px; box-shadow: 0 30px 60px -28px rgba(0, 0, 0, .55); }
+.s-pinbox img { position: static; max-height: calc(100vh - 250px); box-shadow: none; }
+.on .s-shot .s-pinbox img { animation: none; }
+.on .s-pinbox { animation: s-float 6s ease-in-out 1s infinite alternate; }
+.s-pin {
+  position: absolute; z-index: 2; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
+  display: grid; place-items: center; font: 700 12.5px/1 'SYF Body', system-ui, sans-serif; color: #fff;
+  background: var(--brand); border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0, 0, 0, .35);
+  transition: scale .18s ease, background .18s ease; cursor: default;
+}
+.s-pin-e { margin-left: -27px; }   /* before the end of a label's text, not on it */
+.on .s-pin { animation: s-pop .45s cubic-bezier(.2, 1.4, .4, 1) both; animation-delay: calc(500ms + var(--i, 0) * 110ms); }
+@keyframes s-pop { from { transform: scale(0); } to { transform: scale(1); } }
+.s-pin.hot { scale: 1.35; background: var(--gold); z-index: 3; }
+.s-set .s-tile.s-emo { display: grid; place-items: center; padding: 0; font-size: 30px; line-height: 1; }
+.s-set .s-where { margin: 4px 0 12px; }
+.s-setlist { gap: 7px; }
+.s-setlist li { font-size: clamp(13px, 1.05vw, 15px); line-height: 1.6; padding: 8px 12px; padding-inline-start: 48px; transition: border-color .18s ease, background .18s ease; }
+.s-setlist li::before { width: 26px; height: 26px; border-radius: 50%; top: 8px; background: var(--brand); }
+.s-setlist li b { display: block; font-size: 1.04em; color: var(--ink); }
+.s-setlist li span { color: var(--mut); }
+.s-setlist li.nopin::before { background: transparent; color: var(--brand); border: 2px dashed var(--brand); }
+.s-setlist li.hot { border-color: var(--brand); background: color-mix(in oklab, var(--brand) 10%, var(--card)); }
+.s-setlist li.hot::before { background: var(--gold); }
+
+/* the shortcut card */
+.s-keys {
+  display: grid; gap: 8px; padding: 14px 16px; border-radius: 16px;
+  background: color-mix(in oklab, var(--acc) 9%, var(--card)); border: 1px dashed color-mix(in oklab, var(--acc) 45%, var(--line));
+}
+.s-keys-h { font-size: 13px; font-weight: 700; color: var(--acc); display: flex; align-items: center; gap: 8px; }
+.s-combo { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; direction: ltr; justify-content: flex-start; }
+[dir="rtl"] .s-combo { justify-content: flex-end; }
+kbd {
+  font-family: 'SYF Body', ui-monospace, monospace; font-size: 15px; font-weight: 700; min-width: 38px; height: 38px;
+  padding: 0 10px; display: inline-grid; place-items: center; border-radius: 9px; color: var(--ink);
+  background: var(--key-bg); border: 1px solid var(--key-edge); border-bottom-width: 4px;
+  box-shadow: 0 6px 12px -8px rgba(0, 0, 0, .35);
+}
+.on .s-combo kbd { animation: s-press .5s ease-out both; animation-delay: calc(600ms + var(--k, 0) * 260ms); }
+@keyframes s-press { 0% { transform: translateY(0); } 40% { transform: translateY(3px); border-bottom-width: 1px; background: color-mix(in oklab, var(--acc) 22%, var(--key-bg)); } 100% { transform: none; } }
+.s-combo i { font-style: normal; color: var(--mut); font-size: 14px; }
+.s-keys p { margin: 0; font-size: 13px; color: var(--mut); }
+.s-keys .warn { color: color-mix(in oklab, #b45309 85%, var(--ink)); }
+
+/* ===== cover ===== */
+.s-cover { color: var(--hero-ink); background:
+  radial-gradient(80% 80% at 50% 45%, var(--hero-2), var(--hero-1) 70%); }
+.s-cover::before {                 /* star dust */
+  content: ''; position: absolute; inset: 0; opacity: .35;
+  background-image: radial-gradient(rgba(255, 255, 255, .5) 1px, transparent 1.5px);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(circle at center, transparent 20%, #000 75%); mask-image: radial-gradient(circle at center, transparent 20%, #000 75%);
+}
+/* the icon wall (design «B», v0.140.4): every tool's icon in tilted rows that drift
+   in alternating directions. Tiles are see-through glass — the user asked for a
+   transparent background, not solid colour blocks. Each row holds its list TWICE and
+   slides by half its width, so the loop has no seam. */
+/* ⚡ smoothness (v0.140.8): only `transform` moves, on rows promoted to their own GPU
+   layer, and nothing inside a row may force a repaint per frame — the first version
+   gave all 360 tiles a backdrop-filter, which re-blurred the whole wall every frame
+   and is what made it stutter. The wall is LTR on purpose: the loop slides each row
+   left by exactly one copy (-50%), which is only seamless when rows start at the left. */
+.s-wall {
+  position: absolute; inset: -25% -12%; display: grid; gap: 16px; align-content: center;
+  direction: ltr; transform: rotate(-9deg); contain: layout paint; pointer-events: none;
+}
+.s-row { --hg: 8px; display: flex; gap: 16px; width: max-content; will-change: transform; backface-visibility: hidden; }
+.on .s-row { animation: s-slide var(--t, 80s) linear infinite; }
+.s-row.rev { animation-direction: reverse; }
+@keyframes s-slide { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-50% - var(--hg)), 0, 0); } }
+/* ↑ one copy = half the row + half a gap (the row has no gap after its last tile) */
+.s-cell {
+  flex: none; width: 76px; height: 76px; padding: 20px; border-radius: 22px; cursor: pointer; pointer-events: auto;
+  color: rgba(214, 238, 229, .85); background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(255, 255, 255, .11);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.s-cell:hover { background: rgba(69, 115, 100, .55); border-color: rgba(255, 255, 255, .35); color: #fff; }
+@keyframes s-pop { from { opacity: 0; scale: .2; } to { opacity: 1; scale: 1; } }
+.s-vig {                           /* keeps the centre calm so the title reads */
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 44% 50% at 50% 50%, var(--hero-1) 30%, color-mix(in oklab, var(--hero-1) 88%, transparent) 55%, color-mix(in oklab, var(--hero-1) 15%, transparent) 100%);
+}
+.s-hero { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; z-index: 2; pointer-events: none; padding: 0 16px; }
+.s-hero-in { pointer-events: auto; max-width: 900px; }
+.s-hero h1 { white-space: nowrap; }
+@media (max-width: 767px) { .s-hero h1 { white-space: normal; } }
+.on .s-hero-in { animation: s-rise .9s cubic-bezier(.2, .8, .2, 1) .15s both; }
+.s-kick { font-size: 13px; letter-spacing: 2.5px; color: var(--gold); }
+.s-hero h1 {
+  font-size: clamp(46px, 6.6vw, 100px); margin: 12px 0 14px; line-height: 1.08;
+  background: linear-gradient(180deg, #ffffff, #b9d9cc); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.s-hero p { margin: 0 auto 26px; font-size: clamp(15px, 1.45vw, 19px); color: #a9bfb6; max-width: 50ch; line-height: 1.85; }
+.s-go {
+  font: inherit; font-weight: 700; font-size: 15px; color: #fff; cursor: pointer;
+  padding: 12px 28px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .22);
+  background: linear-gradient(120deg, color-mix(in oklab, var(--brand) 70%, #fff), var(--brand) 55%, var(--brand-2));
+  box-shadow: 0 14px 40px -10px var(--brand), inset 0 1px 0 rgba(255, 255, 255, .25);
+  position: relative; isolation: isolate;
+}
+/* the glow breathes through OPACITY on a pseudo-element — animating box-shadow itself
+   repaints every frame, right in the middle of the moving wall */
+.s-go::before {
+  content: ''; position: absolute; inset: -6px; border-radius: inherit; z-index: -1;
+  background: var(--brand); filter: blur(14px); opacity: .35; will-change: opacity;
+}
+.on .s-go::before { animation: s-glow 2.6s ease-in-out infinite; }
+@keyframes s-glow { 50% { opacity: .75; } }
+.s-stats { margin-top: 22px; display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; color: #a9bfb6; font-size: 14px; }
+.s-stats b { color: #fff; font-family: 'SYF Head', sans-serif; font-size: 20px; margin-inline-end: 5px; }
+.s-hint { margin-top: 18px; font-size: 12px; color: rgba(238, 246, 242, .5); }
+
+/* ===== category divider ===== */
+.s-div .s-in { display: grid; place-items: center; text-align: center; align-content: center; gap: 6px; }
+.s-big {
+  position: relative; display: block; width: clamp(96px, 14vmin, 132px); aspect-ratio: 1; padding: clamp(24px, 3.5vmin, 34px); border-radius: 32%; margin: 0 auto 10px; color: #fff;
+  background: linear-gradient(140deg, color-mix(in oklab, var(--acc) 75%, #fff), var(--acc) 55%, color-mix(in oklab, var(--acc) 65%, #000));
+  box-shadow: 0 30px 60px -20px var(--acc);
+}
+.s-big::before, .s-big::after { content: ''; position: absolute; inset: -18px; border-radius: 38%; border: 2px solid color-mix(in oklab, var(--acc) 45%, transparent); }
+.on .s-big::before { animation: s-pulse 2.8s ease-out infinite; }
+.on .s-big::after { animation: s-pulse 2.8s ease-out 1.4s infinite; }
+.s-div h2 { font-size: clamp(34px, 5vw, 62px); margin: 8px 0 0; line-height: 1.15; }
+.s-div .s-sub { color: var(--mut); font-size: 17px; margin: 0 0 6px; }
+.s-div .s-combo { justify-content: center; margin: 6px 0 22px; }
+.s-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 980px; }
+.s-grid button {
+  font: inherit; font-size: 12.5px; color: var(--ink); cursor: pointer; width: 104px; padding: 12px 6px 10px; border-radius: 16px;
+  display: grid; justify-items: center; gap: 6px; background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(6px);
+  transition: transform .18s, border-color .18s;
+}
+.s-grid button:hover { transform: translateY(-3px); border-color: var(--acc); }
+.s-grid .ic { width: 40px; height: 40px; padding: 9px; border-radius: 12px; background: var(--acc); color: #fff; box-shadow: 0 8px 16px -8px var(--acc); }
+.on .s-grid button { animation: s-pop .5s cubic-bezier(.2, 1.4, .4, 1) both; animation-delay: calc(300ms + var(--i) * 45ms); }
+
+/* ===== list slides: quick links + settings ===== */
+.s-list-h { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.s-list-h h2 { margin: 0; font-size: clamp(24px, 3vw, 38px); line-height: 1.2; }
+.s-emoji { flex: none; width: 60px; height: 60px; display: grid; place-items: center; font-size: 28px; border-radius: 18px; background: linear-gradient(140deg, color-mix(in oklab, var(--acc) 30%, var(--card)), color-mix(in oklab, var(--acc) 12%, var(--card))); border: 1px solid color-mix(in oklab, var(--acc) 30%, var(--line)); }
+.s-where { display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 20px; font-size: 13.5px; color: var(--mut); background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: 6px 12px; }
+.s-where b { color: var(--acc); }
+.s-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.s-card {
+  padding: 14px 16px; border-radius: 16px; background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(8px);
+  border-inline-start: 4px solid var(--acc);
+}
+.s-card h3 { margin: 0 0 4px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.s-card h3 .ic { width: 26px; height: 26px; padding: 5px; border-radius: 8px; background: var(--acc); color: #fff; flex: none; }
+.s-card p { margin: 0; font-size: 14px; color: var(--mut); line-height: 1.7; }
+.s-card small { display: inline-block; margin-top: 6px; font-size: 12px; direction: ltr; color: var(--acc); font-weight: 700; }
+.on .s-card { animation: s-rise .5s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(200ms + var(--i) * 55ms); }
+
+/* ===== bottom controls ===== */
+.s-foot {
+  position: relative; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 10px 18px;
+  background: var(--glass); backdrop-filter: blur(14px) saturate(1.4); border-top: 1px solid var(--line);
+}
+.s-foot button {
+  font: inherit; font-size: 18px; line-height: 1; width: 46px; height: 40px; cursor: pointer;
+  border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+}
+.s-foot button:hover:not(:disabled) { border-color: var(--acc); color: var(--acc); }
+.s-foot button:disabled { opacity: .35; cursor: default; }
+.s-bar { flex: 1; height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.s-bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--acc), color-mix(in oklab, var(--acc) 60%, #fff)); transition: width .35s cubic-bezier(.2, .8, .2, 1), background .35s; }
+#s-pos { font-size: 13px; color: var(--mut); min-width: 74px; text-align: center; font-variant-numeric: tabular-nums; }
+.s-kb { font-size: 12px; color: var(--mut); display: flex; gap: 4px; align-items: center; }
+.s-kb kbd { min-width: 24px; height: 24px; font-size: 12px; border-bottom-width: 2px; padding: 0 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ===== phone ===== */
+@media (max-width: 767px) {
+  .s-top { padding: 8px 16px; gap: 6px; }
+  .s-brand { width: 100%; }
+  .s-top select { max-width: none; flex: 1 1 100%; order: 5; }
+  .s-top .s-hide-sm { display: none; }
+  .s-in { padding: 18px 16px 24px; }
+  .s-tool { grid-template-columns: 1fr; align-content: start; }
+  .s-shot { min-height: 180px; max-height: none; }
+  .s-shot img, .s-pinbox img { max-height: 42vh; }
+  .s-head { gap: 12px; }
+  .s-tile { width: 54px; height: 54px; padding: 13px; border-radius: 16px; }
+  .s-cell { width: 56px; height: 56px; padding: 15px; border-radius: 16px; }
+  .s-wall { gap: 12px; }
+  .s-row { gap: 12px; --hg: 6px; }
+  .s-kb { display: none; }
+  .s-foot { padding: 8px 16px; }
+  .s-grid button { width: 88px; }
+}
+
+/* ===== print / PDF: every slide on its own landscape page ===== */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { height: auto; overflow: visible; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .s-top, .s-foot { display: none; }
+  .s-stage { overflow: visible; }
+  .s-slide, .s-slide.on { position: relative; display: block; width: 297mm; height: 210mm; break-after: page; page-break-after: always; }
+  .s-in { overflow: hidden; }
+  *, *::before, *::after { animation: none !important; }
+  .s-shot { max-height: 170mm; }
+  .s-shot img, .s-pinbox img { max-height: 150mm; }
+}
