@@ -23,8 +23,8 @@
     sub: 'كل ما تحتاجه أثناء التصفّح، في شريط واحد على حافة الشاشة. تعرّف على كل أداة وأيقونتها واختصار فتحها وخطوات استعمالها، ثم اضبط الإضافة على ذوقك بشرح واضح لكل إعداد.',
     tools: 'أداة', cats: 'فئة', sets: 'شاشة إعدادات', go: 'ابدأ الجولة',
     hint: 'الأسهم أو المسافة للتنقّل · F ملء الشاشة · انقر أي أيقونة لتذهب إليها',
-    count: '{0} أداة', noshot: 'تفتح في شاشتها الخاصّة — لا نافذة عائمة تُصوَّر.',
-    shorts: 'اختصارات سريعة', shortsSub: 'روابط تفتح موقعًا بضغطة — بلا نافذة ولا إعداد.',
+    count: '{0} أداة',
+    shorts: 'أدوات بضغطة واحدة', shortsSub: 'تعمل بضغطة من الشريط ولا تفتح نافذة تُصوَّر — ما تفعله وكيف تستعملها تحت كل بطاقة.',
     cover: 'الغلاف', open: 'افتحها من لوحة المفاتيح', catKeys: 'افتح الفئة من لوحة المفاتيح',
     chord: 'اضغط {0} ثم {1} ثم {2} — الحروف تظهر على الشاشة بعد {0}، وتعمل بلوحة المفاتيح العربية أيضًا.',
     catChord: 'اضغط {0} ثم {1} لتظهر أدوات الفئة بحروفها.',
@@ -35,14 +35,15 @@
     setTitle: 'الإعدادات', setSub: 'كل إعداد في الإضافة وماذا يفعل بالضبط.',
     setHow: 'أين تجد الإعدادات؟', where: 'المكان:', pinHint: 'كل رقم على الصورة يقابل شرحه هنا',
     slide: 'شريحة', light: 'الوضع الفاتح', dark: 'الوضع الداكن',
-    toc: 'الفهرس', tocSub: 'كل الفئات والأدوات في مكان واحد — انقر أيّ سطر لتذهب إلى شريحته، والرقم بجانبه هو رقم الشريحة.'
+    toc: 'الفهرس', tocSub: 'كل الفئات والأدوات في مكان واحد — انقر أيّ سطر لتذهب إلى شريحته، والرقم بجانبه هو رقم الشريحة.',
+    mainView: 'الواجهة', views: 'شاشات الأداة'
   } : {
     title: 'User guide', kick: 'SYF SHORTCUTS · YOUR BROWSER TOOLBOX',
     sub: 'Everything you need while browsing, in one bar at the edge of the screen. Meet every tool, its icon, the shortcut that opens it and the steps to use it — then tune the extension with a clear explanation of every setting.',
     tools: 'tools', cats: 'categories', sets: 'settings screens', go: 'Start the tour',
     hint: 'Arrows or Space to move · F for full screen · click any icon to jump to it',
-    count: '{0} tools', noshot: 'Opens in its own screen — no floating window to picture.',
-    shorts: 'Quick shortcuts', shortsSub: 'Links that open a site in one press — no window, no setup.',
+    count: '{0} tools',
+    shorts: 'One-click tools', shortsSub: 'They work with one click on the rail and open no window to picture — what each does and how to use it is under its card.',
     cover: 'Cover', open: 'Open it from the keyboard', catKeys: 'Open the category from the keyboard',
     chord: 'Press {0}, then {1}, then {2} — the letters appear on screen after {0}, and work on an Arabic layout too.',
     catChord: 'Press {0}, then {1}, to see the category\'s tools with their letters.',
@@ -53,8 +54,33 @@
     setTitle: 'Settings', setSub: 'Every setting in the extension and exactly what it does.',
     setHow: 'Where are the settings?', where: 'Where:', pinHint: 'Each number on the picture matches its explanation here',
     slide: 'slide', light: 'Light mode', dark: 'Dark mode',
-    toc: 'Contents', tocSub: 'Every category and tool in one place — click any line to jump to its slide; the number beside it is the slide number.'
+    toc: 'Contents', tocSub: 'Every category and tool in one place — click any line to jump to its slide; the number beside it is the slide number.',
+    mainView: 'Main view', views: 'Tool screens'
   };
+  var VIEWS = window.SYF_GUIDE_VIEWS || {};
+  var BARE_PER = 6;
+  /* A tool with tabs/modes has more than one screen: the extra pictures are
+     guide-img/<file>.png, listed in SYF_GUIDE_VIEWS (guide-data.js). One chip per
+     screen under the picture swaps it in place — the slide stays one slide. */
+  function viewChips(img, t, cls) {
+    var list = [[t.id, UI.mainView, UI.mainView]].concat(VIEWS[t.id] || []);
+    var box = el('div', cls);
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', UI.views);
+    list.forEach(function (v, i) {
+      var b = el('button', null, AR ? v[1] : v[2]);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(i === 0));
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        img.src = 'guide-img/' + v[0] + '.png';
+        img.alt = t[LANG].n + ' — ' + b.textContent;
+        box.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      });
+      box.appendChild(b);
+    });
+    return box;
+  }
   function fmt(s) { var a = arguments; return s.replace(/\{(\d)\}/g, function (m, i) { return a[+i + 1]; }); }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -226,7 +252,7 @@
     /* the plain links share ONE slide, so they share one line here too */
     var bareT = [];
     mine.forEach(function (t) {
-      if (!t.img && !(t[LANG].s && t[LANG].s.length)) { bareT.push(t[LANG].n); return; }
+      if (!t.img) { bareT.push(t[LANG].n); return; }
       tocRow(box, 's-toc-t', icon(tm(t.id).icon), t[LANG].n, 'tool-' + t.id);
     });
     if (bareT.length) {
@@ -283,26 +309,21 @@
     var bare = [];
     mine.forEach(function (t) {
       var d = t[LANG], m = tm(t.id);
-      if (!t.img && !(d.s && d.s.length)) { bare.push(t); return; }
+      if (!t.img) { bare.push(t); return; }
 
       var s = slide('', 'tool-' + t.id, cat.id, d.n);
       var inner = wash(s, m.icon);
-      var wrap = el('div', 's-tool');
+      var wrap = el('div', 's-tool' + (d.s && d.s.length > 5 ? ' s-long' : ''));
 
+      /* only a tool WITH a picture gets its own slide — the rest are cards (below) */
       var shot = el('div', 's-shot');
-      if (t.img) {
-        var img = document.createElement('img');
-        img.src = 'guide-img/' + t.id + '.png';
-        img.alt = d.n;
-        img.decoding = 'async';
-        img.loading = 'lazy';
-        shot.appendChild(img);
-      } else {
-        var solo = el('div', 's-solo');
-        solo.appendChild(icon(m.icon, 's-tile'));
-        solo.appendChild(el('span', null, UI.noshot));
-        shot.appendChild(solo);
-      }
+      var img = document.createElement('img');
+      img.src = 'guide-img/' + t.id + '.png';
+      img.alt = d.n;
+      img.decoding = 'async';
+      img.loading = 'lazy';
+      shot.appendChild(img);
+      if (VIEWS[t.id]) shot.appendChild(viewChips(img, t, 's-views'));
       wrap.appendChild(rise(shot, 0));
 
       var tx = el('div', 's-text');
@@ -334,16 +355,19 @@
       var op = el('option', null, d.n); op.value = 'tool-' + t.id; grp.appendChild(op);
     });
 
-    if (bare.length) {
-      var ls = slide('', 'cat-' + cat.id + '-links', cat.id, cat[LANG] + ' · ' + UI.shorts);
+    /* tools with no panel to picture (links, launchers): cards with their steps,
+       BARE_PER to a slide so a card never shrinks below readable */
+    for (var bi = 0; bi < bare.length; bi += BARE_PER) {
+      var sid = 'cat-' + cat.id + '-links' + (bi ? '-' + (bi / BARE_PER + 1) : '');
+      var ls = slide('', sid, cat.id, cat[LANG] + ' · ' + UI.shorts);
       var lin = wash(ls, cm.icon);
       var lh = el('div', 's-list-h');
       lh.appendChild(icon(cm.icon, 's-tile'));
-      lh.appendChild(el('h2', null, UI.shorts));
+      lh.appendChild(el('h2', null, UI.shorts + (bare.length > BARE_PER ? ' (' + (bi / BARE_PER + 1) + '/' + Math.ceil(bare.length / BARE_PER) + ')' : '')));
       lin.appendChild(rise(lh, 0));
       lin.appendChild(rise(el('p', 's-what', UI.shortsSub), 1));
       var cards = el('div', 's-cards');
-      bare.forEach(function (t, i) {
+      bare.slice(bi, bi + BARE_PER).forEach(function (t, i) {
         var c = el('div', 's-card');
         c.style.setProperty('--i', i);
         var h3 = el('h3');
@@ -351,6 +375,11 @@
         h3.appendChild(document.createTextNode(t[LANG].n));
         c.appendChild(h3);
         c.appendChild(el('p', null, t[LANG].w));
+        if (t[LANG].s && t[LANG].s.length) {
+          var sl = el('ol', 's-card-steps');
+          t[LANG].s.forEach(function (st) { sl.appendChild(el('li', null, st)); });
+          c.appendChild(sl);
+        }
         var mm = tm(t.id);
         if (mm.chord) c.appendChild(el('small', null, META.leader + ' → ' + mm.chord[0].toUpperCase() + ' → ' + mm.chord[1].toUpperCase()));
         else if (mm.hotkey) c.appendChild(el('small', null, mm.hotkey));
@@ -358,7 +387,7 @@
         byId['tool-' + t.id] = deck.length - 1;
       });
       lin.appendChild(cards);
-      var ol2 = el('option', null, UI.shorts); ol2.value = 'cat-' + cat.id + '-links'; grp.appendChild(ol2);
+      var ol2 = el('option', null, UI.shorts + (bi ? ' ' + (bi / BARE_PER + 1) : '')); ol2.value = sid; grp.appendChild(ol2);
     }
     jump.appendChild(grp);
   });

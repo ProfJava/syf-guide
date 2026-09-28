@@ -119,10 +119,19 @@ h1, h2, h3 { font-family: 'SYF Head', 'SYF Body', system-ui, sans-serif; font-we
   border-radius: 14px; box-shadow: 0 30px 60px -28px rgba(0, 0, 0, .55);
 }
 .on .s-shot img { animation: s-float 6s ease-in-out 1s infinite alternate; }
+/* one chip per screen of a tool with tabs/modes (SYF_GUIDE_VIEWS) */
+.s-views { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 12px; max-width: 100%; }
+.s-views button {
+  font: inherit; font-size: 12.5px; padding: 4px 11px; border-radius: 999px; cursor: pointer;
+  color: var(--ink); background: color-mix(in oklab, var(--card) 85%, transparent);
+  border: 1px solid color-mix(in oklab, var(--acc) 30%, var(--line));
+}
+.s-views button:hover { border-color: var(--acc); }
+.s-views button[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on-acc, #fff); }
+.s-views button:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.s-shot:has(.s-views) { grid-template-rows: minmax(0, 1fr) auto; }
+.s-shot:has(.s-views) img { max-height: calc(100vh - 300px); }
 @keyframes s-float { to { transform: translateY(-8px); } }
-.s-solo { display: grid; justify-items: center; gap: 16px; position: relative; z-index: 1; text-align: center; color: var(--mut); }
-.s-solo .s-tile { width: 120px; height: 120px; border-radius: 34px; padding: 28px; }
-.s-solo .s-tile::after { content: ''; position: absolute; inset: -14px; border-radius: 44px; border: 2px solid color-mix(in oklab, var(--acc) 40%, transparent); animation: s-pulse 2.4s ease-out infinite; }
 @keyframes s-pulse { from { transform: scale(.9); opacity: 1; } to { transform: scale(1.25); opacity: 0; } }
 
 .s-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mut); background: var(--glass); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px 4px 6px; backdrop-filter: blur(8px); }
@@ -150,6 +159,15 @@ h1, h2, h3 { font-family: 'SYF Head', 'SYF Body', system-ui, sans-serif; font-we
   width: 28px; height: 28px; border-radius: 9px; background: var(--acc); color: #fff;
   font-size: 13px; font-weight: 700; display: grid; place-items: center;
 }
+
+/* v0.140.13 — a tool with many steps (every tab explained): tighter steps, and the
+   picture stays in view (sticky) while the text column scrolls past it */
+.s-tool.s-long { align-items: start; }
+.s-tool.s-long .s-shot { position: sticky; top: 0; }
+.s-long .s-what { margin-bottom: 12px; }
+.s-long .s-steps { gap: 6px; }
+.s-long .s-steps li { font-size: clamp(13px, 1.05vw, 15px); line-height: 1.6; padding: 7px 12px; padding-inline-start: 46px; }
+.s-long .s-steps li::before { top: 7px; width: 24px; height: 24px; font-size: 12px; border-radius: 8px; }
 
 /* ===== settings slide: the screen with numbered pins (v0.140.11) =====
    The box shrinks to the picture so a pin's % lands on the same spot at any size. */
@@ -332,6 +350,8 @@ kbd {
 .s-card h3 { margin: 0 0 4px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
 .s-card h3 .ic { width: 26px; height: 26px; padding: 5px; border-radius: 8px; background: var(--acc); color: #fff; flex: none; }
 .s-card p { margin: 0; font-size: 14px; color: var(--mut); line-height: 1.7; }
+.s-card-steps { margin: 6px 0 0; padding-inline-start: 18px; font-size: 12.5px; line-height: 1.6; color: var(--ink); }
+.s-card-steps li { margin: 2px 0; }
 .s-card small { display: inline-block; margin-top: 6px; font-size: 12px; direction: ltr; color: var(--acc); font-weight: 700; }
 .on .s-card { animation: s-rise .5s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(200ms + var(--i) * 55ms); }
 
@@ -364,7 +384,7 @@ kbd {
   .s-top .s-hide-sm { display: none; }
   .s-in { padding: 18px 16px 24px; }
   .s-tool { grid-template-columns: 1fr; align-content: start; }
-  .s-shot { min-height: 180px; max-height: none; }
+  .s-shot, .s-tool.s-long .s-shot { min-height: 180px; max-height: none; position: relative; }
   .s-shot img, .s-pinbox img { max-height: 42vh; }
   .s-head { gap: 12px; }
   .s-tile { width: 54px; height: 54px; padding: 13px; border-radius: 16px; }
@@ -381,7 +401,7 @@ kbd {
   @page { size: A4 landscape; margin: 0; }
   html, body { height: auto; overflow: visible; }
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .s-top, .s-foot { display: none; }
+  .s-top, .s-foot, .s-views { display: none; }
   .s-stage { overflow: visible; }
   .s-slide, .s-slide.on { position: relative; display: block; width: 297mm; height: 210mm; break-after: page; page-break-after: always; }
   .s-in { overflow: hidden; }
@@ -393,4 +413,7 @@ kbd {
   .s-toc-cat { margin-bottom: 8px; padding: 4px; }
   .s-toc-cat button { padding: 0 4px; line-height: 1.35; }
   .s-toc-t { font-size: 10px; }
+  .s-tool.s-long .s-shot { position: relative; }
+  .s-long .s-steps li { font-size: 10.5px; line-height: 1.45; padding: 4px 8px; padding-inline-start: 36px; }
+  .s-long .s-steps li::before { top: 4px; width: 20px; height: 20px; font-size: 10px; }
 }
