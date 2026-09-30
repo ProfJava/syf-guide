@@ -36,6 +36,19 @@
        '★ Star', 'Adds the tool to the favourites shelf at the top of the rail.']
     ]),
 
+    g('win', '🪟', ['رأس نافذة الأداة', 'أعلى كل نافذة أداة تفتحها — على الشريط العائم وفي وضع العمل'], ['The tool window\'s head', 'The top of every tool window you open — on the floating rail and in Workspace mode'], [
+      ['✕ إغلاق', 'يغلق النافذة. سحب الرأس ينقلها، والمقبض في زاويتها السفلى يغيّر حجمها.',
+       '✕ Close', 'Closes the window. Drag the head to move it; the grip in its bottom corner resizes it.'],
+      ['★ المفضّلة', 'يضيف الأداة إلى رفّ المفضّلة أعلى الشريط أو يزيلها منه.',
+       '★ Favourite', 'Adds the tool to the favourites shelf at the top of the rail, or removes it.'],
+      ['📷 تصوير الأداة ونسخ الصورة', 'يلتقط النافذة كما تراها وينسخها صورةً إلى الحافظة — الصقها مباشرة في محادثة أو مستند. لا يُنزَّل ملف، ولا يُصوَّر إلا التبويب الظاهر أمامك. ✓ على الزرّ يعني أنها نُسخت.',
+       '📷 Snap this tool and copy the picture', 'Captures the window exactly as you see it and copies it to the clipboard as an image — paste it straight into a chat or a document. No file is downloaded, and only the tab in front of you is ever captured. A ✓ on the button means it was copied.'],
+      ['▢ تكبير', 'يملأ الصفحة بالنافذة، وضغطة ثانية تعيد حجمها.',
+       '▢ Maximise', 'Fills the page with the window; press again to restore its size.'],
+      ['▭ تصغير', 'يطوي النافذة إلى شريط أسفل الشاشة؛ انقره لتعود.',
+       '▭ Minimise', 'Folds the window into a strip at the bottom of the screen; click it to bring it back.']
+    ]),
+
     g('langpos', '🌐', ['اللغة والموضع', RAIL_AR + ' ← 🎨 المظهر ← اللغة والموضع'], ['Language & position', RAIL_EN + ' → 🎨 Appearance → Language & position'], [
       ['اللغة — Language', 'العربية أو English. يقلب اتجاه الواجهة، ويغلق النوافذ المفتوحة، ويعيد بناء الشريط. أول تثبيت يخمّنها من لغة متصفّحك ويسألك مرّة.',
        'Language', 'Arabic or English. Flips the interface direction, closes open windows and rebuilds the rail. A fresh install guesses from your browser language and asks you once.'],
@@ -47,7 +60,9 @@
       ['اللون', 'ثمانية ألوان لهويّة الشريط ونوافذ الأدوات: تركوازي (الافتراضي)، أزرق، بنفسجي، أخضر، برتقالي، وردي، سماوي، رمادي.',
        'Colour', 'Eight accent colours for the rail and tool windows: teal (default), blue, purple, green, orange, pink, sky, grey.'],
       ['نمط الأزرار', 'صلب، زجاجي، ثلجي، محدّد، داكن، واضح — شكل رسم أزرار الشريط. «ثلجي» أو «واضح» أوضح على المواقع المزدحمة.',
-       'Button style', 'Solid, glass, frosted, outlined, dark, clear — how the rail\'s buttons are drawn. «Frosted» or «clear» read better on busy sites.']
+       'Button style', 'Solid, glass, frosted, outlined, dark, clear — how the rail\'s buttons are drawn. «Frosted» or «clear» read better on busy sites.'],
+      ['قوائم منسدلة محسّنة (سلكت ٢) مع بحث داخل الخيارات', 'كل قائمة منسدلة في الأدوات وصفحات الإضافة تفتح قائمة أوضح، وفيها خانة بحث متى زادت خياراتها على سبعة (تفهم الهمزة والتشكيل). الأسهم وEnter وEsc تعمل. لا تمسّ قوائم المواقع التي تتصفّحها. مفعّلة افتراضيًا، ويسري الإطفاء فورًا.',
+       'Enhanced dropdowns (Select2 style) with search inside the options', 'Every dropdown in the tools and extension pages opens a clearer list, with a search box once it has more than seven options. Arrows, Enter and Esc work. The dropdowns of the sites you browse are left alone. On by default; switching it off applies at once.']
     ]),
 
     g('fonts', '🔤', ['الخطوط', RAIL_AR + ' ← 🎨 المظهر ← الخطوط'], ['Fonts', RAIL_EN + ' → 🎨 Appearance → Fonts'], [
@@ -152,7 +167,8 @@
   var PINS = {
     tools:   [[95.9, 26.5], [84.3, 53.1], [88.4, 64.6], [93.4, 53.1], [15.5, 65.3], [8.8, 65.2]],
     langpos: [[43.4, 41.6, 1], [50.1, 67.4, 1]],
-    colors:  [[60.2, 41.6, 1], [54.5, 54.7, 1]],
+    win:     [[7.8, 5.5], [16.3, 5.5], [24.7, 5.5], [33.1, 5.5], [41.6, 5.5]],
+    colors:  [[60.2, 41.5, 1], [54.6, 54.6, 1], [6.9, 78.5, 1]],
     fonts:   [[52.5, 27.5, 1], [65, 64.8], [13.9, 83, 1]],
     bar:     [[49.3, 28.6, 1], [56.1, 44.9, 1], [53, 54.4, 1], [42.2, 71.1, 1], [11.2, 92, 1], null],
     clock:   [[23.5, 34, 1], [58.8, 38.9, 1], [53.9, 54.7, 1], [52, 63.9, 1], [51.6, 73.1, 1], [10.4, 83.2, 1]],

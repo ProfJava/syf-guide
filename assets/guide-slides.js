@@ -103,8 +103,12 @@
     return box;
   }
 
-  var CATS = window.SYF_GUIDE_CATS, TOOLS = window.SYF_GUIDE;
   var META = window.SYF_GUIDE_META || { leader: 'Alt+K', cats: {}, tools: {} };
+  /* same rail order as guide.js — from guide-meta.js, generated from src/rail.js */
+  var ORD = META.order || { cats: [], tools: [] };
+  function rank(list, id) { var i = list.indexOf(id); return i < 0 ? 1e4 : i; }
+  var CATS = window.SYF_GUIDE_CATS.slice().sort(function (a, b) { return rank(ORD.cats, a.id) - rank(ORD.cats, b.id); });
+  var TOOLS = window.SYF_GUIDE.slice().sort(function (a, b) { return rank(ORD.tools, a.id) - rank(ORD.tools, b.id); });
   var SETS = window.SYF_GUIDE_SETTINGS || [];
   var stage = document.getElementById('s-stage');
   var jump = document.getElementById('s-jump');
