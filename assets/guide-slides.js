@@ -1,6 +1,7 @@
 /* guide-slides.js — the illustrated guide as slides, v0.140.2.
  *
- * Reads the SAME data as guide.html: guide-data.js (text), guide-img/ (screenshots),
+ * The ONLY guide since v0.150.0 (the gallery guide.html was removed; this deck is also
+ * published as syf-guide). Reads guide-data.js (text), guide-img/ (screenshots),
  * guide-meta.js (real icons + shortcuts, GENERATED from the shipped tools by
  * tools/guide-meta-build.js) and guide-settings.js (what every setting does). The
  * page's own <html lang> picks the language (guide-slides.html = ar, -en = en).
@@ -104,7 +105,7 @@
   }
 
   var META = window.SYF_GUIDE_META || { leader: 'Alt+K', cats: {}, tools: {} };
-  /* same rail order as guide.js — from guide-meta.js, generated from src/rail.js */
+  /* the rail's order — from guide-meta.js, generated from src/rail.js */
   var ORD = META.order || { cats: [], tools: [] };
   function rank(list, id) { var i = list.indexOf(id); return i < 0 ? 1e4 : i; }
   var CATS = window.SYF_GUIDE_CATS.slice().sort(function (a, b) { return rank(ORD.cats, a.id) - rank(ORD.cats, b.id); });
