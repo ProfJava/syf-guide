@@ -20,7 +20,7 @@
   var RTL = document.documentElement.dir === 'rtl';
 
   var UI = AR ? {
-    title: 'دليل الاستخدام', kick: 'SYF SHORTCUTS · صندوق أدوات المتصفّح',
+    title: 'دليل الاستخدام', kick: 'SYF TOOLS · صندوق أدوات المتصفح',
     sub: 'كل ما تحتاجه أثناء التصفّح، في شريط واحد على حافة الشاشة. تعرّف على كل أداة وأيقونتها واختصار فتحها وخطوات استعمالها، ثم اضبط الإضافة على ذوقك بشرح واضح لكل إعداد.',
     tools: 'أداة', cats: 'فئة', sets: 'شاشة إعدادات', go: 'ابدأ الجولة',
     hint: 'الأسهم أو المسافة للتنقّل · F ملء الشاشة · انقر أي أيقونة لتذهب إليها',
@@ -39,7 +39,7 @@
     toc: 'الفهرس', tocSub: 'كل الفئات والأدوات في مكان واحد — انقر أيّ سطر لتذهب إلى شريحته، والرقم بجانبه هو رقم الشريحة.',
     mainView: 'الواجهة', views: 'شاشات الأداة'
   } : {
-    title: 'User guide', kick: 'SYF SHORTCUTS · YOUR BROWSER TOOLBOX',
+    title: 'User guide', kick: 'SYF TOOLS · YOUR BROWSER TOOLBOX',
     sub: 'Everything you need while browsing, in one bar at the edge of the screen. Meet every tool, its icon, the shortcut that opens it and the steps to use it — then tune the extension with a clear explanation of every setting.',
     tools: 'tools', cats: 'categories', sets: 'settings screens', go: 'Start the tour',
     hint: 'Arrows or Space to move · F for full screen · click any icon to jump to it',
@@ -104,7 +104,7 @@
     return box;
   }
 
-  var META = window.SYF_GUIDE_META || { leader: 'Alt+K', cats: {}, tools: {} };
+  var META = window.SYF_GUIDE_META || { leader: 'Ctrl+Alt+K', cats: {}, tools: {} };
   /* the rail's order — from guide-meta.js, generated from src/rail.js */
   var ORD = META.order || { cats: [], tools: [] };
   function rank(list, id) { var i = list.indexOf(id); return i < 0 ? 1e4 : i; }
@@ -141,7 +141,7 @@
   function rise(node, d) { node.classList.add('s-rise'); node.style.setProperty('--d', d); return node; }
   function jumpTo(id) { return function () { if (byId[id] != null) go(byId[id]); }; }
 
-  /* keycaps: 'Alt+K' + ['i','q'] → [Alt] + [K] → [I] → [Q] */
+  /* keycaps: 'Ctrl+Alt+K' + ['i','q'] → [Alt] + [K] → [I] → [Q] */
   function combo(parts) {
     var row = el('div', 's-combo'), k = 0;
     parts.forEach(function (p, pi) {

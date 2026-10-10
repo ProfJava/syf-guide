@@ -29,8 +29,8 @@
        'Language', 'Arabic or English. Flips the interface direction, closes open windows and rebuilds the rail. A fresh install guesses from your browser language and asks you once.'],
       ['قوائم منسدلة محسّنة (سلكت ٢) مع بحث داخل الخيارات', 'كل قائمة منسدلة في الأدوات وصفحات الإضافة تفتح قائمة أوضح، وفيها خانة بحث متى زادت خياراتها على سبعة (تفهم الهمزة والتشكيل). الأسهم وEnter وEsc تعمل. لا تمسّ قوائم المواقع التي تتصفّحها. مفعّلة افتراضيًا، ويسري الإطفاء فورًا.',
        'Enhanced dropdowns (Select2 style) with search inside the options', 'Every dropdown in the tools and extension pages opens a clearer list, with a search box once it has more than seven options. Arrows, Enter and Esc work. The dropdowns of the sites you browse are left alone. On by default; switching it off applies at once.'],
-      ['⬇ تصدير', 'تحت «النسخ الاحتياطي»: ينزّل ملف syf-shortcuts-settings.json بكل إعداداتك — بلا المفاتيح وكلمات السر والخزنة والأقفال، ويخبرك كم عنصرًا حسّاسًا لم يُكتب.',
-       '⬇ Export', 'Under «Backup»: downloads syf-shortcuts-settings.json with all your settings — without keys, passwords, the vault or the locks, and tells you how many sensitive items were left out.'],
+      ['⬇ تصدير', 'تحت «النسخ الاحتياطي»: ينزّل ملف syf-tools-settings.json بكل إعداداتك — بلا المفاتيح وكلمات السر والخزنة والأقفال، ويخبرك كم عنصرًا حسّاسًا لم يُكتب.',
+       '⬇ Export', 'Under «Backup»: downloads syf-tools-settings.json with all your settings — without keys, passwords, the vault or the locks, and tells you how many sensitive items were left out.'],
       ['⬆ استيراد', 'يقرأ ملفًّا مصدَّرًا ويتحقّق من كل قيمة قبل حفظها (ومنها رمز اللون المخصّص). أعد تحميل الصفحة بعده.',
        '⬆ Import', 'Reads an exported file and checks every value before saving it (the custom colour code included). Reload the page afterwards.'],
       ['↺ إعادة تعيين', '⚠️ يمسح كل الإعدادات والبيانات. يحتاج ضغطتين: الأولى تطلب التأكيد لأربع ثوانٍ.',
@@ -133,17 +133,17 @@
     g('keys', '⌨', ['المفاتيح', RAIL_AR + ' ← المفاتيح'], ['Keys', RAIL_EN + ' → Keys'], [
       ['سجّل توليفة', 'اختر أداة من القائمة، اضغط «⌨ سجّل توليفة»، ثم اضغط التوليفة (يجب أن تحوي Alt أو Ctrl أو ⌘). توليفة مستخدمة تنتقل للأداة الجديدة.',
        'Record a combo', 'Pick a tool, press «⌨ Record a combo», then press the combination (it must include Alt, Ctrl or ⌘). A combination already in use moves to the new tool.'],
-      ['الاختصارات الافتراضية لكل الأدوات', 'Alt+K ثم حرف الفئة ثم حرف الأداة — لكل أداة اختصار بلا إعداد. يتحكّم أيضًا في ⌘K/Ctrl+K للبحث. إطفاؤه يعيد المفتاحين للموقع.',
-       'Built-in shortcuts for every tool', 'Alt+K, then the category letter, then the tool letter — every tool has a shortcut with no setup. Also controls ⌘K/Ctrl+K for search. Turning it off gives both keys back to the site.'],
+      ['الاختصارات الافتراضية لكل الأدوات', 'Ctrl+Alt+K ثم حرف الفئة ثم حرف الأداة — لكل أداة اختصار بلا إعداد. يتحكّم أيضًا في ⌘K/Ctrl+K للبحث. إطفاؤه يعيد المفتاحين للموقع.',
+       'Built-in shortcuts for every tool', 'Ctrl+Alt+K, then the category letter, then the tool letter — every tool has a shortcut with no setup. Also controls ⌘K/Ctrl+K for search. Turning it off gives both keys back to the site.'],
       ['اعرض قائمة الاختصارات الافتراضية', 'يفتح لوحة الحروف على الشاشة لترى كل اختصار.',
        'Show the built-in shortcut list', 'Opens the letter sheet on screen so you can see every shortcut.'],
-      ['اختصارات ثابتة', 'Alt+H يخفي الشريط ويُظهره، وAlt+Q يغلق كل النوافذ، و⌘K/Ctrl+K يبحث في كل الأدوات. لا تعمل وأنت تكتب داخل حقل.',
-       'Fixed shortcuts', 'Alt+H hides and shows the rail, Alt+Q closes every window, ⌘K/Ctrl+K searches every tool. They do nothing while you type in a field.']
+      ['اختصارات ثابتة', 'Ctrl+Alt+H يخفي الشريط ويُظهره، وCtrl+Alt+Q يغلق كل النوافذ، و⌘K/Ctrl+K يبحث في كل الأدوات. لا تعمل وأنت تكتب داخل حقل.',
+       'Fixed shortcuts', 'Ctrl+Alt+H hides and shows the rail, Ctrl+Alt+Q closes every window, ⌘K/Ctrl+K searches every tool. They do nothing while you type in a field.']
     ]),
 
-    g('options', '⚙', ['صفحة الخيارات', 'chrome://extensions ← SYF ← الخيارات (أو زرّ 📖 في قسم المفاتيح)'], ['Options page', 'chrome://extensions → SYF → Options (or the 📖 button in the Keys section)'], [
-      ['إظهار الشريط على الصفحات', 'يشغّل الشريط العائم على المواقع أو يطفئه كليًا — مثل Alt+H وأيقونة الإضافة في شريط المتصفّح.',
-       'Show the toolbar on pages', 'Turns the floating rail on or off on websites — same as Alt+H and the extension\'s toolbar icon.'],
+    g('options', '⚙', ['صفحة الخيارات', 'chrome://extensions ← SYF Tools ← الخيارات (أو زرّ 📖 في قسم المفاتيح)'], ['Options page', 'chrome://extensions → SYF Tools → Options (or the 📖 button in the Keys section)'], [
+      ['إظهار الشريط على الصفحات', 'يشغّل الشريط العائم على المواقع أو يطفئه كليًا — مثل Ctrl+Alt+H وأيقونة الإضافة في شريط المتصفّح.',
+       'Show the toolbar on pages', 'Turns the floating rail on or off on websites — same as Ctrl+Alt+H and the extension\'s toolbar icon.'],
       ['الموضع الافتراضي / اللون الأساسي', 'نفس إعدادَي الموضع واللون في نافذة الإعدادات (واللون المخصّص يظهر باسم «لون مخصّص» ورمزه).',
        'Default position / accent colour', 'The same position and colour settings as the settings window (a custom colour shows as «Custom colour» with its code).'],
       ['تصدير / استيراد / إعادة تعيين', 'نفس أزرار النسخ الاحتياطي وبنفس الحماية للبيانات الحسّاسة. التغيير يسري بعد إعادة تحميل الصفحات المفتوحة.',

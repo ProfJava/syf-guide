@@ -1,4 +1,4 @@
-FONTS BUNDLED WITH SYF — صندوق أدوات المتصفّح
+FONTS BUNDLED WITH SYF Tools - صندوق أدوات المتصفح
 =============================================
 
 Every font in this folder is a Google Font released under the
