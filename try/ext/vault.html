@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!-- data-syfs-i18n="page": src/i18n.js translates this page's STATIC markup and writes
+     lang/dir/--syfs-dir from the stored language. Earned, not assumed — this page's
+     prose has no sentence split mid-clause by a <b>, which is the one thing that makes
+     per-text-node translation unsafe (§6.100). -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>حافظة الباسوردات — SYF</title>
+  <style>
+    /* light is the default whatever the OS says; the header toggle writes data-theme
+       (src/vault.js — the same key as the guide and help pages) */
+    :root { --pri:#457364; --pri-d:#35594e; --bg:#f4f6f5; --card:#fff; --ink:#1f2a27; --mut:#6b7c76; --line:#e3e9e6; --danger:#c0392b; --on-pri:#fff; --shadow:rgba(0,0,0,.25); }
+    :root[data-theme="dark"] { --bg:#14100c; --card:#1e2622; --ink:#e7ece9; --mut:#9fb0aa; --line:#33403a; --danger:#e0675a; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    /* --syfs-font comes from src/fontkit.js (`ui_font`); unset → the system stack */
+    body { background:var(--bg); color:var(--ink); font:15px/1.6 var(--syfs-font,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif); }
+    .wrap { max-width:760px; margin:0 auto; padding:28px 16px 64px; }
+    header { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+    header h1 { font-size:20px; font-weight:700; flex:1; }
+    .lock-ico { width:30px; height:30px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; }
+    .card h2 { font-size:16px; margin-bottom:6px; }
+    label { display:block; font-size:13px; color:var(--mut); margin:10px 0 4px; }
+    input[type=text], input[type=password], textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:9px; background:var(--bg); color:var(--ink); font:inherit; }
+    textarea { resize:vertical; min-height:52px; }
+    .btn { background:var(--pri); color:var(--on-pri); border:none; border-radius:9px; padding:10px 16px; font:inherit; font-weight:600; cursor:pointer; }
+    .btn:hover { background:var(--pri-d); }
+    .btn:focus-visible, .theme:focus-visible, .link:focus-visible { outline:2px solid var(--pri); outline-offset:2px; }
+    .btn.sec { background:transparent; color:var(--pri); border:1px solid var(--pri); }
+    .btn.danger { background:transparent; color:var(--danger); border:1px solid var(--danger); }
+    .btn.mini { padding:5px 10px; font-size:13px; }
+    .link { background:none; border:none; color:var(--pri); font:inherit; text-decoration:underline; cursor:pointer; padding:0; }
+    .theme { background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:50%; width:34px; height:34px; font-size:16px; cursor:pointer; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .row.end { justify-content:flex-end; }
+    .hint { color:var(--mut); font-size:12.5px; margin-top:8px; }
+    .hint.warn, .err { color:var(--danger); }
+    .hide { display:none !important; }
+    .entry { border:1px solid var(--line); border-radius:11px; padding:12px 14px; margin-bottom:10px; background:var(--card); }
+    .entry .title { font-weight:700; }
+    .entry .u { color:var(--mut); font-size:13px; direction:ltr; text-align:start; }
+    .entry .pw { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; direction:ltr; letter-spacing:1px; word-break:break-all; }
+    .entry .when { color:var(--mut); font-size:12px; margin-top:4px; }
+    .entry .acts { margin-top:8px; }
+    .search { margin-bottom:12px; }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+    .empty { color:var(--mut); text-align:center; padding:24px; }
+    .toast { position:fixed; inset-inline:0; bottom:20px; margin:auto; width:max-content; max-width:90%; background:var(--pri-d); color:var(--on-pri); padding:9px 16px; border-radius:20px; box-shadow:0 6px 20px var(--shadow); opacity:0; transition:opacity .2s; pointer-events:none; }
+    .toast.show { opacity:1; }
+    @media (max-width: 480px) { .card { padding:14px; } .toolbar .row { width:100%; } }
+  </style>
+<link rel="stylesheet" href="controls.css"><!-- switches + glass buttons (v0.153.0/v0.154.0) -->
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <svg class="lock-ico" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+      <h1>حافظة الباسوردات</h1>
+      <button type="button" class="theme" id="v-theme"></button>
+    </header>
+
+    <!-- setup: first run -->
+    <section id="view-setup" class="card hide">
+      <h2>إنشاء كلمة المرور الرئيسية</h2>
+      <p class="hint">تُشفَّر كل بياناتك بهذه الكلمة (AES-GCM). لا تُخزَّن الكلمة نفسها في أي مكان.</p>
+      <label for="su-p1">كلمة المرور الرئيسية</label>
+      <input type="password" id="su-p1" autocomplete="new-password">
+      <label for="su-p2">تأكيد كلمة المرور</label>
+      <input type="password" id="su-p2" autocomplete="new-password">
+      <p class="hint warn">⚠️ إن نسيت هذه الكلمة فلا يمكن استرجاع بياناتك إطلاقاً — هذا هو سبب الأمان.</p>
+      <div class="row end" style="margin-top:12px"><button class="btn" id="su-go">إنشاء الحافظة</button></div>
+      <p class="hint err" id="su-err" role="alert"></p>
+      <p class="hint"><button type="button" class="link" id="su-restore">استعادة حافظة من نسخة مشفّرة</button></p>
+    </section>
+
+    <!-- unlock -->
+    <section id="view-unlock" class="card hide">
+      <h2>فتح الحافظة</h2>
+      <label for="un-p">كلمة المرور الرئيسية</label>
+      <input type="password" id="un-p" autocomplete="current-password">
+      <div class="row end" style="margin-top:12px"><button class="btn" id="un-go">فتح</button></div>
+      <p class="hint err" id="un-err" role="alert"></p>
+    </section>
+
+    <!-- vault -->
+    <section id="view-vault" class="hide">
+      <div class="toolbar">
+        <button class="btn mini" id="v-add">+ إضافة مدخل</button>
+        <div class="row">
+          <button class="btn mini sec" id="v-export">⬇ تصدير نسخة مشفّرة</button>
+          <button class="btn mini sec" id="v-import">⬆ استيراد نسخة</button>
+          <button class="btn mini sec" id="v-master">🔑 تغيير كلمة المرور الرئيسية</button>
+          <button class="btn mini sec" id="v-lock">🔒 قفل</button>
+        </div>
+      </div>
+      <input type="text" id="v-search" class="search" placeholder="بحث بالعنوان أو اسم المستخدم…" aria-label="بحث بالعنوان أو اسم المستخدم…">
+      <div id="v-list"></div>
+    </section>
+
+    <!-- editor -->
+    <section id="view-edit" class="card hide">
+      <h2 id="ed-title">مدخل جديد</h2>
+      <label for="ed-t">العنوان / الموقع</label>
+      <input type="text" id="ed-t" placeholder="مثال: بريد العمل">
+      <label for="ed-u">اسم المستخدم / البريد</label>
+      <input type="text" id="ed-u" style="direction:ltr" autocomplete="off">
+      <label for="ed-p">كلمة المرور</label>
+      <div class="row">
+        <input type="text" id="ed-p" style="direction:ltr;flex:1;font-family:ui-monospace,monospace" autocomplete="off">
+        <button class="btn mini sec" id="ed-gen">توليد قوية</button>
+      </div>
+      <label for="ed-n">ملاحظة (اختياري)</label>
+      <textarea id="ed-n"></textarea>
+      <div class="row end" style="margin-top:14px">
+        <button class="btn danger mini hide" id="ed-del">حذف</button>
+        <button class="btn sec mini" id="ed-cancel">إلغاء</button>
+        <button class="btn" id="ed-save">حفظ</button>
+      </div>
+    </section>
+
+    <!-- import an encrypted copy (restore on first run, merge when unlocked) -->
+    <section id="view-import" class="card hide">
+      <h2>استيراد نسخة مشفّرة</h2>
+      <p class="hint" id="im-file"></p>
+      <label for="im-p">كلمة المرور الرئيسية لهذه النسخة</label>
+      <input type="password" id="im-p" autocomplete="off">
+      <p class="hint" id="im-how">تُدمَج المدخلات مع حافظتك: الجديد يُضاف، والمدخل الموجود يُستبدل فقط إن كان في النسخة أحدث.</p>
+      <div class="row end" style="margin-top:12px">
+        <button class="btn sec mini" id="im-cancel">إلغاء</button>
+        <button class="btn" id="im-go">استيراد</button>
+      </div>
+      <p class="hint err" id="im-err" role="alert"></p>
+    </section>
+
+    <!-- change the master password -->
+    <section id="view-master" class="card hide">
+      <h2>تغيير كلمة المرور الرئيسية</h2>
+      <label for="mp-old">كلمة المرور الحالية</label>
+      <input type="password" id="mp-old" autocomplete="current-password">
+      <label for="mp-new">كلمة المرور الجديدة</label>
+      <input type="password" id="mp-new" autocomplete="new-password">
+      <label for="mp-new2">تأكيد كلمة المرور الجديدة</label>
+      <input type="password" id="mp-new2" autocomplete="new-password">
+      <p class="hint warn">⚠️ النسخ المصدَّرة سابقاً تبقى مقفلة بكلمتها القديمة.</p>
+      <div class="row end" style="margin-top:12px">
+        <button class="btn sec mini" id="mp-cancel">إلغاء</button>
+        <button class="btn" id="mp-go">تغيير</button>
+      </div>
+      <p class="hint err" id="mp-err" role="alert"></p>
+    </section>
+
+    <!-- a second vault tab: the first one is brought forward instead -->
+    <section id="view-dup" class="card hide">
+      <h2>الحافظة مفتوحة في تبويب آخر</h2>
+      <p class="hint">تبويب واحد للحافظة يمنع أن يكتب أحدهما فوق ما حفظه الآخر.</p>
+      <div class="row end" style="margin-top:12px"><button class="btn" id="dup-go">انتقل إليها</button></div>
+    </section>
+
+    <input type="file" id="v-file" accept="application/json,.json" class="hide">
+    <p class="hint" style="text-align:center;margin-top:20px">كل شيء محلي على جهازك — لا شبكة، لا مزامنة، لا ملء تلقائي. انسخ كلمة السر والصقها بنفسك.</p>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- ⚠️ i18n.js first, and it was missing entirely until v0.97.0 — this whole page
+       was Arabic in an English interface, and SYFS.t did not exist for vault.js. -->
+  <script src="src/i18n.js"></script>
+  <script src="src/btnkit.js"></script>
+  <script src="src/fontkit.js"></script>
+  <script src="src/vault.js"></script>
+</body>
+</html>

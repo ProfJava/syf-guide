@@ -1,0 +1,469 @@
+/* SYF Studio Lab — themes + components. Colours ONLY through the tokens below.
+   Themes: accent (default, the rail's glass) · accent-dark · graphite · midnight · light · syf · glass · sand.
+   Labels: html[data-labels="icons"] hides every .lbl and narrows the side nav. */
+
+:root, [data-theme="graphite"] {
+  --bg: #18181b; --bg2: #1f1f23; --panel: #26262b; --panel2: #2e2e34; --sunk: #1b1b1f;
+  --line: #36363d; --line2: #2c2c32;
+  --fg: #ececf0; --muted: #a2a2ad; --faint: #6f6f7a;
+  --acc: #3b9eff; --acc2: rgba(59,158,255,.16); --acc-fg: #fff;
+  --nav: #141417; --nav-fg: #a9a9b3; --nav-on: #2a2a30;
+  --good: #34c77b; --good-bg: rgba(52,199,123,.14); --bad: #ff6b6b; --warn: #f5b74e;
+  --checker1: #2a2a2f; --checker2: #232328;
+  --shadow: 0 18px 50px -18px rgba(0,0,0,.7);
+  --glass: none; --r: 10px;
+  color-scheme: dark;
+}
+[data-theme="midnight"] {
+  --bg: #0b1020; --bg2: #0f162a; --panel: #131c33; --panel2: #18233f; --sunk: #0d1426;
+  --line: #24304f; --line2: #1c2742;
+  --fg: #e6ebf7; --muted: #9aa6c4; --faint: #64708f;
+  --acc: #8b7cff; --acc2: rgba(139,124,255,.18); --acc-fg: #fff;
+  --nav: #080c18; --nav-fg: #8d98b8; --nav-on: #182240;
+  --good: #3ddc97; --good-bg: rgba(61,220,151,.13); --bad: #ff7a8a; --warn: #ffc65c;
+  --checker1: #18213a; --checker2: #121a2f;
+  --shadow: 0 18px 50px -18px rgba(0,0,0,.8);
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  --bg: #eef0f4; --bg2: #f6f7f9; --panel: #ffffff; --panel2: #f4f5f8; --sunk: #eceef2;
+  --line: #dfe2e8; --line2: #e9ebf0;
+  --fg: #141821; --muted: #5d6576; --faint: #9aa1af;
+  --acc: #2563eb; --acc2: rgba(37,99,235,.10); --acc-fg: #fff;
+  --nav: #ffffff; --nav-fg: #4b5363; --nav-on: #eef2fd;
+  --good: #15803d; --good-bg: #e7f6ec; --bad: #dc2626; --warn: #b45309;
+  --checker1: #e4e7ec; --checker2: #f4f5f8;
+  --shadow: 0 18px 50px -22px rgba(20,30,50,.35);
+  color-scheme: light;
+}
+[data-theme="syf"] {
+  --bg: #eef1ef; --bg2: #f5f7f6; --panel: #ffffff; --panel2: #f3f6f4; --sunk: #e8ece9;
+  --line: #d4dbd7; --line2: #e3e8e5;
+  --fg: #17201c; --muted: #58665f; --faint: #8a958f;
+  --acc: #2f6b57; --acc2: #e3efe9; --acc-fg: #fff;
+  --nav: #17201c; --nav-fg: #9fb0a8; --nav-on: #24302b;
+  --good: #2b6c3e; --good-bg: #e3f2e7; --bad: #c2453c; --warn: #a0562b;
+  --checker1: #e3e8e5; --checker2: #f3f6f4;
+  --shadow: 0 24px 60px -24px rgba(15,35,25,.45);
+  color-scheme: light;
+}
+[data-theme="glass"] {
+  --bg: #0d1b2a; --bg2: rgba(255,255,255,.04); --panel: rgba(255,255,255,.07); --panel2: rgba(255,255,255,.10); --sunk: rgba(0,0,0,.22);
+  --line: rgba(255,255,255,.14); --line2: rgba(255,255,255,.08);
+  --fg: #f1f5fb; --muted: #b6c2d6; --faint: #7f8ca3;
+  --acc: #2dd4bf; --acc2: rgba(45,212,191,.18); --acc-fg: #062a26;
+  --nav: rgba(0,0,0,.28); --nav-fg: #b6c2d6; --nav-on: rgba(255,255,255,.12);
+  --good: #4ade80; --good-bg: rgba(74,222,128,.14); --bad: #fb7185; --warn: #fbbf24;
+  --checker1: rgba(255,255,255,.08); --checker2: rgba(255,255,255,.03);
+  --shadow: 0 24px 60px -20px rgba(0,0,0,.6);
+  --glass: blur(18px) saturate(140%);
+  color-scheme: dark;
+}
+[data-theme="sand"] {
+  --bg: #f3ede4; --bg2: #f8f4ee; --panel: #fffcf7; --panel2: #f7f1e8; --sunk: #efe7db;
+  --line: #e2d6c4; --line2: #ece3d6;
+  --fg: #2a211a; --muted: #6e5f50; --faint: #a39280;
+  --acc: #c2410c; --acc2: rgba(194,65,12,.10); --acc-fg: #fff;
+  --nav: #2a211a; --nav-fg: #c8b9a6; --nav-on: #3a2f26;
+  --good: #3f7d3a; --good-bg: #e6f1e1; --bad: #b42318; --warn: #b45309;
+  --checker1: #ece3d6; --checker2: #f8f4ee;
+  --shadow: 0 22px 56px -24px rgba(60,40,20,.4);
+  color-scheme: light;
+}
+/* «لون الإضافة» (default, v0.166.0): the side nav and the accent follow the colour chosen
+   in the extension's settings (`accent`). studio/app.js writes --ext / --ext-d / --ext-rgb
+   on <html> from storage and again on every change; the fallbacks are SYF's own green. */
+/* v0.170.0: «لون الإضافة» is now the rail's GLASS — the same recipe as .syfs-bar in
+   rail.css (white .84→.64, blur 26 + saturate 1.8, a bright top hairline and a 1px inner
+   edge). Glass needs something behind it to frost: the page ground is the accent and a
+   warm counter-tone as soft light, so the panes read as panes, not grey boxes.
+   «لون الإضافة — داكن» is the same glass, smoked. */
+[data-theme="accent"], [data-theme="accent-dark"] {
+  --acc: var(--ext, #457364); --acc2: rgba(var(--ext-rgb, 69,115,100), .13); --acc-fg: #fff;
+  --acc-hi: color-mix(in srgb, var(--ext, #457364) 78%, #fff);
+  --head: rgba(var(--ext-d-rgb, 43,71,62), .78);
+  --glass: blur(26px) saturate(1.8);
+  --pane-hl: inset 0 1px 0 rgba(255,255,255,.95);
+}
+[data-theme="accent"] {
+  --bg: #e7edee; --bg2: transparent;
+  --panel: linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.62)); --panel2: rgba(255,255,255,.86); --sunk: rgba(15,23,42,.045);
+  --line: rgba(15,23,42,.10); --line2: rgba(15,23,42,.07);
+  --fg: #1d2430; --muted: #566170; --faint: #8a93a0;
+  --nav: linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.62)); --nav-fg: #566170; --nav-on: rgba(15,23,42,.06);
+  --good: #1f7a45; --good-bg: rgba(31,122,69,.12); --bad: #c2453c; --warn: #a0562b;
+  --checker1: #e3e8ea; --checker2: #f6f8f9;
+  --shadow: 0 18px 44px rgba(15,23,42,.16);
+  color-scheme: light;
+}
+[data-theme="accent-dark"] {
+  --bg: #0e1315; --bg2: transparent;
+  --panel: linear-gradient(180deg, rgba(40,48,52,.74), rgba(24,30,33,.6)); --panel2: rgba(46,55,60,.9); --sunk: rgba(0,0,0,.22);
+  --line: rgba(255,255,255,.10); --line2: rgba(255,255,255,.07);
+  --fg: #eef2f3; --muted: #a5afb5; --faint: #6e797f;
+  --nav: linear-gradient(180deg, rgba(40,48,52,.74), rgba(24,30,33,.6)); --nav-fg: #a5afb5; --nav-on: rgba(255,255,255,.07);
+  --good: #4ade80; --good-bg: rgba(74,222,128,.13); --bad: #fb7185; --warn: #fbbf24;
+  --checker1: #1d2427; --checker2: #262e32;
+  --shadow: 0 18px 44px rgba(0,0,0,.5);
+  --pane-hl: inset 0 1px 0 rgba(255,255,255,.10);
+  color-scheme: dark;
+}
+[data-theme="accent"] body, [data-theme="accent-dark"] body {
+  background:
+    radial-gradient(900px 600px at 92% -8%, rgba(var(--ext-rgb, 69,115,100), .50), transparent 62%),
+    radial-gradient(760px 560px at 0% 108%, rgba(232,170,80,.30), transparent 60%),
+    radial-gradient(640px 480px at 45% 55%, rgba(90,140,220,.16), transparent 65%), var(--bg);
+}
+[data-theme="accent-dark"] .seg button.on { background: rgba(255,255,255,.12); }
+[data-theme="glass"] body {
+  background: radial-gradient(1200px 700px at 85% -10%, #3b2a7a 0%, transparent 60%),
+              radial-gradient(900px 600px at 0% 110%, #0f766e 0%, transparent 55%), #0d1b2a;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg); overflow: hidden;
+  /* --syfs-font: the extension's chosen UI font (src/fontkit.js binds it on extension pages) */
+  font: 13.5px/1.55 var(--syfs-font, "IBM Plex Sans Arabic"), "SF Arabic", "Segoe UI", system-ui, -apple-system, Tahoma, sans-serif;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.ic { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.ic.s { width: 15px; height: 15px; }
+.ic.l { width: 22px; height: 22px; }
+.ic.xl { width: 34px; height: 34px; stroke-width: 1.5; }
+.num, .mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+.lbl { white-space: nowrap; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+
+/* ============ app frame — «لوح جانبي زجاجي» (v0.170.0) ============
+   Two floating panes on the page ground: the nav, and the work area (glass head + the
+   tool). Nothing touches an edge — the 12px of ground around them is what lets the
+   frosting show. Tokens only; on the flat themes the same layout reads as cards. */
+.app { display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: 12px; padding: 12px; height: 100vh; transition: grid-template-columns .18s; }
+html[data-labels="icons"] .app { grid-template-columns: 68px minmax(0, 1fr); }
+/* the glass surface: one recipe for every pane */
+.nav, .card, .pop, .dd { -webkit-backdrop-filter: var(--glass); backdrop-filter: var(--glass); }
+.nav, .card { box-shadow: var(--pane-hl, none), inset 0 0 0 1px var(--line2), var(--shadow); }
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: .1px; padding: 14px 14px 10px; }
+.brand .mark { width: 34px; height: 34px; border-radius: 11px; flex: none; display: grid; place-items: center; color: var(--acc-fg);
+  background: linear-gradient(160deg, var(--acc-hi, var(--acc)), var(--acc)); box-shadow: 0 6px 16px var(--acc2), inset 0 1px 0 rgba(255,255,255,.3); }
+.brand small { font-weight: 500; color: var(--faint); font-size: 11px; display: block; line-height: 1.2; }
+.filechip {
+  display: flex; align-items: center; gap: 8px; max-width: 280px; padding: 4px 10px 4px 5px; border-radius: 10px;
+  background: rgba(255,255,255,.16); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); color: rgba(255,255,255,.82); font-size: 12px;
+}
+.filechip img { width: 26px; height: 26px; border-radius: 6px; object-fit: cover; background: var(--checker1); }
+.filechip b { color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ============ side nav (every item = icon + label) ============ */
+.nav {
+  background: var(--nav); color: var(--nav-fg); border-radius: 16px; overflow: hidden;
+  display: flex; flex-direction: column; min-height: 0;
+}
+.nsearch { position: relative; display: block; margin: 0 12px 4px; }
+.nsearch .ic { position: absolute; inset-inline-start: 10px; top: 9px; color: var(--faint); pointer-events: none; }
+.nsearch .in { height: 34px; padding-inline-start: 33px; border-radius: 10px; }
+html[data-labels="icons"] .nsearch, html[data-labels="icons"] .brand > div { display: none; }
+html[data-labels="icons"] .brand { justify-content: center; padding: 14px 0 8px; }
+.nav .scroll { overflow: auto; padding: 4px 10px 6px; flex: 1; }
+.nav h6 { margin: 12px 8px 5px; font-size: 11px; font-weight: 700; letter-spacing: .3px; color: var(--faint); }
+html[data-labels="icons"] .nav h6 { visibility: hidden; height: 6px; margin: 6px 0; overflow: hidden; }
+.nav .item {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 36px; padding: 0 10px; margin-bottom: 2px;
+  border: 0; border-radius: 10px; background: transparent; color: inherit; cursor: pointer; text-align: start; position: relative; font-weight: 500;
+}
+.nav .item:hover { background: var(--nav-on); color: var(--fg); }
+[data-theme="syf"] .nav .item:hover, [data-theme="sand"] .nav .item:hover { color: #fff; }
+/* the active tool is a lit accent key — the rail's category button, flattened to a row */
+.nav .item.on { color: var(--acc-fg); font-weight: 600;
+  background: linear-gradient(160deg, var(--acc-hi, var(--acc)), var(--acc)); box-shadow: 0 6px 14px var(--acc2), inset 0 1px 0 rgba(255,255,255,.28); }
+.nav .item .badge { margin-inline-start: auto; font-size: 10px; padding: 1px 6px; border-radius: 99px; background: var(--acc2); color: var(--acc); font-weight: 700; }
+.nav .item.on .badge { background: rgba(255,255,255,.22); color: inherit; }
+html[data-labels="icons"] .nav .item { justify-content: center; padding: 0; }
+html[data-labels="icons"] .nav .lbl, html[data-labels="icons"] .nav .badge { display: none; }
+.nav .foot { padding: 10px; border-top: 1px solid var(--line2); display: grid; gap: 6px; }
+
+/* ============ work area: glass head + the tool ============ */
+.work { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 12px; min-width: 0; min-height: 0; }
+/* the rail window's head (rail.css .syfs-win-head): one tone of the accent's dark shade
+   at .78 so the ground shows through, a specular hairline on top, a dark one beneath */
+.whead {
+  display: flex; align-items: center; gap: 11px; padding: 9px 12px; border-radius: 16px; min-width: 0; color: #fff; position: relative; z-index: 5;
+  background: linear-gradient(180deg, rgba(255,255,255,.15), rgba(255,255,255,0) 38%), var(--head, color-mix(in srgb, var(--acc) 70%, #000));
+  -webkit-backdrop-filter: blur(28px) saturate(1.8) brightness(1.06); backdrop-filter: blur(28px) saturate(1.8) brightness(1.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.34), inset 0 -1px 0 rgba(0,0,0,.14), var(--shadow);
+}
+.whead .pic { width: 34px; height: 34px; flex: none; border-radius: 10px; display: grid; place-items: center;
+  background: rgba(255,255,255,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+.whead .ht { min-width: 0; }
+.whead h1 { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.3; text-shadow: 0 1px 2px rgba(0,0,0,.22); white-space: nowrap; }
+.whead p { margin: 0; font-size: 12px; opacity: .84; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 54ch; }
+.whead .sp { flex: 1; }
+.whead .btn { background: rgba(255,255,255,.16); border-color: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+.whead .btn:hover { background: rgba(255,255,255,.32); border-color: transparent; }
+.whead .seg { background: rgba(0,0,0,.16); border-color: transparent; }
+.whead .seg button { color: rgba(255,255,255,.8); }
+.whead .seg button:hover { color: #fff; }
+.whead .seg button.on, .whead .modeseg button.on { background: rgba(255,255,255,.26); color: #fff; box-shadow: none; }
+.whead .btn.icon .lbl { display: none; }
+/* head tooltips open downwards — sideways would run off the head */
+.whead .tiponly[data-tip]:hover::after { inset-inline-start: auto; inset-inline-end: 0; top: calc(100% + 8px); transform: none; }
+@media (max-width: 1000px) { .whead p { display: none; } }
+
+/* tooltip for icon-only controls */
+[data-tip] { position: relative; }
+html[data-labels="icons"] [data-tip]:hover::after, .tiponly[data-tip]:hover::after {
+  content: attr(data-tip); position: absolute; inset-inline-start: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+  white-space: nowrap; background: var(--fg); color: var(--bg); font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 7px;
+  z-index: 50; pointer-events: none; box-shadow: var(--shadow);
+}
+.tbar .tiponly[data-tip]:hover::after, .tools [data-tip]:hover::after { inset-inline-start: calc(100% + 6px); }
+
+/* ============ main ============ */
+.main { min-width: 0; min-height: 0; display: flex; flex-direction: column; background: var(--bg2); border-radius: 16px; }
+.page { flex: 1; min-height: 0; overflow: auto; padding: 0 2px 24px; }
+
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 14px; align-items: start; }
+@media (max-width: 1100px) { .grid2 { grid-template-columns: 1fr; } }
+
+.card { background: var(--panel); border: 0; border-radius: 16px; padding: 16px; }
+.card + .card { margin-top: 14px; }
+
+/* ============ side tabs — «أيقونة فوق نص» (design T2, v0.170.0) ============
+   Built by sideTabs() in app.js from the tool's own <h3> sections. Order on the line:
+   tabs · settings panel · the tool's work column — the tabs take the START edge
+   (right in Arabic), the work column the rest. */
+.grid2.has-stabs { grid-template-columns: auto minmax(0, 1fr); }
+.stabs { order: -1; display: grid; grid-template-columns: 86px 300px; gap: 12px; align-items: start; position: sticky; top: 0; }
+.stabs-nav { display: flex; flex-direction: column; gap: 6px; padding: 8px 6px; border-radius: 16px; background: var(--panel);
+  -webkit-backdrop-filter: var(--glass); backdrop-filter: var(--glass); box-shadow: var(--pane-hl, none), inset 0 0 0 1px var(--line2), var(--shadow); }
+.stab { display: grid; justify-items: center; gap: 5px; padding: 9px 4px; border: 0; border-radius: 12px; background: transparent; cursor: pointer;
+  color: var(--muted); font-size: 11.5px; font-weight: 600; line-height: 1.3; text-align: center; }
+.stab .tw { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line2); transition: background .15s, box-shadow .15s; }
+.stab:hover { color: var(--fg); }
+.stab:hover .tw { background: var(--panel2); }
+.stab.on { color: var(--fg); }
+.stab.on .tw { color: var(--acc-fg); background: linear-gradient(160deg, var(--acc-hi, var(--acc)), var(--acc)); box-shadow: 0 6px 16px var(--acc2), inset 0 1px 0 rgba(255,255,255,.3); }
+.stabs-panel { min-width: 0; max-height: calc(100vh - 120px); overflow: auto; }
+.stabs-wrap { padding: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* the floating window is at most 1240px wide: there the panel drops UNDER the work column
+   and widens, but the tabs stay a vertical column beside it. Only a phone-narrow frame
+   turns them into a row. */
+@media (max-width: 1180px) {
+  .grid2.has-stabs { grid-template-columns: 1fr; }
+  .stabs { order: 0; position: static; grid-template-columns: 86px minmax(0, 1fr); }
+  .stabs-panel { max-height: none; }
+}
+@media (max-width: 640px) {
+  .stabs { grid-template-columns: 1fr; }
+  .stabs-nav { flex-direction: row; overflow-x: auto; padding: 6px; }
+  .stab { flex: none; min-width: 72px; }
+}
+.card h3 { margin: 0 0 12px; font-size: 13.5px; display: flex; align-items: center; gap: 8px; }
+.card h3 .ic { color: var(--acc); }
+
+/* ============ controls ============ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 36px; padding: 0 14px;
+  border-radius: 9px; border: 1px solid var(--line); background: var(--panel2); color: var(--fg); cursor: pointer; font-weight: 600; font-size: 13px;
+  transition: background .15s, border-color .15s, transform .05s;
+}
+.btn:hover { border-color: var(--faint); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: default; transform: none; }
+/* the primary action is the rail's lit key: the accent's light→base ramp at 160° */
+.btn.pri { background: linear-gradient(160deg, var(--acc-hi, var(--acc)), var(--acc)); border-color: transparent; color: var(--acc-fg);
+  box-shadow: 0 6px 16px var(--acc2), inset 0 1px 0 rgba(255,255,255,.3); }
+.btn.pri:hover { filter: brightness(1.06); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+.btn.ghost:hover { background: var(--panel2); color: var(--fg); }
+.btn.sm { height: 30px; padding: 0 10px; font-size: 12.5px; border-radius: 8px; }
+.btn.icon { width: 36px; padding: 0; }
+.btn.sm.icon { width: 30px; }
+.btn.block { width: 100%; }
+html[data-labels="icons"] .btn.collapsible .lbl { display: none; }
+html[data-labels="icons"] .btn.collapsible { width: 36px; padding: 0; }
+
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row.end { justify-content: flex-end; }
+.stack { display: grid; gap: 12px; }
+.field { display: grid; gap: 6px; }
+.field > label, .lab { font-size: 12px; color: var(--muted); font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.field > label .num { color: var(--fg); font-weight: 500; }
+.in, select.in {
+  height: 36px; padding: 0 11px; border-radius: 9px; border: 1px solid var(--line); background: var(--sunk); color: var(--fg); width: 100%; min-width: 0;
+}
+.in:focus { border-color: var(--acc); outline: none; }
+textarea.in { height: auto; padding: 10px 11px; resize: vertical; min-height: 90px; line-height: 1.6; }
+input[type=range] { width: 100%; accent-color: var(--acc); }
+input[type=color] { width: 36px; height: 36px; padding: 0; border: 1px solid var(--line); border-radius: 9px; background: none; cursor: pointer; }
+input[type=color]::-webkit-color-swatch-wrapper { padding: 3px; }
+input[type=color]::-webkit-color-swatch { border: 0; border-radius: 6px; }
+
+.seg { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 10px; background: var(--sunk); border: 1px solid var(--line2); }
+.seg button {
+  flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 0 10px;
+  border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; font-size: 12.5px; font-weight: 600;
+}
+.seg button:hover { color: var(--fg); }
+.seg button.on { background: var(--panel); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+[data-theme="glass"] .seg button.on { background: var(--acc2); color: var(--acc); }
+
+.check { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; }
+.sw { appearance: none; width: 38px; height: 22px; border-radius: 99px; background: color-mix(in srgb, var(--fg) 22%, transparent); position: relative; cursor: pointer; flex: none; margin: 0; transition: background .15s; }
+.sw::after { content: ""; position: absolute; top: 3px; inset-inline-start: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: inset-inline-start .15s; }
+.sw:checked { background: var(--acc); }
+.sw:checked::after { inset-inline-start: 19px; }
+
+/* drop zone */
+.drop {
+  border: 1.5px dashed color-mix(in srgb, var(--acc) 40%, transparent); border-radius: 16px; padding: 34px 18px; min-height: 240px; align-content: center; text-align: center; display: grid; gap: 10px; justify-items: center;
+  background: var(--panel); color: var(--muted); cursor: pointer; -webkit-backdrop-filter: var(--glass); backdrop-filter: var(--glass); transition: border-color .15s, background .15s;
+}
+.drop:hover, .drop.over { border-color: var(--acc); background: var(--acc2); }
+.drop .big { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; background: var(--acc2); color: var(--acc); }
+.drop b { color: var(--fg); font-size: 15px; }
+.drop small { font-size: 12px; }
+
+/* preview */
+.checker { background: repeating-conic-gradient(var(--checker1) 0 25%, var(--checker2) 0 50%) 0 0 / 18px 18px; }
+.preview { border-radius: 12px; border: 1px solid var(--line); min-height: 260px; display: grid; place-items: center; overflow: hidden; position: relative; }
+.preview img, .preview canvas { max-width: 100%; max-height: 62vh; display: block; }
+.preview .tag { position: absolute; bottom: 10px; inset-inline-start: 10px; font-size: 11.5px; padding: 3px 8px; border-radius: 6px; background: rgba(0,0,0,.55); color: #fff; }
+
+.saving { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 10px; background: var(--good-bg); color: var(--good); font-weight: 600; }
+.saving.bad { background: rgba(255,107,107,.12); color: var(--bad); }
+.note { font-size: 12px; color: var(--muted); }
+.kv { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.kv td { padding: 7px 8px; border-bottom: 1px solid var(--line2); vertical-align: top; }
+.kv td:first-child { color: var(--muted); width: 40%; }
+.kv tr.warn td { color: var(--warn); }
+
+.list { display: grid; gap: 6px; }
+.fileitem { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 8px; border-radius: 10px; background: var(--sunk); border: 1px solid var(--line2); }
+.fileitem img { width: 44px; height: 44px; border-radius: 7px; object-fit: cover; }
+.fileitem .meta { min-width: 0; }
+.fileitem .meta b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; }
+.fileitem .meta span { font-size: 11.5px; color: var(--muted); }
+.fileitem .res { font-size: 12px; font-weight: 700; color: var(--good); }
+.fileitem .res.bad { color: var(--bad); }
+
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+.swatch { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); cursor: pointer; background: var(--panel); }
+.swatch i { display: block; height: 58px; }
+.swatch span { display: block; padding: 6px 8px; font-size: 11.5px; }
+
+.progress { height: 6px; border-radius: 99px; background: var(--sunk); overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--acc); transition: width .2s; }
+
+/* toast */
+.toasts { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 100; display: grid; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 9px; padding: 10px 14px; border-radius: 11px; background: var(--fg); color: var(--bg); font-weight: 600; font-size: 13px; box-shadow: var(--shadow); animation: tin .18s ease-out; }
+.toast.bad { background: var(--bad); color: #fff; }
+@keyframes tin { from { opacity: 0; transform: translateY(8px); } }
+
+/* popover (theme picker) */
+.pop { position: absolute; top: 70px; inset-inline-end: 18px; z-index: 60; width: 380px; padding: 14px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: var(--glass); }
+[data-theme="glass"] .pop { background: #142235; }
+.pop h4 { margin: 0 0 10px; font-size: 13px; }
+.themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.theme-card { border: 2px solid var(--line); border-radius: 11px; padding: 0; overflow: hidden; cursor: pointer; background: none; text-align: start; }
+.theme-card.on { border-color: var(--acc); }
+.theme-card .tp { height: 54px; display: grid; grid-template-columns: 16px 1fr; }
+.theme-card .tp i { display: block; }
+.theme-card .tp div { display: grid; grid-template-rows: 10px 1fr; }
+.theme-card span { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; font-size: 11.5px; font-weight: 600; background: var(--panel2); color: var(--fg); }
+
+/* هـ ⇄ د (embedded only): the mode switch sits beside the brand, always labelled —
+   icons-only mode never strips it, it is the one control the user asked to find */
+.modeseg { flex-wrap: nowrap; }
+.modeseg button { white-space: nowrap; }
+.modeseg button.on { background: var(--acc); color: var(--acc-fg); }
+/* capture items are actions, not pages: they never take the «on» state */
+.nav .item.act .ic { color: var(--acc); }
+[data-theme="accent"] .nav .item.act .ic, [data-theme="syf"] .nav .item.act .ic, [data-theme="sand"] .nav .item.act .ic { color: #fff; }
+/* embedded: the rail window has its own title, the brand line is a lighter echo */
+html[data-host="win"] .brand small, html[data-host="full"] .brand small { display: none; }
+
+/* empty state */
+.empty { display: grid; place-items: center; gap: 10px; padding: 40px; color: var(--muted); text-align: center; }
+
+/* ============ layout «بلاطات» (v0.172.0, default) ============
+   No side pane: the start screen lists every tool, the head carries «كل الأدوات» and the
+   open tool's neighbours. Under 760px the nav comes back as the bottom bar below. */
+@media (min-width: 761px) {
+  html[data-layout="tiles"] .app, html[data-layout="tiles"][data-labels="icons"] .app { grid-template-columns: minmax(0, 1fr); }
+  html[data-layout="tiles"] .nav { display: none; }
+}
+html:not([data-layout="tiles"]) #hback, html[data-page="home"] #hback { display: none; }
+#hback, #layslot { display: contents; }
+[dir="rtl"] .whead .back .ic { transform: scaleX(-1); }
+.whead .back .lbl { display: inline !important; }
+.layseg .lbl { margin-inline-start: 5px; }
+@media (max-width: 1280px) { .layseg .lbl { display: none; } .layseg [data-tip]:hover::after { content: attr(data-tip); position: absolute; top: calc(100% + 8px); inset-inline-end: 0; white-space: nowrap; background: var(--fg); color: var(--bg); font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 7px; z-index: 50; pointer-events: none; } }
+/* the strip is the one head item that gives way: everything else keeps its size */
+.whead > *, .whead .layseg { flex-shrink: 0; }
+.whead > .ht, .whead > .hsibs { flex-shrink: 1; }
+html[data-layout="tiles"][data-page="tool"] .whead p { display: none; }
+.hsibs { display: flex; gap: 4px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.hsibs:empty { display: none; }
+.hsib { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 0; border-radius: 99px; cursor: pointer; white-space: nowrap;
+  font: inherit; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.82); background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.hsib:hover { background: rgba(255,255,255,.22); color: #fff; }
+.hsib.on { background: rgba(255,255,255,.3); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.34); }
+@media (max-width: 1180px) { .hsibs { display: none; } }
+
+/* the start screen — «أعمدة زجاجية» (approved design 1) */
+.page.home { padding: 18px 16px 28px; }
+.home .hero { display: grid; justify-items: center; gap: 10px; text-align: center; padding: 6px 0 18px; }
+.home .hero h2 { margin: 0; font-size: 22px; font-weight: 700; text-wrap: balance; }
+.hsearch { position: relative; display: block; width: min(560px, 100%); }
+.hsearch .ic { position: absolute; inset-inline-start: 13px; top: 13px; color: var(--faint); pointer-events: none; }
+.hsearch .in { height: 44px; border-radius: 14px; padding-inline-start: 40px; font-size: 14px; }
+.recent { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; }
+.recent .hint { font-size: 12px; color: var(--muted); }
+.hchip { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 11px; border-radius: 99px; border: 0; cursor: pointer; font: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--muted); background: var(--panel2); box-shadow: inset 0 0 0 1px var(--line2); }
+.hchip:hover { color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--acc); }
+.hcols { columns: 4 230px; column-gap: 14px; }
+.hcol { break-inside: avoid; margin-bottom: 14px; padding: 8px; display: grid; gap: 2px; border-radius: 16px; background: var(--panel);
+  -webkit-backdrop-filter: var(--glass); backdrop-filter: var(--glass); box-shadow: var(--pane-hl, none), inset 0 0 0 1px var(--line2), var(--shadow); }
+.hcol[hidden] { display: none; }
+.hgh { display: flex; align-items: center; gap: 9px; padding: 6px 8px 10px; margin-bottom: 4px; border-bottom: 1px solid var(--line2); }
+.hgh .gi { width: 30px; height: 30px; border-radius: 10px; flex: none; display: grid; place-items: center; color: var(--acc-fg);
+  background: linear-gradient(160deg, var(--acc-hi, var(--acc)), var(--acc)); box-shadow: 0 6px 14px var(--acc2), inset 0 1px 0 rgba(255,255,255,.28); }
+.hgh b { font-size: 14px; }
+.hgh .n { margin-inline-start: auto; font-size: 11px; font-weight: 600; color: var(--faint); }
+.htool { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 10px; align-items: center; padding: 8px; border: 0; border-radius: 12px;
+  background: transparent; color: var(--fg); cursor: pointer; text-align: start; font: inherit; }
+.htool[hidden] { display: none; }
+.htool .ti { grid-row: span 2; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: var(--acc);
+  background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line2); transition: background .15s, color .15s; }
+.htool b { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.htool .badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; background: var(--acc2); color: var(--acc); font-weight: 700; }
+.htool .d { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.htool .d:empty { display: none; }
+.htool:hover, .htool:focus-visible { background: var(--panel2); }
+.htool:hover .ti, .htool:focus-visible .ti { color: var(--acc-fg); background: linear-gradient(160deg, var(--acc-hi, var(--acc)), var(--acc)); box-shadow: 0 6px 14px var(--acc2); }
+.hnone { text-align: center; color: var(--muted); padding: 30px 0; }
+@media (prefers-reduced-motion: reduce) { .htool .ti { transition: none; } }
+
+/* narrow frame: the nav pane becomes a glass bar along the bottom */
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr !important; grid-template-rows: minmax(0, 1fr) auto; padding: 8px; gap: 8px; }
+  .nav { order: 2; flex-direction: row; }
+  .nav .brand, .nsearch { display: none; }
+  .nav .scroll { display: flex; overflow-x: auto; padding: 6px; gap: 4px; }
+  .nav h6, .nav .foot { display: none; }
+  .nav .item { flex-direction: column; gap: 2px; min-width: 64px; font-size: 10.5px; padding: 6px 4px; justify-content: center; }
+  .nav .item .lbl { display: block !important; }
+  .page { padding: 0 0 16px; }
+  .filechip, .whead p { display: none; }
+  .whead { flex-wrap: wrap; }
+  .whead .layseg { display: none; }   /* both layouts are the same bottom bar here */
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- data-syfs-i18n="page": src/i18n.js translates this page's STATIC markup and
+     writes lang/dir/--syfs-dir from the stored language. Every text node here is a
+     whole clause — see the notes beside the paragraphs that had to be restructured. -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>محرّر الإيميلات — SYF</title>
+  <link rel="stylesheet" href="rail.css">
+  <link rel="stylesheet" href="app-dock.css">
+  <style>
+    :root { color-scheme:light; --pri:#457364; --pri-d:#35594e; --bg:#fff; --card:#fff; --soft:#f4f6f5; --ink:#1f2a27; --mut:#6b7c76; --line:#e3e9e6; --danger:#c0392b; --page:#eef1f0; --ins:#e3f5e8; --del:#fde8e6; }
+
+    /* every rule scoped to .ml — the tool windows share class names with this page */
+    html, body { height:100%; }
+    /* --syfs-font comes from src/fontkit.js (`ui_font`); unset → the system stack */
+    body { margin:0; background:var(--page); color:var(--ink); font:14px/1.6 var(--syfs-font,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif); }
+    .ml, .ml * { box-sizing:border-box; margin:0; padding:0; }
+    .ml { height:100%; display:flex; flex-direction:column; }
+
+    .ml header { display:flex; align-items:center; gap:8px; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--card); flex-wrap:wrap; }
+    .ml h1 { font-size:15px; font-weight:700; white-space:nowrap; }
+    .ml .ico { width:21px; height:21px; flex:none; }
+    .ml .btn { background:var(--pri); color:#fff; border:none; border-radius:8px; padding:6px 11px; font:inherit; font-weight:600; cursor:pointer; white-space:nowrap; }
+    .ml .btn:hover { background:var(--pri-d); }
+    .ml .btn:disabled { opacity:.45; cursor:default; }
+    .ml .btn.sec { background:transparent; color:var(--pri); border:1px solid var(--pri); }
+    .ml .btn.mini { padding:5px 9px; font-size:13px; font-weight:500; }
+    .ml .btn.danger { background:transparent; color:var(--danger); border:1px solid var(--danger); }
+    .ml .spacer { flex:1; }
+    .ml .hide { display:none !important; }
+
+    /* the privacy banner: permanent, above everything */
+    .ml .privacy { display:flex; align-items:center; gap:8px; padding:8px 14px; background:#eef5f2; border-bottom:1px solid #cfe0d8; color:#2f5c4c; font-size:12.5px; }
+
+    .ml .wrap { flex:1; overflow:auto; padding:18px 14px 40px; }
+    .ml .sheetcard { max-width:900px; margin:0 auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:0 4px 20px rgba(0,0,0,.05); }
+
+    .ml .row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .ml .row label { flex:none; width:74px; font-size:13px; color:var(--mut); }
+    .ml input[type=text], .ml input[type=email], .ml select, .ml textarea {
+      flex:1; width:100%; padding:8px 11px; border:1px solid var(--line); border-radius:9px; background:var(--soft); color:var(--ink); font:inherit; font-size:13.5px; }
+    .ml textarea { resize:vertical; }
+
+    /* formatting bar + the body */
+    .ml .bar { display:flex; align-items:center; gap:3px; padding:7px 0; flex-wrap:wrap; }
+    .ml .tb { min-width:30px; height:28px; padding:0 8px; border:1px solid transparent; border-radius:7px; background:none; color:var(--ink); font:inherit; font-size:13px; cursor:pointer; }
+    .ml .tb:hover { background:var(--soft); border-color:var(--line); }
+    .ml .body { min-height:260px; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:#fff; outline:none; font-size:15px; line-height:1.8; }
+    .ml .body:focus { box-shadow:0 0 0 2px rgba(69,115,100,.3); }
+
+    /* AI toolbar */
+    .ml .ai { margin-top:12px; padding:11px; border:1px dashed var(--line); border-radius:11px; background:var(--soft); }
+    .ml .ai h3 { font-size:13px; margin-bottom:7px; color:var(--pri); }
+    .ml .ai .btns { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .ml .ai select { flex:none; width:auto; }
+    .ml .ai .state { font-size:12.5px; color:var(--mut); margin-top:6px; min-height:18px; }
+    .ml .who { font-size:12px; color:var(--mut); margin-top:6px; }
+
+    /* diff */
+    .ml .diff { margin-top:12px; border:1px solid var(--pri); border-radius:11px; overflow:hidden; }
+    .ml .diff .dh { display:flex; align-items:center; gap:8px; padding:8px 11px; background:var(--pri); color:#fff; font-size:13px; font-weight:700; }
+    .ml .diff .dh .spacer { flex:1; }
+    .ml .diff .dh button { border:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.14); color:#fff; border-radius:7px; padding:4px 9px; font:inherit; font-size:12.5px; cursor:pointer; }
+    .ml .diff .db { padding:13px 15px; background:#fff; white-space:pre-wrap; font-size:14.5px; line-height:1.9; max-height:340px; overflow:auto; }
+    .ml .chg { border-radius:5px; padding:1px 2px; }
+    .ml .chg del { background:var(--del); text-decoration:line-through; }
+    .ml .chg ins { background:var(--ins); text-decoration:none; }
+    .ml .chg.off del { text-decoration:none; }
+    .ml .chg.off ins { display:none; }
+    .ml .chgx { border:none; background:none; cursor:pointer; font-size:11px; color:var(--pri); padding:0 3px; }
+
+    /* consent gate */
+    .ml .consent { position:fixed; inset:0; background:rgba(20,26,24,.55); display:flex; align-items:center; justify-content:center; z-index:70; padding:20px; }
+    .ml .consent .box { background:#fff; border-radius:16px; padding:20px; max-width:520px; box-shadow:0 18px 50px rgba(0,0,0,.3); }
+    .ml .consent h2 { font-size:17px; margin-bottom:9px; }
+    .ml .consent p { font-size:13.5px; margin-bottom:9px; color:#3a4a44; }
+    .ml .consent .acts { display:flex; gap:8px; justify-content:flex-start; margin-top:13px; }
+
+    .ml footer { display:flex; align-items:center; gap:10px; padding:6px 14px; border-top:1px solid var(--line); background:var(--card); font-size:12.5px; color:var(--mut); flex-wrap:wrap; }
+    .ml .dot { color:var(--danger); font-weight:700; }
+    .ml .toast { position:fixed; inset-inline:0; bottom:22px; margin:auto; width:max-content; max-width:90%; background:var(--pri-d); color:#fff; padding:9px 16px; border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,.25); opacity:0; transition:opacity .2s; pointer-events:none; z-index:80; }
+    .ml .toast.show { opacity:1; }
+    .ml .toast.bad { background:var(--danger); }
+  </style>
+</head>
+<body>
+<div class="ml">
+  <header>
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+    <h1>محرّر الإيميلات</h1>
+    <select id="tpl" style="flex:none;width:auto">
+      <option value="meeting_ar">قالب: طلب اجتماع</option>
+      <option value="followup_ar">قالب: متابعة</option>
+      <option value="apology_ar">قالب: اعتذار</option>
+      <option value="quote_ar">قالب: عرض سعر</option>
+      <option value="resign_ar">قالب: استقالة</option>
+      <option value="thanks_ar">قالب: شكر</option>
+      <option value="meeting_en">Template: meeting request</option>
+      <option value="followup_en">Template: following up</option>
+      <option value="apology_en">Template: apology</option>
+      <option value="intro_en">Template: introduction</option>
+    </select>
+    <button class="btn mini sec" id="tpl-go">أدرج القالب</button>
+    <span class="spacer"></span>
+    <button class="btn mini" id="send-gmail">✉ افتح في Gmail</button>
+    <button class="btn mini sec" id="send-mailto">تطبيق البريد</button>
+    <button class="btn mini sec" id="copy">نسخ</button>
+    <button class="btn mini sec" id="exp-eml">.eml</button>
+    <button class="btn mini sec" id="exp-txt">نصّ</button>
+  </header>
+
+  <div class="privacy">
+    🔒 <b>لا شيء يخرج من جهازك إلا بضغطك على زرّ ذكاء.</b> عندها يُرسَل <b>الموضوع ونصّ الرسالة فقط</b> إلى المزوّد الذي اخترته —
+    <b>عناوين المستلمين (إلى/نسخة/مخفية) لا تُرسَل أبداً</b>. الأداة نفسها لا ترسل بريداً: تسلّمك الرسالة إلى Gmail أو تطبيق بريدك.
+  </div>
+
+  <div class="wrap">
+    <div class="sheetcard">
+      <div class="row"><label for="to">إلى</label><input type="text" id="to" placeholder="name@example.com, other@example.com"></div>
+      <div class="row"><label for="cc">نسخة</label><input type="text" id="cc" placeholder="اختياري"></div>
+      <div class="row"><label for="bcc">نسخة مخفية</label><input type="text" id="bcc" placeholder="اختياري — لا تُكتب في ملف .eml"></div>
+      <div class="row"><label for="subject">الموضوع</label><input type="text" id="subject" placeholder="موضوع الرسالة"></div>
+
+      <div class="bar">
+        <button class="tb" data-cmd="bold" title="عريض"><b>B</b></button>
+        <button class="tb" data-cmd="italic" title="مائل"><i>I</i></button>
+        <button class="tb" data-cmd="underline" title="تحته خط"><u>U</u></button>
+        <button class="tb" data-cmd="insertUnorderedList" title="قائمة">• قائمة</button>
+        <button class="tb" data-cmd="undo" title="تراجع">↩</button>
+        <button class="tb" data-cmd="redo" title="إعادة">↪</button>
+        <span class="spacer"></span>
+        <button class="btn mini sec" id="save-draft">💾 احفظ مسودة</button>
+        <button class="btn mini sec hide" id="load-draft">استعِد المسودة</button>
+        <button class="btn mini danger hide" id="drop-draft">🗑 احذف المسودة</button>
+      </div>
+
+      <div class="body" id="body" contenteditable="true" spellcheck="true" dir="rtl"><div><br></div></div>
+
+      <div class="ai">
+        <h3>✨ إجراءات الذكاء — بضغطة صريحة منك، ثم <b>تُعرض التغييرات قبل/بعد قبل أن تُطبَّق</b></h3>
+        <div class="btns">
+          <button class="btn mini" id="ai-fix">✅ صحّح الإملاء والقواعد</button>
+          <select id="tone">
+            <option value="رسمية">نبرة: رسمية</option>
+            <option value="ودّية">نبرة: ودّية</option>
+            <option value="مختصرة ومباشرة">نبرة: مختصرة</option>
+            <option value="حازمة">نبرة: حازمة</option>
+            <option value="اعتذارية">نبرة: اعتذارية</option>
+          </select>
+          <button class="btn mini sec" id="ai-tone">✨ أعد الصياغة</button>
+          <button class="btn mini sec" id="ai-draft">✍️ اكتب مسودة من نقاطي</button>
+          <button class="btn mini sec" id="ai-translate">🌐 ترجم (ع ⇄ En)</button>
+          <button class="btn mini sec" id="ai-sum">📝 لخّص ورُدّ</button>
+        </div>
+        <div class="state" id="ai-state"></div>
+        <div class="who" id="provider"></div>
+      </div>
+
+      <div class="diff hide" id="diff">
+        <div class="dh">
+          <span id="diff-title"></span>
+          <span class="spacer"></span>
+          <button id="diff-accept">اقبل المقبول ✓</button>
+          <button id="diff-reject">ارفض الكل ✕</button>
+        </div>
+        <div class="db" id="diff-body"></div>
+      </div>
+
+      <div class="row" style="margin-top:14px;align-items:flex-start">
+        <label for="sig">التوقيع</label>
+        <textarea id="sig" rows="2" placeholder="اسمك — المسمّى الوظيفي — الشركة"></textarea>
+        <button class="btn mini sec" id="sig-save" style="flex:none">احفظ</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span id="stats"></span>
+    <span class="spacer"></span>
+    <span id="dirty" class="dot"></span>
+    <span>🔒 مسودّتك لا تُحفظ تلقائياً — ذاكرة التبويب فقط ما لم تضغط «احفظ مسودة».</span>
+  </footer>
+
+  <div class="consent hide" id="consent">
+    <div class="box">
+      <h2>⚠️ نصّ رسالتك سيخرج من جهازك</h2>
+      <p>لتنفيذ هذا الإجراء يُرسَل <b>موضوع الرسالة ونصّها</b> إلى المزوّد الذي اخترته: <b id="consent-who"></b>، باستخدام مفتاحك المخزَّن محلياً.</p>
+      <p><b>لا تُرسَل عناوين المستلمين</b> (إلى / نسخة / نسخة مخفية) — ولا يُرسَل شيء إلا عند ضغطك على زرّ ذكاء.</p>
+      <p>إن كانت الرسالة تحوي بيانات لا يصحّ مشاركتها مع طرف ثالث، اضغط «إلغاء».</p>
+      <div class="acts">
+        <button class="btn" id="consent-ok">أوافق — نفّذ</button>
+        <button class="btn sec" id="consent-no">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<div id="syfa-root" class="syfs-wrap" data-dock-key="mail_dock_pos" data-dock-bottom="52" hidden></div>
+
+<!-- storage.js gives SYFS.store + SYFS.bgFetch (the worker relay); ai-chat.js exposes
+     SYFS.ai (the provider plumbing) — mail.js reuses both, adding no new key, no new
+     host and no second HTTP path. -->
+<script src="src/i18n.js"></script>
+<script src="src/btnkit.js"></script>
+<script src="src/storage.js"></script>
+<!-- ⚠️ dockfx.js was missing from this page through v0.103.0. Without it SYFS.dockfx is
+     undefined, so every read and write of the shared dock-appearance preferences passes
+     silently and the whole «المظهر» tab disappears — a fault that shows up on this page
+     only. Its position (after storage.js, before fontkit.js) matches app.html. -->
+<script src="src/dockfx.js"></script>
+<script src="src/fontkit.js"></script>
+<script src="src/ai-chat.js"></script>
+<script src="src/mail.js"></script>
+
+<!-- the rest of the toolbox + the dock; src/app.js last -->
+<script src="lib/qr.js"></script>
+<script src="src/tools.js"></script>
+<script src="src/tools2.js"></script><script src="src/tools2-body.js"></script>
+<script src="src/registry.js"></script>
+<script src="src/azkar-data.js"></script><script src="src/islam2.js"></script><script src="src/islam2-body.js"></script>
+<script src="src/imgkit.js"></script>
+<script src="lib/canvas-pdf.js"></script>
+<script src="src/calc.js"></script>
+<script src="src/money.js"></script>
+<script src="src/bgrm.js"></script>
+<script src="src/media.js"></script>
+<script src="src/extras.js"></script>
+<script src="src/dev.js"></script>
+<script src="src/dev2.js"></script>
+<script src="src/vault-launch.js"></script>
+<script src="src/sheet-launch.js"></script>
+<script src="src/word-launch.js"></script>
+<script src="src/slides-launch.js"></script>
+<script src="src/mail-launch.js"></script>
+<script src="src/phones-launch.js"></script>
+<script src="src/status-launch.js"></script>
+<script src="src/frames-launch.js"></script>
+<script src="src/calendar.js"></script>
+<script src="src/tools3.js"></script>
+<script src="src/app.js"></script>
+<script src="src/sel2.js"></script>
+</body>
+</html>

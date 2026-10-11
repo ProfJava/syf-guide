@@ -1,0 +1,262 @@
+{
+  "manifest_version": 3,
+  "name": "SYF Tools - صندوق أدوات المتصفح",
+  "version": "0.185.0",
+  "description": "Floating toolkit on any site: offline calculators, notes, QR, ad & tracker blocking, dark & reading mode, privacy tools. RTL Arabic.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "SYF Tools — إظهار/إخفاء الشريط",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "help.html",
+    "open_in_tab": true
+  },
+  "side_panel": {
+    "default_path": "side.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://profjava.github.io/syf-guide/*"
+      ],
+      "js": [
+        "src/i18n.js",
+        "src/btnkit.js",
+        "src/storage.js",
+        "src/dockfx.js",
+        "src/winsize.js",
+        "src/fontkit.js",
+        "src/sel2.js",
+        "lib/qr.js",
+        "src/tools.js",
+        "src/tools2.js",
+        "src/registry.js",
+        "src/wa-privacy.js",
+        "src/azkar-data.js",
+        "src/islam2.js",
+        "src/occasions.js",
+        "src/quran.js",
+        "src/speed.js",
+        "src/docdetect.js",
+        "src/capbar.js",
+        "src/rail.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://profjava.github.io/syf-guide/*"
+      ],
+      "js": [
+        "src/adblock-main.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://profjava.github.io/syf-guide/*"
+      ],
+      "js": [
+        "src/adblock-stealth.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://profjava.github.io/syf-guide/*"
+      ],
+      "js": [
+        "src/display.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://web.whatsapp.com/*",
+        "https://www.messenger.com/*",
+        "https://www.facebook.com/*",
+        "https://web.facebook.com/*"
+      ],
+      "js": [
+        "src/wa-lock.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://web.whatsapp.com/*",
+        "https://www.messenger.com/*",
+        "https://www.facebook.com/*",
+        "https://web.facebook.com/*"
+      ],
+      "js": [
+        "src/storage.js",
+        "src/wa-privacy.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://*.youtube-nocookie.com/*"
+      ],
+      "js": [
+        "src/yt-guard.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://*.youtube-nocookie.com/*"
+      ],
+      "js": [
+        "src/yt-plus.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://mail.google.com/*"
+      ],
+      "js": [
+        "src/gmail-adblock.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://*.facebook.com/*"
+      ],
+      "js": [
+        "src/fb-adblock.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://profjava.github.io/syf-guide/*"
+      ],
+      "js": [
+        "src/site-mark.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "rail.css",
+        "help.html",
+        "help-en.html",
+        "guide-slides.html",
+        "guide-slides-en.html",
+        "i18n/*.json",
+        "fonts/*.woff2",
+        "lib/pdfjs/pdf.min.mjs",
+        "lib/pdfjs/pdf.worker.min.mjs",
+        "lib/pdflib/pdf-lib.esm.min.js",
+        "src/regex-worker.js",
+        "icons/author.jpg"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    },
+    {
+      "resources": [
+        "bgrm-engine.html",
+        "studio.html",
+        "kids.html",
+        "hifz.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage",
+    "scripting",
+    "declarativeNetRequest",
+    "browsingData",
+    "cookies",
+    "alarms",
+    "notifications",
+    "offscreen",
+    "sidePanel"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "syfs_ads",
+        "enabled": false,
+        "path": "rules/ads.json"
+      },
+      {
+        "id": "syfs_tracking",
+        "enabled": true,
+        "path": "rules/tracking.json"
+      },
+      {
+        "id": "syfs_fingerprint",
+        "enabled": true,
+        "path": "rules/fingerprint.json"
+      },
+      {
+        "id": "syfs_pixels",
+        "enabled": true,
+        "path": "rules/pixels.json"
+      },
+      {
+        "id": "syfs_youtube",
+        "enabled": true,
+        "path": "rules/youtube.json"
+      }
+    ]
+  },
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

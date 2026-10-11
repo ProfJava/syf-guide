@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SYF Tools - صندوق أدوات المتصفح — دليل الاستخدام</title>
+<!-- v0.166.1 — the help page is a slide deck in the illustrated guide's own format:
+     guide-slides.css draws it (shared with the guide, unchanged), help.css adds only what
+     this page has and the guide does not (the settings controls, emoji tiles).
+     ⛔ Both help pages link the same two sheets — never a rule inline in either (§6.100/1).
+     ⛔ Generated layout, hand-kept prose: the slides carry data-slide ids that src/help.js
+     and deep links (#settings, #start-3) rely on; set-* / help-ver / h-theme are contracts. -->
+<link rel="stylesheet" href="guide-slides.css">
+<link rel="stylesheet" href="help.css">
+<!-- ⚠️ في <head> عمداً وقبل أي نثر: كروم يفتح هذه الصفحة بنفسه من `options_ui` فلا
+     تمرّ بالشريط، وقارئ الإنجليزية كان يهبط على الدليل العربي (§6.100/9). الملفّ
+     يحوّل إلى التوأم الإنجليزي إن كانت اللغة `en`. ⛔ لا تُضِفه إلى help-en.html —
+     الصفحتان ستتقاذفان بلا نهاية. -->
+<script src="src/help-lang.js"></script>
+<link rel="stylesheet" href="controls.css"><!-- switches + glass buttons (v0.153.0/v0.154.0) -->
+</head>
+<body class="h-deck">
+<header class="s-top">
+  <span class="s-brand"><span class="s-logo" aria-hidden="true">✦</span>SYF Tools · المساعدة</span>
+  <select id="s-jump" aria-label="انتقل إلى شريحة"></select>
+  <a class="s-hide-sm" href="guide-slides.html">🖼 الدليل المصوّر</a>
+  <button type="button" id="s-print" class="s-hide-sm">⎙ طباعة / PDF</button>
+  <button type="button" id="s-full" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
+  <button type="button" id="h-theme"></button>
+  <!-- ⛔ Bilingual and never translated (§6.96/5): it is read by someone who cannot read this page. -->
+  <a class="lang-switch" href="help-en.html?stay=1" hreflang="en">English guide</a>
+</header>
+
+<main class="s-stage" id="s-stage">
+
+<section class="s-slide s-cover" data-slide="cover" data-name="الغلاف" role="group" aria-roledescription="شريحة">
+  <div class="s-wall" aria-hidden="true"></div>
+  <div class="s-vig"></div>
+  <div class="s-hero"><div class="s-hero-in">
+    <div class="s-kick">SYF TOOLS · BROWSER TOOLBOX</div>
+    <h1>SYF Tools - صندوق أدوات المتصفح</h1>
+    <p>شريط أدوات عائم فوق أي صفحة — حاسبات، حماية وخصوصية، وضع ليلي وقراءة، وأدوات إنتاجية. دليل الاستخدام.</p>
+    <button type="button" class="s-go" data-goto="step-1">ابدأ الجولة  ←</button>
+    <div class="s-stats"><span><b>7</b>خطوات الجولة</span><span><b>11</b>فئة أدوات</span><span><b>9</b>نصيحة</span></div>
+    <div class="s-hint">الأسهم أو المسافة للتنقّل · F ملء الشاشة · انقر أي أيقونة لتفتح شرحها المصوّر</div>
+  </div></div>
+</section>
+
+<section class="s-slide s-toc" data-slide="toc" data-name="الفهرس" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">☰</span><h2>الفهرس</h2></div>
+    <p class="s-what s-rise">كل أقسام المساعدة في مكان واحد — انقر أيّ سطر لتذهب إلى شريحته، والرقم بجانبه رقم الشريحة.</p>
+    <div class="s-toc-cols">
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🚀</span><span class="s-toc-n">ابدأ في ٧ خطوات</span></div>
+        <button type="button" class="s-toc-t" data-goto="step-1"><span class="ic s-toc-emo" aria-hidden="true">🧰</span><span class="s-toc-n">أظهِر الشريط</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-2"><span class="ic s-toc-emo" aria-hidden="true">🪟</span><span class="s-toc-n">افتح أداة</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-3"><span class="ic s-toc-emo" aria-hidden="true">⭐</span><span class="s-toc-n">المفضلة والاختصارات</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-4"><span class="ic s-toc-emo" aria-hidden="true">⊞</span><span class="s-toc-n">وضع العمل</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-5"><span class="ic s-toc-emo" aria-hidden="true">📄</span><span class="s-toc-n">ملفات المكتب</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-6"><span class="ic s-toc-emo" aria-hidden="true">⚙</span><span class="s-toc-n">لوحة الإدارة</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-7"><span class="ic s-toc-emo" aria-hidden="true">🔒</span><span class="s-toc-n">الخصوصية والنسخ</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🧭</span><span class="s-toc-n">عام</span></div>
+        <button type="button" class="s-toc-t" data-goto="tips"><span class="ic s-toc-emo" aria-hidden="true">💡</span><span class="s-toc-n">نصائح سريعة</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="settings"><span class="ic s-toc-emo" aria-hidden="true">⚙</span><span class="s-toc-n">الإعدادات العامة</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="about"><span class="ic s-toc-emo" aria-hidden="true">🧰</span><span class="s-toc-n">ما هي الإضافة؟</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="rail"><span class="ic s-toc-emo" aria-hidden="true">🎛</span><span class="s-toc-n">التحكّم في الشريط</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="guide"><span class="ic s-toc-emo" aria-hidden="true">🖼</span><span class="s-toc-n">الدليل المصوّر</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🗂</span><span class="s-toc-n">الفئات والأدوات</span></div>
+        <button type="button" class="s-toc-t" data-goto="cat-1"><span class="ic s-toc-emo" aria-hidden="true">🔗</span><span class="s-toc-n">روابط</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-2"><span class="ic s-toc-emo" aria-hidden="true">🛡</span><span class="s-toc-n">الحماية</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-3"><span class="ic s-toc-emo" aria-hidden="true">🧮</span><span class="s-toc-n">حاسبات</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-4"><span class="ic s-toc-emo" aria-hidden="true">🧾</span><span class="s-toc-n">حاسبة الضرائب (تبويبات — سعودي + إمارات)</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-5"><span class="ic s-toc-emo" aria-hidden="true">⏱</span><span class="s-toc-n">الوقت</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-6"><span class="ic s-toc-emo" aria-hidden="true">☪</span><span class="s-toc-n">إسلامية</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-7"><span class="ic s-toc-emo" aria-hidden="true">📝</span><span class="s-toc-n">ملاحظات</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-8"><span class="ic s-toc-emo" aria-hidden="true">🔤</span><span class="s-toc-n">نصوص</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-9"><span class="ic s-toc-emo" aria-hidden="true">🖼</span><span class="s-toc-n">الصور</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-10"><span class="ic s-toc-emo" aria-hidden="true">🛠</span><span class="s-toc-n">أدوات</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-11"><span class="ic s-toc-emo" aria-hidden="true">🔗</span><span class="s-toc-n">نوافذ منبثقة</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🔒</span><span class="s-toc-n">الخصوصية</span></div>
+        <button type="button" class="s-toc-t" data-goto="perms"><span class="ic s-toc-emo" aria-hidden="true">🔑</span><span class="s-toc-n">أدوات تحتاج إذناً من المتصفّح</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="privacy"><span class="ic s-toc-emo" aria-hidden="true">🔒</span><span class="s-toc-n">الخصوصية</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-1" data-name="أظهِر الشريط" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧰</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/_rail.png" alt="١) أظهِر الشريط العائم على أي صفحة" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ١ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">🧰</span><div><h2>١) أظهِر الشريط العائم على أي صفحة</h2></div></div>
+        <p class="s-what s-rise">بعد التثبيت يظهر شريط SYF Tools تلقائياً على <b>حافة أي صفحة ويب</b> (يمين افتراضياً). أيقونة الإضافة في شريط المتصفّح تعمل كمفتاح: <b>اضغطها لإظهار الشريط أو إخفائه في الصفحة الحالية</b>.</p>
+        <ol class="s-steps s-rise">
+          <li>ثبّت أيقونة الإضافة (<b>📌</b> من قائمة الإضافات) ليصير المفتاح في متناولك دائماً.</li>
+          <li>غيّر حافة الشريط (يمين · يسار · أعلى · أسفل) من <b>الإعدادات العامة</b> بالأسفل أو من زرّ الموضع في الشريط.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 نصيحة:</b> إن كانت الأيقونات لا تُقرأ فوق موقع مزدحم الألوان، جرّب نمط الأزرار <span class="pill">ثلجي</span> أو <span class="pill">واضح</span> من «الألوان» في الشريط.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-2" data-name="افتح أداة" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🪟</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/calc.png" alt="٢) افتح أوّل أداة كنافذة عائمة" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ٢ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">🪟</span><div><h2>٢) افتح أوّل أداة كنافذة عائمة</h2></div></div>
+        <p class="s-what s-rise">اضغط (أو مرّر على) <b>أيقونة تصنيف</b> فتنكشف أدواته، ثم اضغط الأداة لتفتح <b>نافذة صغيرة عائمة</b> فوق الصفحة — والصفحة تحتها تبقى قابلة للاستخدام.</p>
+        <ol class="s-steps s-rise">
+          <li><b>اسحب</b> النافذة من شريط عنوانها · <b>غيّر حجمها</b> من زاوية أسفل النافذة · <b>صغّرها</b> فتنزل إلى صفّ سفلي.</li>
+          <li>افتح <b>عدّة أدوات معاً</b> — كل نافذة مستقلّة، والموضع يُحفظ.</li>
+          <li>أدوات متشابهة مدموجة في نافذة واحدة <b>بتبويبات</b>: «حاسبة مالية» · «حاسبة الضرائب» · «مؤقّت وإيقاف» · «أذكار وورد».</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 نصيحة:</b> ابدأ بأداة خفيفة لتتعرّف على الشكل — <b>مولّد QR</b> أو <b>الحاسبة</b> أو <b>مواقيت الصلاة</b> (كلّها تعمل دون اتصال).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-3" data-name="المفضلة والاختصارات" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⭐</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/set-keys.png" alt="٣) قرّب ما تستخدمه كثيراً" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ٣ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">⭐</span><div><h2>٣) قرّب ما تستخدمه كثيراً</h2></div></div>
+        <p class="s-what s-rise">داخل أي نافذة أداة اضغط النجمة <b>★</b> فتُضاف إلى فئة <b>المفضلة</b> التي تظهر <b>أعلى الشريط</b> — وصول بنقرة واحدة بدل التنقّل بين التصنيفات.</p>
+        <ol class="s-steps s-rise">
+          <li><b>رتّب أيقونات التصنيفات</b> بسحب الأيقونة وإفلاتها فوق أخرى على الشريط نفسه — الترتيب يُحفظ.</li>
+          <li><b>اختصار لوحة مفاتيح لكل أداة:</b> لوحة الإدارة ⚙ → تبويب «الأدوات» → زرّ <b>⌨</b> في صفّ الأداة.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 نصيحة:</b> أنسب أداتين لاختصار كيبورد: <b>التقاط منطقة</b> (تُصوّر وتنسخ للحافظة فوراً بلا نوافذ) و<b>وضع العمل</b>.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-4" data-name="وضع العمل" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⊞</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/appmode.png" alt="٤) وضع العمل — مساحة عمل كاملة" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ٤ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">⊞</span><div><h2>٤) وضع العمل — مساحة عمل كاملة</h2></div></div>
+        <p class="s-what s-rise">زرّ <b>⊞ وضع العمل</b> أعلى الشريط يفتح <b>مساحة عمل بنوافذ عائمة</b> (على طريقة برامج سطح المكتب): <b>دوك أيقونات عمودي</b> على اليمين + نوافذ تسحبها وتغيّر حجمها، وعدّة أدوات مفتوحة معاً.</p>
+        <ol class="s-steps s-rise">
+          <li><b>الدوك:</b> مرّر على تصنيف فتظهر أدواته كشبكة أيقونات (الاسم يظهر عند المرور)، ثم اضغط أداة لتفتح كنافذة.</li>
+          <li><b>أزرار الدوك السفلية:</b> بحث عن أداة · نافذة مستقلّة · ترتيب النوافذ · إغلاق كل النوافذ · ⚙ إعدادات الدوك.</li>
+          <li><b>اسحب مقبض الدوك</b> (الشرطة أعلاه) لتنقله إلى أي مكان — موضعه يُحفظ.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 نصيحة:</b> من <b>⚙ إعدادات الدوك</b> اضبط حجم الأيقونات، وأثر المرور (<span class="pill">تكبير Mac</span><span class="pill">ارتفاع</span><span class="pill">توهّج</span>)، والشفافية، و<b>الاختباء عند الحافة</b> — يطوي الدوك حتى تقترب منه فتكسب مساحة.</p></div>
+        <div class="s-keys h-warn s-rise"><p class="h-tip"><b>ملاحظة:</b> أدوات تحتاج صفحة ويب حقيقية (لقطة الشاشة · مانع الإعلانات · فاحص العناصر · يوتيوب+) تبقى في <b>الشريط العائم</b> ولا تظهر في وضع العمل.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-5" data-name="ملفات المكتب" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">📄</span></div>
+  <div class="s-in">
+    <div class="s-tool s-long">
+      <div class="s-shot s-rise"><img src="guide-img/sheetview.png" alt="٥) الإكسيل والوورد والبوربوينت والإيميل" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ٥ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">📄</span><div><h2>٥) الإكسيل والوورد والبوربوينت والإيميل</h2></div></div>
+        <p class="s-what s-rise">هذه الأدوات تُفتح <b>كتبويبات داخل وضع العمل</b> (أو صفحة مستقلّة): أفلت الملف داخلها فيصير قابلاً للتحرير، ثم <b>صدّره</b> بالصيغة التي تريد.</p>
+        <ol class="s-steps s-rise">
+          <li><b>جداول الإكسيل</b> — xlsx/xls/ods/csv → تحرير وفرز وبحث وإخفاء، وتصدير xlsx · CSV · JSON.</li>
+          <li><b>مستندات Word</b> — docx → محرّر كامل، وتصدير docx · PDF · HTML.</li>
+          <li><b>عروض PowerPoint</b> — pptx → نصوص وصور وترتيب بالسحب، ثم عرض أو تصدير pptx · PDF · صور.</li>
+          <li><b>محرّر الإيميلات</b> — قوالب وتوقيع، وأزرار ذكاء اختيارية، ثم تسليم إلى Gmail أو تصدير <code>.eml</code>.</li>
+        </ol>
+        <div class="s-keys h-warn s-rise"><p class="h-tip"><b>⚠️ مهم:</b> الملف <b>لا يغادر جهازك ولا يُحفظ في أي مكان</b> — بإغلاق التبويب يزول. <b>صدّر عملك أولاً.</b> كما أن التنسيقات والقوالب والحركات لا تُحفظ (يُقرأ المحتوى لا التصميم).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-6" data-name="لوحة الإدارة" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⚙</span></div>
+  <div class="s-in">
+    <div class="s-tool s-long">
+      <div class="s-shot s-rise"><img src="guide-img/set-tools.png" alt="٦) شكّل الشريط على مقاسك (لوحة الإدارة)" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ٦ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">⚙</span><div><h2>٦) شكّل الشريط على مقاسك (لوحة الإدارة)</h2></div></div>
+        <p class="s-what s-rise">زرّ <b>⚙ الإعدادات</b> في الشريط هو مركز التحكّم، بأقسام في شريط جانبي:</p>
+        <ol class="s-steps s-rise">
+          <li><b>عام</b> — اللغة · القوائم المنسدلة المحسّنة · النسخ الاحتياطي (تصدير · استيراد · إعادة تعيين).</li>
+          <li><b>الأدوات ← الاختصارات</b> — أكورديون لكل تصنيف: رتّب الأدوات <b>بالسحب</b>، رتّب التصنيفات بسحب عناوينها، أخفِ أداة (مفتاحها) أو <b>تصنيفاً كاملاً</b> (مفتاح العنوان)، ★ مفضّلة، ⌨ اختصار.</li>
+          <li><b>الأدوات ← روابط مخصّصة</b> — أضِف أي موقع (اسم + رابط) فيظهر كزرّ داخل فئة «روابط».</li>
+          <li><b>المظهر</b> — الشريط (الموضع · حجم الأيقونات…) · الاستايل (٢٠ لوناً + لون مخصّص · ١٥ نمطاً للأزرار) · الخطوط · الوقت.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 نصيحة:</b> تصنيفا <b>المساعد الذكي</b> و<b>المطوّرون</b> مخفيان افتراضياً — أظهرهما بعلامة الاختيار بجوار عنوان التصنيف في تبويب «الأدوات».</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-7" data-name="الخصوصية والنسخ" data-group="الجولة" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔒</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/set-gen.png" alt="٧) بياناتك عندك — واحفظ نسخة" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>ابدأ في ٧ خطوات › <b>الخطوة ٧ من ٧</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">🔒</span><div><h2>٧) بياناتك عندك — واحفظ نسخة</h2></div></div>
+        <p class="s-what s-rise">كل شيء (المفضلة · الترتيب · الملاحظات · الاختصارات · الإعدادات) يُحفظ محلياً في <code>chrome.storage</code> داخل متصفّحك — <b>لا يُرسل لأي خادم</b>، والإضافة لا تجمع بيانات تصفّحك.</p>
+        <ol class="s-steps s-rise">
+          <li>أغلب الأدوات تعمل <b>دون اتصال</b> تماماً.</li>
+          <li>الاتصال محصور بنطاقات موثوقة محدّدة فقط (أسعار العملات · الترجمة · قياس السرعة · القرآن والتفسير · مساعد بروف).</li>
+          <li>من قسم <b>الإعدادات العامة</b> بالأسفل: <b>⬇ صدّر</b> كل شيء إلى ملف JSON، و<b>⬆ استورده</b> على جهاز أو متصفّح آخر.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 نصيحة:</b> صدّر نسخة <b>قبل</b> أي «إعادة تعيين» — إعادة التعيين تحذف كل شيء ولا تراجع فيها.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="tips" data-name="نصائح سريعة" data-group="عام" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">💡</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">💡</span><h2>نصائح سريعة</h2></div>
+    <p class="s-what s-rise">أشياء صغيرة توفّر وقتاً كثيراً — لا تحتاج أكثر من نقرة واحدة لتجريبها.</p>
+    <div class="s-cards">
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⌨</span>اختصار للقطة الفورية</h3><p>عيّن اختصاراً لأداة «التقاط منطقة»: اسحب مستطيلاً فتُنسخ الصورة للحافظة فوراً بلا نوافذ.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">📌</span>ملاحظة لاصقة على الشاشة</h3><p>من أداة «ملاحظات» زرّ 📌 يلصق ملاحظة ملوّنة عائمة فوق الصفحة، تسحبها كما تشاء.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🌙</span>وضع ليلي وقراءة</h3><p>أداة «الوضع الليلي والقراءة» تُريح العين على المواقع المضيئة وتُخفي مشتّتات الصفحة.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">▶</span>يوتيوب أفضل</h3><p>«يوتيوب+»: سرعة · جودة ثابتة · مضخّم صوت · تكرار A-B · وضع سينما · إخفاء المشتّتات · اختصارات.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🛡</span>موقع تعطّل؟ استثنِه</h3><p>من «مانع الإعلانات» استثنِ الموقع الحالي بضغطة، ثم أعد تحميل الصفحة — بقيّة المواقع تبقى محمية.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🔗</span>واتساب فوق عملك</h3><p>«واتساب ويب» يفتح <b>لوحة كروم الجانبية</b> داخل نفس النافذة، والصفحة تنكمش إلى جوارها — شغلك وواتساب جنباً إلى جنب بلا تبويب ولا نافذة ثانية. في اللوحة شريط منصّات (واتساب · ماسنجر · تيليجرام · Gmail · ChatGPT) وحقل لأي رابط. وإن رفض موقعٌ العرضَ داخل اللوحة فزرّ واحد ينقله إلى نافذة مستقلّة.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🔑</span>ملء الفورمات</h3><p>«الملء التلقائي» يعبّئ الحقول المطابقة من بروفايل محفوظ محلياً — ولا يلمس كلمات المرور أبداً.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">📶</span>يعمل دون اتصال</h3><p>الحاسبات · مواقيت الصلاة · مولّد QR · كلمات المرور · ضغط الصور · المؤقّت — كلها تعمل بلا إنترنت.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">💾</span>نسخة احتياطية دورية</h3><p>صدّر إعداداتك JSON من «الإعدادات العامة» بعد أي تخصيص كبير — واستعِدها على أي جهاز.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="settings" data-name="الإعدادات العامة" data-group="عام" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⚙</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">⚙</span><h2>الإعدادات العامة</h2></div>
+    <div class="h-set s-rise">
+  <div class="grid">
+        <div class="card"><label class="s-ck"><input type="checkbox" id="set-enabled"> إظهار الشريط على الصفحات</label></div>
+        <div class="card">الموضع الافتراضي:<br><select id="set-pos"><option value="right">يمين</option><option value="left">يسار</option><option value="top">أعلى</option><option value="bottom">أسفل</option></select></div>
+        <div class="card">اللون الأساسي:<br><select id="set-accent"></select></div>
+      </div>
+  
+      <h3>💾 تصدير / استيراد الإعدادات</h3>
+      <p>احفظ نسخة من كل إعداداتك وبياناتك (المفضلة، ترتيب الأدوات، الروابط المخصّصة، الملاحظات، الاختصارات…) في ملف، أو استعِدها على جهاز/متصفّح آخر.</p>
+      <div class="grid">
+        <div class="card"><button class="s-btn" id="set-export">⬇ تصدير الإعدادات (JSON)</button></div>
+        <div class="card"><button class="s-btn" id="set-import-btn">⬆ استيراد من ملف</button><input type="file" id="set-import" accept="application/json,.json" hidden></div>
+        <div class="card"><button class="s-btn danger" id="set-reset">↺ إعادة تعيين كل شيء</button></div>
+      </div>
+      <div id="set-msg" class="note" style="margin-top:10px;display:none"></div>
+      <p class="note" style="margin-top:10px">تُطبَّق تغييرات الإعدادات عند إعادة تحميل الصفحات المفتوحة.</p>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-div" data-slide="about" data-name="ما هي الإضافة؟" data-group="عام" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧰</span></div>
+  <div class="s-in">
+    <span class="s-big s-big-emo s-rise" aria-hidden="true">🧰</span>
+    <h2 class="s-rise">ما هي الإضافة؟</h2>
+    <p class="s-sub h-about s-rise">إضافة Chrome تُضيف شريطاً عائماً على حافة أي صفحة ويب. كل أداة تفتح كنافذة صغيرة قابلة للسحب. تعمل أغلب الأدوات دون اتصال، وكل البيانات تُحفظ محلياً في متصفّحك فقط.</p>
+    <button type="button" class="s-go s-rise" data-goto="step-1">ابدأ الجولة  ←</button>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="rail" data-name="التحكّم في الشريط" data-group="عام" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🎛</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🎛</span><h2>التحكّم في الشريط</h2></div>
+    <p class="s-what s-rise">أزرار التحكّم (الموضع · الألوان · الدليل · الإدارة · المساعدة) تظهر <b>أسفل</b> الأيقونات الرئيسية في الشريط.</p>
+    <div class="s-cards">
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">↕</span>ترتيب الأيقونات الرئيسية (سحب وإفلات)</h3><p>اسحب أي أيقونة تصنيف رئيسية وأفلِتها فوق أخرى لإعادة ترتيبها كما يناسبك — يُحفظ الترتيب تلقائياً.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⚙</span>موضع الشريط</h3><p>اختر إظهار الشريط على حافة <b>يمين / يسار / أعلى / أسفل</b> الصفحة. يُحفظ اختيارك.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🎨</span>الاستايل</h3><p>اختر لوناً أساسياً من 20 لوناً أو <b>لوناً مخصّصاً</b> (منتقي ألوان أو رمز مثل #e11d48) + نمط أزرار من 15 (<span class="pill">صلب</span><span class="pill">زجاجي</span><span class="pill">ثلجي</span><span class="pill">زجاج سائل</span><span class="pill">محدّد</span><span class="pill">داكن</span><span class="pill">واضح</span><span class="pill">نيون</span><span class="pill">متدرّج</span><span class="pill">هادئ</span><span class="pill">ناعم بارز</span><span class="pill">مجسّم</span><span class="pill">دائري</span><span class="pill">بسيط</span><span class="pill">ذهبي</span>) يؤثّر على الأيقونات الرئيسية والداخلية معاً. إن كانت الأيقونات لا تظهر جيداً فوق موقع مزدحم جرّب <b>ثلجي</b> أو <b>واضح</b>.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⭐</span>المفضلة</h3><p>داخل أي نافذة أداة اضغط النجمة <b>★</b> لإضافتها للمفضلة. تظهر فئة المفضلة في أعلى الشريط للوصول السريع.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⚙</span>الإعدادات ← الأدوات</h3><p>من زرّ الإعدادات في الشريط:</p> <ul> <li><b>أضِف اختصاراً مخصّصاً</b> (اسم + رابط) فيظهر كزرّ في فئة «روابط».</li> <li><b>أخفِ أداة مفردة</b> بإزالة علامة الاختيار بجوارها.</li> <li><b>أخفِ تصنيفاً كاملاً</b> بإزالة علامة الاختيار بجوار عنوان التصنيف — يختفي التصنيف بأكمله من الشريط.</li> </ul> <p class="note">ملاحظة: حاسبات الإمارات (القيمة المضافة 5% · الغرامة · ضريبة الشركات · نهاية الخدمة) صارت <b>تبويبات داخل «حاسبة الضرائب»</b> ضمن تصنيف حاسبات.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">📖</span>دليل الاستخدام</h3><p>زرّ الكتاب يفتح هذه الصفحة في أي وقت.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-div" data-slide="guide" data-name="الدليل المصوّر" data-group="عام" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🖼</span></div>
+  <div class="s-in">
+    <span class="s-big s-big-emo s-rise" aria-hidden="true">🖼</span>
+    <h2 class="s-rise">الدليل المصوّر</h2>
+    <p class="s-sub h-about s-rise">شريحة لكل أداة بصورتها بالحجم الذي تفتح به فعلاً، مع خطوات استعمالها والانتقال إليها بالاسم.</p>
+    <a class="s-go s-rise" href="guide-slides.html">افتح الدليل المصوّر</a>
+  </div>
+</section>
+
+<section class="s-slide s-div" data-slide="tools" data-name="الفئات والأدوات" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🗂</span></div>
+  <div class="s-in">
+    <span class="s-big s-big-emo s-rise" aria-hidden="true">🗂</span>
+    <h2 class="s-rise">الفئات والأدوات</h2>
+    <p class="s-sub s-rise">شرح كل أداة في كل فئة — اختر فئة.</p>
+    <div class="s-grid">
+      <button type="button" data-goto="cat-1"><span class="ic s-grid-emo" aria-hidden="true">🔗</span>روابط</button>
+      <button type="button" data-goto="cat-2"><span class="ic s-grid-emo" aria-hidden="true">🛡</span>الحماية</button>
+      <button type="button" data-goto="cat-3"><span class="ic s-grid-emo" aria-hidden="true">🧮</span>حاسبات</button>
+      <button type="button" data-goto="cat-4"><span class="ic s-grid-emo" aria-hidden="true">🧾</span>حاسبة الضرائب (تبويبات — سعودي + إمارات)</button>
+      <button type="button" data-goto="cat-5"><span class="ic s-grid-emo" aria-hidden="true">⏱</span>الوقت</button>
+      <button type="button" data-goto="cat-6"><span class="ic s-grid-emo" aria-hidden="true">☪</span>إسلامية</button>
+      <button type="button" data-goto="cat-7"><span class="ic s-grid-emo" aria-hidden="true">📝</span>ملاحظات</button>
+      <button type="button" data-goto="cat-8"><span class="ic s-grid-emo" aria-hidden="true">🔤</span>نصوص</button>
+      <button type="button" data-goto="cat-9"><span class="ic s-grid-emo" aria-hidden="true">🖼</span>الصور</button>
+      <button type="button" data-goto="cat-10"><span class="ic s-grid-emo" aria-hidden="true">🛠</span>أدوات</button>
+      <button type="button" data-goto="cat-11"><span class="ic s-grid-emo" aria-hidden="true">🔗</span>نوافذ منبثقة</button>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-1" data-name="روابط" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔗</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>روابط</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔗</span><h2>روابط</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Gmail · Outlook</h3><p>فتح البريد الإلكتروني.</p></div>
+      <div class="s-card"><h3>WhatsApp Web · Telegram</h3><p>تطبيقات المراسلة عبر المتصفّح.</p></div>
+      <div class="s-card"><h3>Microsoft Teams</h3><p>اجتماعات وقنوات العمل.</p></div>
+      <div class="s-card"><h3>Google Drive · Google Calendar</h3><p>ملفاتك وتقويمك.</p></div>
+      <div class="s-card"><h3>Facebook · YouTube · LinkedIn · X · Google</h3><p>مواقع شائعة بنقرة واحدة.</p></div>
+      <div class="s-card"><h3>روابط مخصّصة</h3><p>أي موقع تضيفه من «إدارة الاختصارات» يظهر هنا.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-2" data-name="الحماية" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🛡</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>الحماية</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🛡</span><h2>الحماية</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>مانع الإعلانات والتتبّع</h3><p>يحجب طلبات شبكات الإعلانات وأدوات التتبّع المعروفة داخل طبقة الشبكة في المتصفّح. <b>حجب الإعلانات معطّل افتراضياً</b> — فعّله من «كل المواقع» ← «منع الإعلانات (حجب شبكي)». (حجب التتبّع والبصمة والبيكسلات يعمل افتراضياً.) <b>العدّاد على أيقونة الإضافة</b> يعرض عدد الطلبات المحجوبة في التبويب الحالي. من نافذة الأداة: شغّل/أوقف قائمة الإعلانات أو التتبّع، أو <b>استثنِ الموقع الحالي</b> إن تعطّل فيه شيء. أعد تحميل الصفحة بعد أي تغيير.</p></div>
+      <div class="s-card"><h3>منظّف الموقع</h3><p>يحذف كوكيز الموقع الحالي و/أو تخزينه المحلي (يسجّل خروجك منه) دون المساس بأي موقع آخر + زر منفصل لمسح كاش المتصفح كاملاً (بتأكيد).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-3" data-name="حاسبات" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧮</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>حاسبات</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🧮</span><h2>حاسبات</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>حاسبة</h3><p>حاسبة عادية (جمع/طرح/ضرب/قسمة) بمحلّل حسابي آمن دون <code>eval</code>.</p></div>
+      <div class="s-card"><h3>ضريبة القيمة المضافة</h3><p>أضف الضريبة إلى مبلغ أو استخرجها منه.</p></div>
+      <div class="s-card"><h3>محوّل الوحدات</h3><p>تحويل الطول والوزن ودرجة الحرارة.</p></div>
+      <div class="s-card"><h3>العملات</h3><p>تحويل <b>ثنائي الاتجاه</b> بأسعار حيّة؛ اكتب المبلغ في أي خانة فتُحسب الأخرى تلقائياً.</p></div>
+      <div class="s-card"><h3>الخصم</h3><p>السعر النهائي بعد خصم نسبة + قيمة التوفير.</p></div>
+      <div class="s-card"><h3>الراتب (السعودية)</h3><p>صافي الراتب بعد التأمينات الاجتماعية (GOSI) من الأساسي + بدل السكن.</p></div>
+      <div class="s-card"><h3>عمولة المبيعات</h3><p>حساب العمولة من قيمة المبيعات حسب النسبة.</p></div>
+      <div class="s-card"><h3>نسبة الربح</h3><p>هامش الربح من التكلفة وسعر البيع.</p></div>
+      <div class="s-card"><h3>العائد المركّب</h3><p>نمو مبلغ باستثمار مركّب عبر فترة مع إضافات دورية.</p></div>
+      <div class="s-card"><h3>الأوفر تايم</h3><p>أجر ساعات العمل الإضافي.</p></div>
+      <div class="s-card"><h3>النسبة المئوية</h3><p>احسب نسبة، أو جزءاً، أو نسبة تغيّر.</p></div>
+      <div class="s-card"><h3>ROI</h3><p>عائد الاستثمار كنسبة مئوية.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-4" data-name="حاسبة الضرائب (تبويبات — سعودي + إمارات)" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧾</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>حاسبة الضرائب (تبويبات — سعودي + إمارات)</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🧾</span><h2>حاسبة الضرائب (تبويبات — سعودي + إمارات)</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>ضريبة القيمة المضافة</h3><p>منتقي دولة (السعودية 15% / الإمارات 5%)، إضافة الضريبة أو استخراجها.</p></div>
+      <div class="s-card"><h3>غرامة تأخير الضريبة</h3><p>غرامة السداد المتأخر (2% فوري + 4% شهرياً، بسقف نظامي).</p></div>
+      <div class="s-card"><h3>ضريبة الشركات (9%)</h3><p>الضريبة على صافي الربح فوق 375,000 درهم.</p></div>
+      <div class="s-card"><h3>مكافأة نهاية الخدمة</h3><p>وفق قانون العمل الإماراتي (21 يوماً لأول 5 سنوات، 30 يوماً لما بعدها).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-5" data-name="الوقت" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⏱</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>الوقت</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">⏱</span><h2>الوقت</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>المؤقّت</h3><p>عدّاد تنازلي بإعدادات سريعة (1/3/5/10/15/25 د) + تنبيه صوتي متكرّر.</p></div>
+      <div class="s-card"><h3>ساعة الإيقاف + بومودورو</h3><p>ساعة إيقاف بلفّات، ووضع بومودورو (تركيز/راحة بعدّاد دورات).</p></div>
+      <div class="s-card"><h3>تنبيه مجدول</h3><p>تنبيه في وقت محدّد من اليوم.</p></div>
+      <div class="s-card"><h3>تذكيرات</h3><p>تذكيرات دورية جاهزة (أذكار/شرب ماء/حركة) + تذكيرات مخصّصة (كل فترة أو يومياً).</p></div>
+      <div class="s-card"><h3>الساعة العالمية</h3><p>الوقت الحالي في مدن مختلفة.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-6" data-name="إسلامية" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">☪</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>إسلامية</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">☪</span><h2>إسلامية</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>مواقيت الصلاة</h3><p>حساب فلكي (أم القرى) يعمل <b>دون اتصال</b> حسب موقعك.</p></div>
+      <div class="s-card"><h3>هجري ⇄ ميلادي</h3><p>تحويل التاريخ بين التقويمين.</p></div>
+      <div class="s-card"><h3>مشغّل القرآن</h3><p>٢٤١ قارئاً برواياتهم، بحث بالاسم واختيار السورة، شريط تقدّم وسرعة و«التالية تلقائياً» وتكرار. <b>التلاوة تستمر</b> وأنت تتنقّل بين الصفحات والتبويبات، ولا يوقفها إلا زرّ الإيقاف. قائمة القرّاء تُخزَّن محلياً ٧ أيام، وأسماء السور مضمَّنة في الإضافة.</p></div>
+      <div class="s-card"><h3>المناسبات والأيام الفاضلة</h3><p>ما يقترب خلال ٦٠ يوماً: أيام البيض · الاثنين والخميس · تاسوعاء وعاشوراء · العشر من ذي الحجة ويوم عرفة · ست من شوّال · رمضان والعشر الأواخر · الأشهر الحرم. تنبيه قبلها بمدة تختارها، ولكل مناسبة مفتاحها. أيام النهي عن الصوم (العيدان والتشريق) تظهر كتحذير. الحساب <b>أوفلاين بالكامل</b> من تقويم أم القرى، مع معايرة ±يوم، وكل التنبيهات معطّلة افتراضياً.</p></div>
+      <div class="s-card"><h3>أذكار وورد</h3><p>(نافذة واحدة بتبويبات): <b>الصباح/المساء</b> (قائمتا حصن المسلم بعدّاد تكرار) · <b>آية اليوم</b> · <b>الورد اليومي</b> — قارئ <b>صفحة مصحف</b> بالنص العثماني (٦٠٤ صفحة، اسم السورة وأرقام الآيات) مع <b>تفسير ميسّر اختياري</b> (التفسير الميسّر — مجمع الملك فهد)، وتتبّع ورد اليوم (صفحات/يوم)، التقدّم في المصحف، عدد الختمات، وسلسلة الأيام 🔥. نص القرآن والتفسير من <code>api.alquran.cloud</code> ويُخزَّن محلياً فتُقرأ الصفحة دون اتصال بعد أول تحميل.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-7" data-name="ملاحظات" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">📝</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>ملاحظات</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">📝</span><h2>ملاحظات</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>ملاحظات</h3><p>ملاحظات نصية محفوظة محلياً.</p></div>
+      <div class="s-card"><h3>قائمة المهام</h3><p>مهام بعدّاد المنجز/الإجمالي ومسح المنجز.</p></div>
+      <div class="s-card"><h3>ملاحظات لاصقة</h3><p>ملاحظات ملوّنة عائمة فوق الصفحة، قابلة للسحب (عدّة ألوان).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-8" data-name="نصوص" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔤</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>نصوص</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔤</span><h2>نصوص</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>الترجمة</h3><p>ترجمة نص بين اللغات.</p></div>
+      <div class="s-card"><h3>صوت ونص</h3><p>نطق النص صوتياً (TTS) + إملاء صوتي بنصّ يظهر وأنت تتكلّم، مع اختيار الصوت والسرعة والنبرة.</p></div>
+      <div class="s-card"><h3>عدّاد الكلمات</h3><p>عدد الكلمات والأحرف في نصّك.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-9" data-name="الصور" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🖼</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>الصور</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🖼</span><h2>الصور</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>تصوير الصفحة كاملة</h3><p>يصوّر الصفحة بطولها الكامل مع التمرير التلقائي ويدمجها بصورة واحدة (تُخفى الأشرطة الثابتة كي لا تتكرر). تنزيل PNG/JPG أو <b>فتح في المحرر</b> مباشرة. كل شيء محلي — لا تُرفع الصورة لأي جهة.</p></div>
+      <div class="s-card"><h3>محرر الصور</h3><p>قلم/خط/إطار/سهم/نص/قص + لون وسماكة + تدوير + تراجع، ثم تنزيل PNG أو JPG.</p></div>
+      <div class="s-card"><h3>المحوّل الشامل</h3><p>حوّل دفعة كاملة بين كل الصيغ: الدخل <b>PNG · JPG · WebP · GIF · BMP · ICO · AVIF · SVG · PDF</b> (كل صفحة PDF تصير صورة)، والخرج <b>PNG · JPG · WebP · BMP · ICO · GIF · TIFF · PDF</b> (مع خيار دمج الكل في PDF واحد وملاءمة A4). ⚠️ HEIC/TIFF لا يفكّهما المتصفّح قراءةً، وAVIF يُقرأ ولا يُكتب، وGIF إطار واحد.</p></div>
+      <div class="s-card"><h3>PDF ⇄ صور</h3><p>استخرج صفحات PDF كصور (نطاق مثل <code>1-3,7</code> + دقّة 72/110/150/300 DPI → ZIP)، أو ادمج عدّة صور في <b>ملف PDF واحد</b>. محلي بالكامل — لا يُرفع الملف.</p></div>
+      <div class="s-card"><h3>تحميل الفيديو والصوت</h3><p>يستخرج وسائط الصفحة الحالية ويحمّلها: فيديو فيسبوك العام (HD/SD)، مقاطع ساوندكلاود (MP3)، وأي <code>&lt;video&gt;</code>/<code>&lt;audio&gt;</code> مباشر. <b>يوتيوب غير مدعوم.</b> للاستخدام الشخصي ولمحتوى لديك حق حفظه.</p></div>
+      <div class="s-card"><h3>ضغط الصور</h3><p>تصغير حجم الصور (JPEG/WebP/PNG) مع معاينة ونسبة التوفير.</p></div>
+      <div class="s-card"><h3>لقطة شاشة</h3><p>ثلاثة تبويبات: تحديد منطقة · المنطقة المرئية · الصفحة كاملة. ومنها التحرير السريع أو المحرّر الاحترافي.</p></div>
+      <div class="s-card"><h3>التقاط منطقة</h3><p>اسحب مستطيلاً فتُلتقط الصورة وتُنسخ للحافظة فور إفلات الفأرة، بلا فتح نافذة. عيّن لها اختصار لوحة مفاتيح من الإعدادات لتشغيلها فوق أي صفحة. للمناطق الأطول من الشاشة مرّر بالعجلة أثناء السحب — تُصوَّر بالتمرير وتُدمج (النسخ التلقائي قد يفشل حينها لطول العملية، فاستخدم زر النسخ).</p></div>
+      <div class="s-card"><h3>تسجيل الشاشة</h3><p>تسجيل فيديو للشاشة (WebM) مع صوت اختياري.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-10" data-name="أدوات" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🛠</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>أدوات</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🛠</span><h2>أدوات</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>جداول الإكسيل</h3><p>يفتح في صفحة مستقلة. أفلت ملف <b>xlsx / xls / xlsb / ods / csv</b> → جدول قابل للتحرير: بحث في كل الخلايا، إخفاء أعمدة وصفوف، تعديل الخلايا، إضافة/حذف صفوف وأعمدة، فرز، تراجع 50 خطوة، أوراق متعدّدة — ثم <b>تصدير xlsx أو CSV أو JSON</b> (مع خيار «المرئي فقط»). مرّر على رقم أي صف لتظهر أزرار <b>إخفائه 👁 أو حذفه 🗑</b>. 🔒 الملف لا يغادر جهازك ولا يُحفظ في أي مكان — بإغلاق التبويب يزول، فصدّر عملك أولاً. ⚠️ المعادلات تُقرأ كقيمتها المحسوبة، والتنسيقات لا تُحفظ.</p></div>
+      <div class="s-card"><h3>محرّر الإيميلات</h3><p>يفتح في صفحة مستقلة. اكتب الإيميل (قوالب عربية/إنجليزية + توقيع + تنسيق)، ثم <b>بضغطة صريحة</b>: ✅ صحّح الإملاء والقواعد · ✨ أعد الصياغة بنبرة · ✍️ اكتب مسودة من نقاطك · 🌐 ترجم · 📝 لخّص ورُدّ. <b>كل نتيجة تُعرض «قبل/بعد» وتقبلها أو ترفضها تغييراً تغييراً — نصّك لا يُستبدل بصمت.</b> ثم سلّم الرسالة إلى <b>Gmail</b> أو تطبيق بريدك أو انسخها أو صدّرها <b>.eml</b>. 🔒 <b>لا شيء يخرج من جهازك إلا بضغطك على زرّ ذكاء</b>، وعندها يُرسَل <b>الموضوع والنصّ فقط</b> — <b>عناوين المستلمين لا تُرسَل أبداً</b>. يستخدم مفتاح «المساعد الذكي» نفسه (بلا مفتاح: الأداة تعمل والأزرار الذكية معطّلة). الأداة لا ترسل بريداً بنفسها.</p></div>
+      <div class="s-card"><h3>عروض PowerPoint</h3><p>يفتح في صفحة مستقلة. أفلت ملف <b>.pptx</b> → كل شريحة بنصوصها وصورها وملاحظات المتحدّث: عدّل، أضف/كرّر/احذف شريحة، <b>رتّب بالسحب</b>، ثم <b>▶ عرض</b> (ملء الشاشة، ← للتالي، Esc للخروج) أو <b>صدّر pptx</b> أو <b>PDF</b> أو <b>صور PNG</b>. 🔒 الملف لا يغادر جهازك. ⚠️ <b>تُقرأ النصوص والصور لا التصميم</b> — القالب والخطوط والحركات و SmartArt والرسوم البيانية <b>لا تُحفظ</b>، والتصدير يبني شرائح نظيفة بسيطة. صيغة <b>.ppt</b> القديمة غير مدعومة.</p></div>
+      <div class="s-card"><h3>مستندات Word</h3><p>يفتح في صفحة مستقلة. أفلت ملف <b>.docx</b> → مستند قابل للتحرير: عناوين، عريض/مائل، قوائم، جداول، صور، بحث واستبدال — ثم <b>تصدير docx</b> جديد أو <b>PDF</b> (عبر نافذة الطباعة: نصّ متجهي قابل للبحث) أو HTML أو نصّ. 🔒 الملف لا يغادر جهازك ولا يُحفظ. ⚠️ صيغة <b>.doc</b> القديمة غير مدعومة (احفظها كـ.docx)، و<b>تعقّب التغييرات والتعليقات والترويسة/التذييل والماكرو لا تُحفظ</b> — يُصدَّر ما تراه. اللصق نصّ صِرف (حماية).</p></div>
+      <div class="s-card"><h3>كل الأدوات داخل صفحة الجداول</h3><p>نفس دوك «وضع العمل» يطفو فوق الجدول: مرّر على تصنيف لتظهر أدواته، واضغط أداة لتفتح كنافذة عائمة فوق الجدول (يمكن فتح عدّة أدوات معاً). اسحب مقبض الدوك ⠿ لتنقله، وموضعه يُحفظ.</p></div>
+      <div class="s-card"><h3>مولّد كلمات المرور</h3><p>كلمات مرور قوية عشوائية بطول وخيارات قابلة للضبط.</p></div>
+      <div class="s-card"><h3>مولّد QR</h3><p>رمز QR لأي نص/رابط + <b>وضع واي‑فاي</b> (SSID/كلمة المرور) — يعمل دون اتصال.</p></div>
+      <div class="s-card"><h3>سرعة الإنترنت</h3><p>قياس سرعة الاتصال.</p></div>
+      <div class="s-card"><h3>الملء التلقائي للفورمات</h3><p>بروفايل محفوظ محلياً (اسم/بريد/هاتف/عنوان…) يملأ الحقول الفارغة المطابقة بضغطة واحدة. لا يلمس كلمات المرور أبداً.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-11" data-name="نوافذ منبثقة" data-group="الأدوات" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔗</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>الفئات والأدوات › <b>نوافذ منبثقة</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔗</span><h2>نوافذ منبثقة</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>واتساب ويب (لوحة جانبية)</h3><p>يفتح في <b>لوحة كروم الجانبية</b>: نفس النافذة، والصفحة تنكمش إلى جوارها كما تفعل لوحة Claude. اللوحة تبقى مفتوحة وأنت تتنقّل بين الصفحات، وفيها شريط منصّات وحقل لأي رابط. الربط يُطلب <b>مرّة واحدة</b>: جلسة اللوحة مرتبطة بالإضافة نفسها لا بالموقع الذي تتصفّحه. وإن رفض موقعٌ العرضَ داخل اللوحة، زرّ واحد يفتحه في نافذة مستقلّة ملتصقة بحافّة الشاشة (ضمن فئة روابط).</p></div>
+      <div class="s-card"><h3>عارض المواقع</h3><p>افتح أي رابط بنافذة منبثقة بحجم صغير/وسط/كبير مع قائمة بآخر 8 مواقع.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="perms" data-name="أدوات تحتاج إذناً من المتصفّح" data-group="الخصوصية" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔑</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔑</span><h2>أدوات تحتاج إذناً من المتصفّح</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>لقطة شاشة / تسجيل الشاشة:</h3><p>سيطلب المتصفّح اختيار النافذة/الشاشة عند الضغط. لا تُرفع أي بيانات — تبقى محليّة.</p></div>
+      <div class="s-card"><h3>صوت ونص (الإملاء):</h3><p>يطلب إذن الميكروفون.</p></div>
+      <div class="s-card"><h3>العملات / الترجمة / سرعة الإنترنت / الورد اليومي (القرآن والتفسير):</h3><p>تتصل بخدمات عامة موثوقة لجلب البيانات فقط (القرآن والتفسير من <code>api.alquran.cloud</code> — التفسير الميسّر لمجمع الملك فهد)؛ لا تُرسَل أي بيانات شخصية.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="privacy" data-name="الخصوصية" data-group="الخصوصية" role="group" aria-roledescription="شريحة">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔒</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔒</span><h2>الخصوصية</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><p>كل ملاحظاتك وإعداداتك ومفضّلتك تُحفظ في <code>chrome.storage</code> المحلي — لا تُرسل لأي خادم.</p></div>
+      <div class="s-card"><p>الإضافة لا تجمع بيانات تصفّحك.</p></div>
+      <div class="s-card"><p>الاتصال الشبكي محصور بنطاقات موثوقة محدّدة فقط (أسعار العملات، الترجمة، قياس السرعة، القرآن والتفسير، ومساعد بروف) لجلب بيانات تلك الأدوات — لا شيء غيرها.</p></div>
+      <div class="s-card"><p>يمكنك <b>تصدير/استيراد</b> كل إعداداتك من قسم «الإعدادات العامة» أعلاه، أو إعادة تعيينها بالكامل.</p></div>
+    </div>
+    <p class="s-where h-endnote s-rise">💡 روابط المواقع تفتح في تبويب جديد. مولّد QR وضغط الصور ومواقيت الصلاة والحاسبات كلها تعمل دون اتصال بالإنترنت.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="s-foot">
+  <button type="button" id="s-prev" aria-label="الشريحة السابقة">→</button>
+  <div class="s-bar"><i id="s-bar-i"></i></div>
+  <span id="s-pos" aria-live="polite"></span>
+  <span class="s-kb"><kbd>→</kbd><kbd>←</kbd></span>
+  <span class="h-ver">إصدار <span id="help-ver">—</span></span>
+  <button type="button" id="s-next" aria-label="الشريحة التالية">←</button>
+</footer>
+<!-- MV3's extension-page CSP is `script-src 'self'` → an inline <script> here is
+     BLOCKED by the browser (that is why this page's settings panel did nothing until
+     v0.74.0). The guide + settings logic lives in src/help.js. Never inline it again.
+     src/i18n.js comes first: help.js reads the PAGE's lang and translates its own
+     runtime strings through the dictionary (§6.100). -->
+<script src="src/i18n.js"></script>
+<script src="src/btnkit.js"></script>
+<script src="src/fontkit.js"></script>
+<script src="src/storage.js"></script>
+<script src="guide-meta.js"></script>
+<script src="src/help.js"></script>
+<script src="src/sel2.js"></script>
+</body>
+</html>

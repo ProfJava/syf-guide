@@ -1,0 +1,105 @@
+/* SYF — help.html / help-en.html, v0.166.1: the help page IS a slide deck in the
+ * illustrated guide's format. guide-slides.css draws everything (strip, stage, slides,
+ * cards, steps, foot, light/dark tokens) and both help pages link it first; this sheet
+ * adds only what the help page has and the guide does not:
+ *   · emoji where the guide puts an SVG icon (tiles, crumbs, cards, the big divider tile)
+ *   · the general-settings controls (ids are contracts with src/help.js)
+ *   · the tip / warning cards of the tour, and the settings message colours.
+ *
+ * ⚠️ WHY TWO PAGES (v0.95.0): the help text is prose in the markup, translated by
+ * duplication (§6.100) — two pages, ONE design. ⛔ Never inline a rule into either page;
+ * and never fork a guide rule here: change guide-slides.css so both decks follow.
+ * Every directional property is LOGICAL (the two pages differ in `dir`). */
+
+:root {
+  --pri: var(--brand);                                   /* controls.css reads --pri */
+  --ok-bg: #f0fdf4; --ok-line: #bbf7d0; --ok-ink: #15803d;
+  --bad-bg: #fef2f2; --bad-line: #fecaca; --bad-ink: #b91c1c;
+  --warn-bg: #fff7ed; --warn-line: #fed7aa; --warn-acc: #ea580c; --warn-ink: #9a3412;
+  --danger: #dc2626;
+}
+:root[data-theme="dark"] {
+  --ok-bg: #0f2a1c; --ok-line: #1f5236; --ok-ink: #6ee7a8;
+  --bad-bg: #2a1215; --bad-line: #5b2228; --bad-ink: #fca5a5;
+  --warn-bg: #2a1d10; --warn-line: #5b3a17; --warn-acc: #f59e0b; --warn-ink: #fbbf77;
+  --danger: #ef4444;
+}
+
+/* ===== emoji in the guide's icon slots ===== */
+.s-tile.s-emo { display: grid; place-items: center; padding: 0; font-size: 32px; line-height: 1; }
+.s-crumb .s-crumb-emo { display: grid; place-items: center; padding: 0; font-size: 12px; line-height: 1; }
+.s-card h3 .s-card-emo {
+  display: grid; place-items: center; padding: 0; font-size: 14px; line-height: 1;
+  background: color-mix(in oklab, var(--acc) 14%, var(--card));
+}
+.s-grid .s-grid-emo { display: grid; place-items: center; padding: 0; font-size: 20px; line-height: 1; }
+.s-big.s-big-emo { display: grid; place-items: center; padding: 0; font-size: clamp(40px, 6vmin, 58px); line-height: 1; }
+.s-mark.s-mark-emo {
+  display: grid; place-items: center; font-size: min(40vmin, 360px); line-height: 1; opacity: .06;
+  filter: grayscale(1);
+}
+/* the cover title is three words, not the guide's two: it may wrap instead of being cut */
+.s-hero h1 { white-space: normal; text-wrap: balance; font-size: clamp(40px, 5.4vw, 84px); }
+/* the cover's icon wall: links to the guide instead of buttons */
+a.s-cell { display: block; }
+
+/* ===== text the guide does not carry ===== */
+.s-card p { margin: 0 0 6px; }
+.s-card p:last-child { margin-bottom: 0; }
+.s-card ul { margin: 6px 0 0; padding-inline-start: 18px; font-size: 13px; line-height: 1.65; color: var(--ink); }
+.s-card li { margin: 2px 0; }
+.s-card b { color: var(--ink); }
+.s-card h3 { line-height: 1.4; }
+.s-what b { color: var(--ink); }
+code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: .88em; direction: ltr; unicode-bidi: isolate;
+  background: color-mix(in oklab, var(--acc) 9%, var(--card)); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px;
+}
+.pill {
+  display: inline-block; margin: 2px; padding: 1px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
+  color: var(--acc); background: color-mix(in oklab, var(--acc) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--acc) 25%, transparent);
+}
+.note {
+  background: var(--warn-bg); border: 1px solid var(--warn-line); border-inline-start: 4px solid var(--warn-acc);
+  border-radius: 12px; padding: 8px 12px; font-size: 13px; margin: 8px 0 0;
+}
+.s-div .h-about { max-width: 62ch; margin: 4px auto 18px; line-height: 1.85; }
+a.s-go { text-decoration: none; display: inline-block; }
+.h-endnote { display: flex; margin-top: 16px; }
+
+/* the tour's tip and warning — the guide's dashed shortcut card */
+.s-keys + .s-keys { margin-top: 10px; }
+.s-keys .h-tip { font-size: clamp(13.5px, 1.1vw, 15px); line-height: 1.7; color: var(--ink); }
+.s-keys .h-tip b { color: var(--acc); }
+.s-keys.h-warn { background: var(--warn-bg); border: 1px solid var(--warn-line); border-inline-start: 4px solid var(--warn-acc); }
+.s-keys.h-warn .h-tip b { color: var(--warn-ink); }
+
+/* ===== the general-settings slide ===== */
+.h-set h3 { font-size: 16px; margin: 18px 0 6px; }
+.h-set p { margin: 0 0 8px; color: var(--mut); font-size: 14px; }
+.h-set .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 10px; }
+.h-set .card {
+  display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 12px 14px; border-radius: 16px;
+  background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(8px);
+  border-inline-start: 4px solid var(--acc);
+}
+.h-set .card br { display: none; }
+.h-set select, .h-set .s-btn {
+  font: inherit; font-size: 13.5px; width: 100%; min-height: 38px; padding: 7px 10px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink);
+}
+.h-set .s-btn { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 700; }
+.h-set .s-btn:hover { background: var(--brand-2); border-color: var(--brand-2); }
+.h-set .s-btn.danger { background: var(--danger); border-color: var(--danger); }
+.h-set .s-ck { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+
+/* ===== strip + foot extras ===== */
+.s-top .lang-switch { font-weight: 700; }
+#h-theme { min-width: 34px; justify-content: center; }
+.h-ver { font-size: 12px; color: var(--mut); white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .h-ver { display: none; }
+  .s-tile.s-emo { font-size: 26px; }
+}

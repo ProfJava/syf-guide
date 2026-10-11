@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SYF Tools — دليل الاستخدام (شرائح)</title>
+<!-- ⚠️ نفس بيانات الدليل وصوره (guide-data.js · guide-img/ · guide-meta.js ·
+     guide-settings.js) — وهو الدليل نفسه المنشور syf-guide (المعرض حُذف في v0.150.0). ⛔ لا قاعدة داخل الصفحة:
+     التوأم الإنجليزي يقرأ نفس الملفّ. -->
+<link rel="stylesheet" href="guide-slides.css">
+<!-- حارس اللغة: قارئ إنجليزي يُحوَّل إلى guide-slides-en.html. ⛔ لا يُضاف للتوأم. -->
+<script src="src/help-lang.js"></script>
+</head>
+<body>
+<header class="s-top">
+  <span class="s-brand"><span class="s-logo" aria-hidden="true">✦</span>SYF Tools · دليل الاستخدام</span>
+  <select id="s-jump" aria-label="انتقل إلى أداة"></select>
+  <button type="button" id="s-print" class="s-hide-sm">⎙ طباعة / PDF</button>
+  <button type="button" id="s-full" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
+  <button type="button" id="s-theme"></button>
+  <a href="guide-slides-en.html" hreflang="en">English</a>
+</header>
+
+<main class="s-stage" id="s-stage"></main>
+
+<footer class="s-foot">
+  <button type="button" id="s-prev" aria-label="الشريحة السابقة">→</button>
+  <div class="s-bar"><i id="s-bar-i"></i></div>
+  <span id="s-pos" aria-live="polite"></span>
+  <span class="s-kb"><kbd>→</kbd><kbd>←</kbd></span>
+  <button type="button" id="s-next" aria-label="الشريحة التالية">←</button>
+</footer>
+
+<script src="guide-data.js"></script>
+<script src="guide-meta.js"></script>
+<script src="guide-settings.js"></script>
+<script src="guide-slides.js"></script>
+<script src="src/sel2.js"></script>
+</body>
+</html>

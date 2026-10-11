@@ -1,0 +1,77 @@
+/* SYF — the workspace dock.
+ *
+ * Shared by app.html (App Mode) and sheet.html/word.html/… (the page tools), all of
+ * which run src/app.js.
+ *
+ * ===== READ THIS BEFORE ADDING A RULE (v0.79.0) =====
+ * The dock IS the page rail. Not a lookalike — the same markup (.syfs-rail ›
+ * .syfs-shelf + .syfs-bar › .syfs-run + .syfs-fold), styled by rail.css, opening the
+ * same shelf with the same cascade and the same fold badge. It had been a separate
+ * component (.syfa-dock2 with its own row, its own hover flyout of round icon tiles,
+ * its own glass) and the two drifted every single release: one product teaching two
+ * visual languages depending on which surface you were on.
+ *
+ * So this file is now the SHORT LIST of things that are genuinely this surface's own,
+ * and nothing else belongs here:
+ *   1. placement — the rail picks a screen edge, this one is dragged anywhere
+ *   2. the drag grip
+ *   3. the three window controls (نافذة مستقلّة · ترتيب · إغلاق الكل) — this surface
+ *      owns windows and the page rail does not
+ *   4. the running dot — same reason
+ *
+ * If you find yourself restyling a button, a panel or the glass here, STOP: that is
+ * rail.css's job, and a copy here is how the two surfaces drift apart again. */
+
+/* ---- 1. placement ----
+   The rail is `position: fixed` against a screen edge (rail.css line 33 + the
+   [data-pos] rules). This one is absolutely placed from src/app.js's drag, inside
+   the fixed .syfs-wrap overlay. The selector carries an extra class deliberately:
+   `.syfs-wrap[data-pos="top"] .syfs-rail` scores 3, so 3 would only win on file
+   order — and this must win no matter how the stylesheets are loaded. */
+.syfs-wrap[data-pos] .syfs-rail.syfa-dock2 {
+  position: absolute; right: auto; bottom: auto; left: 0; top: 0; transform: none;
+  z-index: 2000000; pointer-events: auto; user-select: none;
+}
+/* the shelf is measured against the dock's own box, so it needs no override */
+
+/* ---- 2. the drag grip ----
+   A plain rounded bar, not a glyph: a braille character sat off-centre and inherited
+   the page font. It widens and tints on hover so it reads as grabbable. It lives at
+   the head of the bar, before the run, so folding never takes the handle away. */
+.syfa-dock-grip { flex: 0 0 auto; display: grid; place-items: center;
+  position: relative; cursor: grab; font-size: 0; color: transparent; }
+.syfs-wrap[data-pos="right"] .syfa-dock-grip, .syfs-wrap[data-pos="left"] .syfa-dock-grip { width: var(--syfs-cat-size, 46px); height: 13px; }
+.syfs-wrap[data-pos="top"] .syfa-dock-grip, .syfs-wrap[data-pos="bottom"] .syfa-dock-grip { height: var(--syfs-cat-size, 46px); width: 13px; }
+.syfa-dock-grip::before { content: ''; border-radius: 3px;
+  background: rgba(15,23,42,.15); transition: width .2s ease, height .2s ease, background .2s ease; }
+.syfs-wrap[data-pos="right"] .syfa-dock-grip::before, .syfs-wrap[data-pos="left"] .syfa-dock-grip::before { width: 20px; height: 4px; }
+.syfs-wrap[data-pos="top"] .syfa-dock-grip::before, .syfs-wrap[data-pos="bottom"] .syfa-dock-grip::before { width: 4px; height: 20px; }
+.syfa-dock-grip:hover::before { background: rgba(var(--pri-rgb),.55); }
+.syfs-wrap[data-pos="right"] .syfa-dock-grip:hover::before, .syfs-wrap[data-pos="left"] .syfa-dock-grip:hover::before { width: 26px; }
+.syfs-wrap[data-pos="top"] .syfa-dock-grip:hover::before, .syfs-wrap[data-pos="bottom"] .syfa-dock-grip:hover::before { height: 26px; }
+.syfa-dock-grip:active { cursor: grabbing; }
+.syfa-dock-grip:active::before { background: var(--pri); }
+/* the grip folds away with the run — it is a handle for a bar, and a folded bar is
+   a single badge you click, not something you drag by an invisible stub */
+.syfs-rail.folded .syfa-dock-grip { width: 0; height: 0; opacity: 0; overflow: hidden;
+  transition: width .3s cubic-bezier(.22,.9,.3,1) .17s, height .3s cubic-bezier(.22,.9,.3,1) .17s, opacity .18s linear .17s; }
+
+/* ---- 3. closing every window is the one destructive control on this bar ----
+   It says so on hover. Everything else about these buttons is .syfs-cat-btn.alt. */
+.syfs-cat-btn[data-act="closeall"]:hover {
+  background: linear-gradient(160deg, #b45252, #8f3535);
+  box-shadow: 0 12px 26px rgba(140,40,40,.34), inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+/* ---- 4. the running dot: this surface owns windows, the page rail does not ----
+   White on the filled accent button — an accent dot ringed in white was legible on
+   the old pale plate and vanishes into a green one. */
+.syfs-cat.running .syfs-cat-btn::after { content: ''; position: absolute; z-index: 2;
+  bottom: 6%; left: 50%; margin-left: -2.5px; width: 5px; height: 5px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 0 2px rgba(15,23,42,.22); }
+/* a tool with an open window, inside the shelf */
+.syfs-tool-btn.open { background: var(--pri); color: #fff; box-shadow: 0 5px 14px rgba(var(--pri-rgb),.38); }
+.syfs-tool-btn.open .syfs-tb-nm { color: #fff; }
+
+/* stagger minimized windows into a bottom taskbar row instead of stacking */
+.syfs-win.syfs-min { box-shadow: 0 6px 18px rgba(0,0,0,.2); }

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SYF Tools - Browser Toolbox — User Guide</title>
+<!-- v0.166.1 — the help page is a slide deck in the illustrated guide's own format:
+     guide-slides.css draws it (shared with the guide, unchanged), help.css adds only what
+     this page has and the guide does not (the settings controls, emoji tiles).
+     ⛔ Both help pages link the same two sheets — never a rule inline in either (§6.100/1).
+     ⛔ Generated layout, hand-kept prose: the slides carry data-slide ids that src/help.js
+     and deep links (#settings, #start-3) rely on; set-* / help-ver / h-theme are contracts. -->
+<link rel="stylesheet" href="guide-slides.css">
+<link rel="stylesheet" href="help.css">
+<link rel="stylesheet" href="controls.css"><!-- switches + glass buttons (v0.153.0/v0.154.0) -->
+</head>
+<body class="h-deck">
+<header class="s-top">
+  <span class="s-brand"><span class="s-logo" aria-hidden="true">✦</span>SYF Tools · Help</span>
+  <select id="s-jump" aria-label="Jump to a slide"></select>
+  <a class="s-hide-sm" href="guide-slides-en.html">🖼 Illustrated guide</a>
+  <button type="button" id="s-print" class="s-hide-sm">⎙ Print / PDF</button>
+  <button type="button" id="s-full" aria-label="Full screen" title="Full screen">⛶</button>
+  <button type="button" id="h-theme"></button>
+  <!-- ⛔ Bilingual and never translated (§6.96/5): it is read by someone who cannot read this page.
+       `?stay=1` is load-bearing: help.html forwards English readers here (src/help-lang.js). -->
+  <a class="lang-switch" href="help.html?stay=1" hreflang="ar">الدليل بالعربية</a>
+</header>
+
+<main class="s-stage" id="s-stage">
+
+<section class="s-slide s-cover" data-slide="cover" data-name="Cover" role="group" aria-roledescription="slide">
+  <div class="s-wall" aria-hidden="true"></div>
+  <div class="s-vig"></div>
+  <div class="s-hero"><div class="s-hero-in">
+    <div class="s-kick">SYF TOOLS · BROWSER TOOLBOX</div>
+    <h1>SYF Tools - Browser Toolbox</h1>
+    <p>A floating toolbar over any page — calculators, privacy and protection, night &amp; reading mode, and productivity tools. User guide.</p>
+    <button type="button" class="s-go" data-goto="step-1">Start the tour  →</button>
+    <div class="s-stats"><span><b>7</b>tour steps</span><span><b>11</b>tool categories</span><span><b>9</b>tips</span></div>
+    <div class="s-hint">Arrows or Space to move · F for full screen · click any icon to open its illustrated page</div>
+  </div></div>
+</section>
+
+<section class="s-slide s-toc" data-slide="toc" data-name="Contents" role="group" aria-roledescription="slide">
+  <div class="s-bg"></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">☰</span><h2>Contents</h2></div>
+    <p class="s-what s-rise">Every part of the help in one place — click any line to jump to its slide; the number beside it is the slide number.</p>
+    <div class="s-toc-cols">
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🚀</span><span class="s-toc-n">Get started in 7 steps</span></div>
+        <button type="button" class="s-toc-t" data-goto="step-1"><span class="ic s-toc-emo" aria-hidden="true">🧰</span><span class="s-toc-n">Show the toolbar</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-2"><span class="ic s-toc-emo" aria-hidden="true">🪟</span><span class="s-toc-n">Open a tool</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-3"><span class="ic s-toc-emo" aria-hidden="true">⭐</span><span class="s-toc-n">Favourites &amp; shortcuts</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-4"><span class="ic s-toc-emo" aria-hidden="true">⊞</span><span class="s-toc-n">Workspace mode</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-5"><span class="ic s-toc-emo" aria-hidden="true">📄</span><span class="s-toc-n">Office files</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-6"><span class="ic s-toc-emo" aria-hidden="true">⚙</span><span class="s-toc-n">Manager panel</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="step-7"><span class="ic s-toc-emo" aria-hidden="true">🔒</span><span class="s-toc-n">Privacy &amp; backup</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🧭</span><span class="s-toc-n">General</span></div>
+        <button type="button" class="s-toc-t" data-goto="tips"><span class="ic s-toc-emo" aria-hidden="true">💡</span><span class="s-toc-n">Quick tips</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="settings"><span class="ic s-toc-emo" aria-hidden="true">⚙</span><span class="s-toc-n">General settings</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="about"><span class="ic s-toc-emo" aria-hidden="true">🧰</span><span class="s-toc-n">What is this extension?</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="rail"><span class="ic s-toc-emo" aria-hidden="true">🎛</span><span class="s-toc-n">Controlling the toolbar</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="guide"><span class="ic s-toc-emo" aria-hidden="true">🖼</span><span class="s-toc-n">Illustrated guide</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🗂</span><span class="s-toc-n">Categories and tools</span></div>
+        <button type="button" class="s-toc-t" data-goto="cat-1"><span class="ic s-toc-emo" aria-hidden="true">🔗</span><span class="s-toc-n">Links</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-2"><span class="ic s-toc-emo" aria-hidden="true">🛡</span><span class="s-toc-n">Protection</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-3"><span class="ic s-toc-emo" aria-hidden="true">🧮</span><span class="s-toc-n">Calculators</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-4"><span class="ic s-toc-emo" aria-hidden="true">🧾</span><span class="s-toc-n">Tax calculator (tabs — Saudi + UAE)</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-5"><span class="ic s-toc-emo" aria-hidden="true">⏱</span><span class="s-toc-n">Time</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-6"><span class="ic s-toc-emo" aria-hidden="true">☪</span><span class="s-toc-n">Islamic</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-7"><span class="ic s-toc-emo" aria-hidden="true">📝</span><span class="s-toc-n">Notes</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-8"><span class="ic s-toc-emo" aria-hidden="true">🔤</span><span class="s-toc-n">Text</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-9"><span class="ic s-toc-emo" aria-hidden="true">🖼</span><span class="s-toc-n">Images</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-10"><span class="ic s-toc-emo" aria-hidden="true">🛠</span><span class="s-toc-n">Tools</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="cat-11"><span class="ic s-toc-emo" aria-hidden="true">🔗</span><span class="s-toc-n">Popup windows</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+      <div class="s-toc-cat">
+        <div class="s-toc-h"><span class="ic s-toc-emo" aria-hidden="true">🔒</span><span class="s-toc-n">Privacy</span></div>
+        <button type="button" class="s-toc-t" data-goto="perms"><span class="ic s-toc-emo" aria-hidden="true">🔑</span><span class="s-toc-n">Tools that need a browser permission</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+        <button type="button" class="s-toc-t" data-goto="privacy"><span class="ic s-toc-emo" aria-hidden="true">🔒</span><span class="s-toc-n">Privacy</span><span class="s-toc-dots"></span><span class="s-toc-p"></span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-1" data-name="Show the toolbar" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧰</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/_rail.png" alt="1) Show the floating toolbar on any page" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 1 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">🧰</span><div><h2>1) Show the floating toolbar on any page</h2></div></div>
+        <p class="s-what s-rise">Once installed, the SYF Tools toolbar appears automatically on the <b>edge of any web page</b> (right side by default). The extension icon in the browser toolbar works as a switch: <b>click it to show or hide the toolbar on the current page</b>.</p>
+        <ol class="s-steps s-rise">
+          <li>Pin the extension icon (<b>📌</b> from the extensions menu) so the switch is always within reach.</li>
+          <li>Change which edge the toolbar sits on (right · left · top · bottom) from <b>General settings</b> below, or from the position button on the toolbar itself.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 Tip:</b> If the icons are hard to read over a busy, colourful site, try the <span class="pill">Frosted</span> or <span class="pill">Clear</span> button style under “Colours” on the toolbar.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-2" data-name="Open a tool" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🪟</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/calc.png" alt="2) Open your first tool as a floating window" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 2 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">🪟</span><div><h2>2) Open your first tool as a floating window</h2></div></div>
+        <p class="s-what s-rise">Click (or hover) a <b>category icon</b> to reveal its tools, then click a tool to open it as a <b>small floating window</b> over the page — the page underneath stays usable.</p>
+        <ol class="s-steps s-rise">
+          <li><b>Drag</b> the window by its title bar · <b>resize</b> it from its bottom corner · <b>minimise</b> it and it drops to a bottom row.</li>
+          <li>Open <b>several tools at once</b> — every window is independent, and positions are remembered.</li>
+          <li>Related tools are merged into one window with <b>tabs</b>: “Finance calculator” · “Tax calculator” · “Timer &amp; stopwatch” · “Adhkar &amp; daily portion”.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 Tip:</b> Start with something light to get a feel for it — the <b>QR generator</b>, the <b>calculator</b>, or <b>prayer times</b> (all of which work offline).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-3" data-name="Favourites &amp;amp; shortcuts" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⭐</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/set-keys.png" alt="3) Bring what you use most within reach" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 3 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">⭐</span><div><h2>3) Bring what you use most within reach</h2></div></div>
+        <p class="s-what s-rise">Inside any tool window, click the star <b>★</b> to add it to the <b>Favourites</b> category, which appears at the <b>top of the toolbar</b> — one click instead of walking through categories.</p>
+        <ol class="s-steps s-rise">
+          <li><b>Reorder the main category icons</b> by dragging one onto another on the toolbar itself — the order is saved.</li>
+          <li><b>A keyboard shortcut per tool:</b> the manager panel ⚙ → “Tools” tab → the <b>⌨</b> button in the tool's row.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 Tip:</b> The two tools that benefit most from a shortcut: <b>Capture region</b> (grabs and copies to the clipboard instantly, no window) and <b>Workspace mode</b>.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-4" data-name="Workspace mode" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⊞</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/appmode.png" alt="4) Workspace mode — a full working surface" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 4 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">⊞</span><div><h2>4) Workspace mode — a full working surface</h2></div></div>
+        <p class="s-what s-rise">The <b>⊞ Workspace</b> button at the top of the toolbar opens a <b>floating-window workspace</b> (the way a desktop app works): a <b>vertical icon dock</b> on the right plus windows you drag and resize, with several tools open together.</p>
+        <ol class="s-steps s-rise">
+          <li><b>The dock:</b> hover a category and its tools appear as an icon grid (names show on hover), then click a tool to open it as a window.</li>
+          <li><b>The dock's bottom buttons:</b> search for a tool · standalone window · arrange windows · close all windows · ⚙ dock settings.</li>
+          <li><b>Drag the dock handle</b> (the dash above it) to move it anywhere — its position is saved.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 Tip:</b> From <b>⚙ dock settings</b> you can set the icon size, the hover effect (<span class="pill">Mac magnify</span><span class="pill">Lift</span><span class="pill">Glow</span>), the opacity, and <b>edge peek</b> — which folds the dock away until you approach it, buying you space.</p></div>
+        <div class="s-keys h-warn s-rise"><p class="h-tip"><b>Note:</b> Tools that need a real web page (screenshot · ad blocker · element inspector · YouTube+) stay on the <b>floating toolbar</b> and do not appear in workspace mode.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-5" data-name="Office files" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">📄</span></div>
+  <div class="s-in">
+    <div class="s-tool s-long">
+      <div class="s-shot s-rise"><img src="guide-img/sheetview.png" alt="5) Excel, Word, PowerPoint and email" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 5 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">📄</span><div><h2>5) Excel, Word, PowerPoint and email</h2></div></div>
+        <p class="s-what s-rise">These open as <b>tabs inside workspace mode</b> (or as a standalone page): drop a file in and it becomes editable, then <b>export</b> it in whichever format you want.</p>
+        <ol class="s-steps s-rise">
+          <li><b>Excel spreadsheets</b> — xlsx/xls/ods/csv → edit, sort, search, hide, and export to xlsx · CSV · JSON.</li>
+          <li><b>Word documents</b> — docx → a full editor, exporting to docx · PDF · HTML.</li>
+          <li><b>PowerPoint decks</b> — pptx → text, images and drag-to-reorder, then present or export pptx · PDF · images.</li>
+          <li><b>Email composer</b> — templates and a signature, optional AI buttons, then hand off to Gmail or export <code>.eml</code>.</li>
+        </ol>
+        <div class="s-keys h-warn s-rise"><p class="h-tip"><b>⚠️ Important:</b> the file <b>never leaves your device and is not stored anywhere</b> — close the tab and it is gone. <b>Export your work first.</b> Formatting, templates and animations are not preserved either (the content is read, not the design).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-6" data-name="Manager panel" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⚙</span></div>
+  <div class="s-in">
+    <div class="s-tool s-long">
+      <div class="s-shot s-rise"><img src="guide-img/set-tools.png" alt="6) Shape the toolbar around you (the manager panel)" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 6 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">⚙</span><div><h2>6) Shape the toolbar around you (the manager panel)</h2></div></div>
+        <p class="s-what s-rise">The <b>⚙ Settings</b> button on the toolbar is the control centre, with sections in a side menu:</p>
+        <ol class="s-steps s-rise">
+          <li><b>General</b> — language · enhanced dropdowns · backup (export · import · reset).</li>
+          <li><b>Tools → Shortcuts</b> — an accordion per category: reorder tools <b>by dragging</b>, reorder categories by dragging their headers, hide a tool (its switch) or a <b>whole category</b> (the header's switch), ★ favourite, ⌨ shortcut.</li>
+          <li><b>Tools → Custom links</b> — add any site (name + URL) and it shows up as a button inside the “Links” category.</li>
+          <li><b>Appearance</b> — Bar (position · icon size…) · Style (20 colours + a custom colour · 15 button styles) · Fonts · Time.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 Tip:</b> The <b>AI assistant</b> and <b>Developers</b> categories are hidden by default — reveal them with the checkbox next to the category header in the “Tools” tab.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide" data-slide="step-7" data-name="Privacy &amp;amp; backup" data-group="Tour" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔒</span></div>
+  <div class="s-in">
+    <div class="s-tool">
+      <div class="s-shot s-rise"><img src="guide-img/set-gen.png" alt="7) Your data is yours — keep a copy" decoding="async" loading="lazy"></div>
+      <div class="s-text">
+        <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🚀</span>Get started in 7 steps › <b>Step 7 of 7</b></div>
+        <div class="s-head s-rise"><span class="s-tile s-emo" aria-hidden="true">🔒</span><div><h2>7) Your data is yours — keep a copy</h2></div></div>
+        <p class="s-what s-rise">Everything (favourites · order · notes · shortcuts · settings) is stored locally in <code>chrome.storage</code> inside your browser — <b>nothing is sent to any server</b>, and the extension does not collect your browsing data.</p>
+        <ol class="s-steps s-rise">
+          <li>Most tools work <b>fully offline</b>.</li>
+          <li>Network access is limited to a fixed set of trusted domains (currency rates · translation · speed test · Quran and tafsir · Prof assistant).</li>
+          <li>From <b>General settings</b> below: <b>⬇ export</b> everything to a JSON file, and <b>⬆ import</b> it on another device or browser.</li>
+        </ol>
+        <div class="s-keys s-rise"><p class="h-tip"><b>💡 Tip:</b> Export a copy <b>before</b> any “reset” — a reset deletes everything and cannot be undone.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="tips" data-name="Quick tips" data-group="General" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">💡</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">💡</span><h2>Quick tips</h2></div>
+    <p class="s-what s-rise">Small things that save a lot of time — none of them takes more than one click to try.</p>
+    <div class="s-cards">
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⌨</span>A shortcut for instant capture</h3><p>Assign a keyboard shortcut to “Capture region”: drag a rectangle and the image is copied to the clipboard immediately, with no window.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">📌</span>A sticky note on screen</h3><p>In the “Notes” tool, the 📌 button sticks a floating coloured note over the page, which you can drag anywhere.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🌙</span>Night &amp; reading mode</h3><p>The “Night &amp; reading mode” tool rests your eyes on bright sites and hides page distractions.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">▶</span>A better YouTube</h3><p>“YouTube+”: speed · locked quality · volume boost · A-B repeat · cinema mode · hide distractions · shortcuts.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🛡</span>A site broke? Whitelist it</h3><p>From “Ad blocker”, whitelist the current site with one click and reload the page — every other site stays protected.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🔗</span>WhatsApp above your work</h3><p>“WhatsApp Web” opens <b>Chrome's side panel</b> in the same window, with the page shrinking beside it — your work and WhatsApp side by side, no second tab or window. The panel carries a row of sites (WhatsApp · Messenger · Telegram · Gmail · ChatGPT) and a field for any URL. If a site refuses to be shown in the panel, one button moves it to a standalone window.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🔑</span>Filling forms</h3><p>“Autofill” fills matching fields from a locally stored profile — and never touches passwords.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">📶</span>Works offline</h3><p>Calculators · prayer times · QR generator · passwords · image compression · the timer — all of them work with no internet.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">💾</span>Back up regularly</h3><p>Export your settings as JSON from “General settings” after any big customisation — and restore it on any device.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="settings" data-name="General settings" data-group="General" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⚙</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">⚙</span><h2>General settings</h2></div>
+    <div class="h-set s-rise">
+  <div class="grid">
+        <div class="card"><label class="s-ck"><input type="checkbox" id="set-enabled"> Show the toolbar on pages</label></div>
+        <div class="card">Default position:<br><select id="set-pos"><option value="right">Right</option><option value="left">Left</option><option value="top">Top</option><option value="bottom">Bottom</option></select></div>
+        <div class="card">Accent colour:<br><select id="set-accent"></select></div>
+      </div>
+  
+      <h3>💾 Export / import settings</h3>
+      <p>Save a copy of all your settings and data (favourites, tool order, custom links, notes, shortcuts…) to a file, or restore it on another device or browser.</p>
+      <div class="grid">
+        <div class="card"><button class="s-btn" id="set-export">⬇ Export settings (JSON)</button></div>
+        <div class="card"><button class="s-btn" id="set-import-btn">⬆ Import from a file</button><input type="file" id="set-import" accept="application/json,.json" hidden></div>
+        <div class="card"><button class="s-btn danger" id="set-reset">↺ Reset everything</button></div>
+      </div>
+      <div id="set-msg" class="note" style="margin-top:10px;display:none"></div>
+      <p class="note" style="margin-top:10px">Setting changes take effect when you reload the pages you already have open.</p>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-div" data-slide="about" data-name="What is this extension?" data-group="General" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧰</span></div>
+  <div class="s-in">
+    <span class="s-big s-big-emo s-rise" aria-hidden="true">🧰</span>
+    <h2 class="s-rise">What is this extension?</h2>
+    <p class="s-sub h-about s-rise">A Chrome extension that adds a floating toolbar to the edge of any web page. Every tool opens as a small draggable window. Most tools work offline, and all data is stored locally in your browser only.</p>
+    <button type="button" class="s-go s-rise" data-goto="step-1">Start the tour  →</button>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="rail" data-name="Controlling the toolbar" data-group="General" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🎛</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🎛</span><h2>Controlling the toolbar</h2></div>
+    <p class="s-what s-rise">The control buttons (position · colours · guide · manage · help) sit <b>below</b> the main icons on the toolbar.</p>
+    <div class="s-cards">
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">↕</span>Reordering the main icons (drag and drop)</h3><p>Drag any main category icon and drop it onto another to reorder them however suits you — the order is saved automatically.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⚙</span>Toolbar position</h3><p>Choose to show the toolbar on the <b>right / left / top / bottom</b> edge of the page. Your choice is saved.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">🎨</span>Style</h3><p>Pick an accent from 20 colours or a <b>custom colour</b> (a colour picker, or a code such as #e11d48) plus one of 15 button styles (<span class="pill">Solid</span><span class="pill">Glass</span><span class="pill">Frosted</span><span class="pill">Liquid glass</span><span class="pill">Outlined</span><span class="pill">Dark</span><span class="pill">Clear</span><span class="pill">Neon</span><span class="pill">Gradient</span><span class="pill">Tonal</span><span class="pill">Soft 3D</span><span class="pill">3D key</span><span class="pill">Round</span><span class="pill">Minimal</span><span class="pill">Gold</span>), which affects the main and inner icons alike. If the icons don't stand out over a busy site, try <b>Frosted</b> or <b>Clear</b>.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⭐</span>Favourites</h3><p>Inside any tool window, click the star <b>★</b> to add it to your favourites. The Favourites category appears at the top of the toolbar for quick access.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">⚙</span>Settings → Tools</h3><p>From the settings button on the toolbar:</p> <ul> <li><b>Add a custom shortcut</b> (name + URL) and it shows up as a button in the “Links” category.</li> <li><b>Hide a single tool</b> by clearing the checkbox next to it.</li> <li><b>Hide a whole category</b> by clearing the checkbox next to the category header — the entire category disappears from the toolbar.</li> </ul> <p class="note">Note: the UAE calculators (5% VAT · late-payment penalty · corporate tax · end-of-service) are now <b>tabs inside “Tax calculator”</b> in the Calculators category.</p></div>
+      <div class="s-card"><h3><span class="ic s-card-emo" aria-hidden="true">📖</span>User guide</h3><p>The book button opens this page at any time.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-div" data-slide="guide" data-name="Illustrated guide" data-group="General" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🖼</span></div>
+  <div class="s-in">
+    <span class="s-big s-big-emo s-rise" aria-hidden="true">🖼</span>
+    <h2 class="s-rise">Illustrated guide</h2>
+    <p class="s-sub h-about s-rise">A slide for every tool, with its picture at the size it really opens at, the steps to use it and a jump by name.</p>
+    <a class="s-go s-rise" href="guide-slides-en.html">Open the illustrated guide</a>
+  </div>
+</section>
+
+<section class="s-slide s-div" data-slide="tools" data-name="Categories and tools" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🗂</span></div>
+  <div class="s-in">
+    <span class="s-big s-big-emo s-rise" aria-hidden="true">🗂</span>
+    <h2 class="s-rise">Categories and tools</h2>
+    <p class="s-sub s-rise">Every tool in every category explained — pick a category.</p>
+    <div class="s-grid">
+      <button type="button" data-goto="cat-1"><span class="ic s-grid-emo" aria-hidden="true">🔗</span>Links</button>
+      <button type="button" data-goto="cat-2"><span class="ic s-grid-emo" aria-hidden="true">🛡</span>Protection</button>
+      <button type="button" data-goto="cat-3"><span class="ic s-grid-emo" aria-hidden="true">🧮</span>Calculators</button>
+      <button type="button" data-goto="cat-4"><span class="ic s-grid-emo" aria-hidden="true">🧾</span>Tax calculator (tabs — Saudi + UAE)</button>
+      <button type="button" data-goto="cat-5"><span class="ic s-grid-emo" aria-hidden="true">⏱</span>Time</button>
+      <button type="button" data-goto="cat-6"><span class="ic s-grid-emo" aria-hidden="true">☪</span>Islamic</button>
+      <button type="button" data-goto="cat-7"><span class="ic s-grid-emo" aria-hidden="true">📝</span>Notes</button>
+      <button type="button" data-goto="cat-8"><span class="ic s-grid-emo" aria-hidden="true">🔤</span>Text</button>
+      <button type="button" data-goto="cat-9"><span class="ic s-grid-emo" aria-hidden="true">🖼</span>Images</button>
+      <button type="button" data-goto="cat-10"><span class="ic s-grid-emo" aria-hidden="true">🛠</span>Tools</button>
+      <button type="button" data-goto="cat-11"><span class="ic s-grid-emo" aria-hidden="true">🔗</span>Popup windows</button>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-1" data-name="Links" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔗</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Links</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔗</span><h2>Links</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Gmail · Outlook</h3><p>open your email.</p></div>
+      <div class="s-card"><h3>WhatsApp Web · Telegram</h3><p>messaging apps in the browser.</p></div>
+      <div class="s-card"><h3>Microsoft Teams</h3><p>work meetings and channels.</p></div>
+      <div class="s-card"><h3>Google Drive · Google Calendar</h3><p>your files and your calendar.</p></div>
+      <div class="s-card"><h3>Facebook · YouTube · LinkedIn · X · Google</h3><p>popular sites in one click.</p></div>
+      <div class="s-card"><h3>Custom links</h3><p>anything you add from “Managing shortcuts” shows up here.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-2" data-name="Protection" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🛡</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Protection</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🛡</span><h2>Protection</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Ad &amp; tracker blocker</h3><p>blocks requests to known ad networks and trackers inside the browser's network layer. <b>Ad blocking is off by default</b> — turn it on from “All sites” → “Block ads (network blocking)”. (Tracker, fingerprint and pixel blocking are on by default.) <b>The badge on the extension icon</b> shows how many requests were blocked in the current tab. From the tool window: turn the ad or tracker list on and off, or <b>whitelist the current site</b> if something breaks on it. Reload the page after any change.</p></div>
+      <div class="s-card"><h3>Site cleaner</h3><p>deletes the current site's cookies and/or its local storage (which signs you out of it) without touching any other site, plus a separate button to clear the browser's whole cache (with a confirmation).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-3" data-name="Calculators" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧮</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Calculators</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🧮</span><h2>Calculators</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Calculator</h3><p>an ordinary calculator (add/subtract/multiply/divide) with a safe arithmetic parser and no <code>eval</code>.</p></div>
+      <div class="s-card"><h3>VAT</h3><p>add tax to an amount or extract it from one.</p></div>
+      <div class="s-card"><h3>Unit converter</h3><p>length, weight and temperature.</p></div>
+      <div class="s-card"><h3>Currencies</h3><p><b>two-way</b> conversion at live rates; type an amount in either box and the other is computed automatically.</p></div>
+      <div class="s-card"><h3>Discount</h3><p>the final price after a percentage off, plus the amount saved.</p></div>
+      <div class="s-card"><h3>Salary (Saudi Arabia)</h3><p>net salary after GOSI social insurance, from basic pay + housing allowance.</p></div>
+      <div class="s-card"><h3>Sales commission</h3><p>commission on a sales figure at a given rate.</p></div>
+      <div class="s-card"><h3>Profit margin</h3><p>margin from cost and selling price.</p></div>
+      <div class="s-card"><h3>Compound return</h3><p>how an amount grows with compounding over a period, with periodic contributions.</p></div>
+      <div class="s-card"><h3>Overtime</h3><p>pay for extra working hours.</p></div>
+      <div class="s-card"><h3>Percentage</h3><p>a percentage, a part, or a percentage change.</p></div>
+      <div class="s-card"><h3>ROI</h3><p>return on investment as a percentage.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-4" data-name="Tax calculator (tabs — Saudi + UAE)" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🧾</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Tax calculator (tabs — Saudi + UAE)</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🧾</span><h2>Tax calculator (tabs — Saudi + UAE)</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>VAT</h3><p>a country picker (Saudi Arabia 15% / UAE 5%), adding tax or extracting it.</p></div>
+      <div class="s-card"><h3>Late-payment penalty</h3><p>the penalty for paying tax late (2% immediately + 4% monthly, up to the statutory cap).</p></div>
+      <div class="s-card"><h3>Corporate tax (9%)</h3><p>tax on net profit above AED 375,000.</p></div>
+      <div class="s-card"><h3>End-of-service gratuity</h3><p>per UAE labour law (21 days for the first 5 years, 30 days thereafter).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-5" data-name="Time" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">⏱</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Time</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">⏱</span><h2>Time</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Timer</h3><p>a countdown with quick presets (1/3/5/10/15/25 min) plus a repeating audible alert.</p></div>
+      <div class="s-card"><h3>Stopwatch + Pomodoro</h3><p>a stopwatch with laps, and a Pomodoro mode (focus/break with a cycle counter).</p></div>
+      <div class="s-card"><h3>Scheduled alarm</h3><p>an alert at a specific time of day.</p></div>
+      <div class="s-card"><h3>Reminders</h3><p>ready-made recurring reminders (adhkar / drink water / move) plus custom ones (every interval or daily).</p></div>
+      <div class="s-card"><h3>World clock</h3><p>the current time in different cities.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-6" data-name="Islamic" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">☪</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Islamic</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">☪</span><h2>Islamic</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Prayer times</h3><p>astronomical calculation (Umm al-Qura) that works <b>offline</b> from your location.</p></div>
+      <div class="s-card"><h3>Hijri ⇄ Gregorian</h3><p>convert dates between the two calendars.</p></div>
+      <div class="s-card"><h3>Quran player</h3><p>241 reciters with their narrations, search by name and surah picker, a progress bar, playback speed, “auto-next” and repeat. <b>Recitation keeps playing</b> as you move between pages and tabs; only the stop button ends it. The reciter list is cached locally for 7 days, and surah names ship inside the extension.</p></div>
+      <div class="s-card"><h3>Occasions and virtuous days</h3><p>what is coming within 60 days: the white days · Mondays and Thursdays · Tasu'a and Ashura · the ten of Dhul-Hijjah and the day of Arafah · six of Shawwal · Ramadan and its last ten · the sacred months. An alert a chosen number of days ahead, and a switch per occasion. The days on which fasting is forbidden (the two Eids and the days of Tashreeq) appear as a warning. The calculation is <b>fully offline</b> from the Umm al-Qura calendar, with a ±1-day calibration, and every alert is off by default.</p></div>
+      <div class="s-card"><h3>Adhkar &amp; daily portion</h3><p>(one window with tabs): <b>morning/evening</b> (the two Hisn al-Muslim lists with a repetition counter) · <b>verse of the day</b> · <b>daily portion</b> — a <b>mushaf page</b> reader in the Uthmani script (604 pages, surah name and verse numbers) with <b>optional plain tafsir</b> (al-Tafsir al-Muyassar — King Fahd Complex), and tracking of today's portion (pages/day), your progress through the mushaf, the number of completions, and a day streak 🔥. The Quran text and tafsir come from <code>api.alquran.cloud</code> and are cached locally, so a page can be read offline after its first load.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-7" data-name="Notes" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">📝</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Notes</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">📝</span><h2>Notes</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Notes</h3><p>text notes stored locally.</p></div>
+      <div class="s-card"><h3>Task List</h3><p>tasks with a done/total counter and a clear-completed button.</p></div>
+      <div class="s-card"><h3>Sticky notes</h3><p>floating coloured notes over the page, draggable (several colours).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-8" data-name="Text" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔤</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Text</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔤</span><h2>Text</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Translation</h3><p>translate text between languages.</p></div>
+      <div class="s-card"><h3>Speech &amp; text</h3><p>read text aloud (TTS) + dictation that shows the words as you speak, with a voice, speed and pitch of your choosing.</p></div>
+      <div class="s-card"><h3>Word counter</h3><p>the number of words and characters in your text.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-9" data-name="Images" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🖼</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Images</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🖼</span><h2>Images</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Full-page screenshot</h3><p>captures the page at its full height by scrolling automatically and stitching it into one image (fixed bars are hidden so they don't repeat). Download PNG/JPG or <b>open it in the editor</b> directly. Everything is local — the image is never uploaded anywhere.</p></div>
+      <div class="s-card"><h3>Image editor</h3><p>pen/line/box/arrow/text/crop + colour and thickness + rotate + undo, then download PNG or JPG.</p></div>
+      <div class="s-card"><h3>Universal converter</h3><p>convert a whole batch between every format: input <b>PNG · JPG · WebP · GIF · BMP · ICO · AVIF · SVG · PDF</b> (each PDF page becomes an image), output <b>PNG · JPG · WebP · BMP · ICO · GIF · TIFF · PDF</b> (with an option to merge everything into one PDF and fit to A4). ⚠️ The browser cannot decode HEIC/TIFF, AVIF can be read but not written, and GIF is single-frame.</p></div>
+      <div class="s-card"><h3>PDF ⇄ images</h3><p>extract PDF pages as images (a range such as <code>1-3,7</code> + 72/110/150/300 DPI → ZIP), or merge several images into <b>a single PDF</b>. Fully local — the file is never uploaded.</p></div>
+      <div class="s-card"><h3>Video &amp; audio download</h3><p>extracts the current page's media and downloads it: public Facebook video (HD/SD), SoundCloud tracks (MP3), and any direct <code>&lt;video&gt;</code>/<code>&lt;audio&gt;</code>. <b>YouTube is not supported.</b> For personal use and for content you have the right to save.</p></div>
+      <div class="s-card"><h3>Image compression</h3><p>shrink image size (JPEG/WebP/PNG) with a preview and the percentage saved.</p></div>
+      <div class="s-card"><h3>Screenshot</h3><p>three tabs: select a region · the visible area · the full page. From there, quick edits or the professional editor.</p></div>
+      <div class="s-card"><h3>Capture region</h3><p>drag a rectangle and the image is captured and copied to the clipboard the moment you release the mouse, with no window opening. Assign it a keyboard shortcut in the settings to run it over any page. For regions taller than the screen, scroll with the wheel while dragging — it captures by scrolling and stitches the result (auto-copy may fail then because the operation takes longer, so use the copy button).</p></div>
+      <div class="s-card"><h3>Screen recording</h3><p>record the screen to video (WebM) with optional audio.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-10" data-name="Tools" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🛠</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Tools</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🛠</span><h2>Tools</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Excel spreadsheets</h3><p>opens in a standalone page. Drop an <b>xlsx / xls / xlsb / ods / csv</b> file → an editable table: search across all cells, hide columns and rows, edit cells, add/delete rows and columns, sort, 50 levels of undo, multiple sheets — then <b>export xlsx, CSV or JSON</b> (with a “visible only” option). Hover any row number to reveal buttons to <b>hide 👁 or delete 🗑</b> it. 🔒 The file never leaves your device and is not stored anywhere — close the tab and it is gone, so export your work first. ⚠️ Formulas are read as their computed value, and formatting is not preserved.</p></div>
+      <div class="s-card"><h3>Email composer</h3><p>opens in a standalone page. Write the email (Arabic/English templates + signature + formatting), then, <b>with an explicit click</b>: ✅ fix spelling and grammar · ✨ rewrite in a tone · ✍️ draft from your bullet points · 🌐 translate · 📝 summarise and reply. <b>Every result is shown before/after and you accept or reject it change by change — your text is never replaced silently.</b> Then hand the message to <b>Gmail</b> or your mail app, copy it, or export <b>.eml</b>. 🔒 <b>Nothing leaves your device unless you press an AI button</b>, and even then <b>only the subject and body</b> are sent — <b>recipient addresses are never sent</b>. It uses the same “AI assistant” key (with no key: the tool works and the AI buttons are disabled). The tool does not send mail itself.</p></div>
+      <div class="s-card"><h3>PowerPoint decks</h3><p>opens in a standalone page. Drop a <b>.pptx</b> file → every slide with its text, images and speaker notes: edit, add/duplicate/delete a slide, <b>reorder by dragging</b>, then <b>▶ present</b> (full screen, → for the next slide, Esc to leave) or <b>export pptx</b>, <b>PDF</b> or <b>PNG images</b>. 🔒 The file never leaves your device. ⚠️ <b>Text and images are read, not the design</b> — the template, fonts, animations, SmartArt and charts are <b>not preserved</b>, and the export builds clean, simple slides. The old <b>.ppt</b> format is not supported.</p></div>
+      <div class="s-card"><h3>Word documents</h3><p>opens in a standalone page. Drop a <b>.docx</b> file → an editable document: headings, bold/italic, lists, tables, images, find and replace — then <b>export a new docx</b>, a <b>PDF</b> (through the print dialog: vector, searchable text), HTML or plain text. 🔒 The file never leaves your device and is not stored. ⚠️ The old <b>.doc</b> format is not supported (save it as .docx), and <b>tracked changes, comments, headers/footers and macros are not preserved</b> — what you see is what is exported. Pasting is plain text (a safety measure).</p></div>
+      <div class="s-card"><h3>Every tool inside the spreadsheet page</h3><p>the same “workspace mode” dock floats over the table: hover a category to reveal its tools, and click a tool to open it as a floating window above the table (several can be open at once). Drag the dock handle ⠿ to move it; its position is saved.</p></div>
+      <div class="s-card"><h3>Password generator</h3><p>strong random passwords with an adjustable length and options.</p></div>
+      <div class="s-card"><h3>QR generator</h3><p>a QR code for any text or link + a <b>Wi-Fi mode</b> (SSID/password) — works offline.</p></div>
+      <div class="s-card"><h3>Internet speed</h3><p>measure your connection speed.</p></div>
+      <div class="s-card"><h3>Form autofill</h3><p>a locally stored profile (name/email/phone/address…) fills matching empty fields in one click. It never touches passwords.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="cat-11" data-name="Popup windows" data-group="Tools" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔗</span></div>
+  <div class="s-in">
+    <div class="s-crumb s-rise"><span class="ic s-crumb-emo" aria-hidden="true">🗂</span>Categories and tools › <b>Popup windows</b></div>
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔗</span><h2>Popup windows</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>WhatsApp Web (side panel)</h3><p>opens in <b>Chrome's side panel</b>: the same window, with the page shrinking beside it, the way the Claude panel works. The panel stays open as you move between pages, and carries a row of sites plus a field for any URL. You link it <b>once</b>: the panel's session belongs to the extension, not to the site you are browsing. If a site refuses the panel, one button opens it in a standalone window snapped to the screen edge (inside the Links category).</p></div>
+      <div class="s-card"><h3>Site viewer</h3><p>open any link in a popup window at small/medium/large size, with a list of your last 8 sites.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="perms" data-name="Tools that need a browser permission" data-group="Privacy" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔑</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔑</span><h2>Tools that need a browser permission</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><h3>Screenshot / screen recording:</h3><p>the browser will ask you to choose the window or screen when you click. No data is uploaded — it stays local.</p></div>
+      <div class="s-card"><h3>Speech &amp; text (dictation):</h3><p>asks for microphone permission.</p></div>
+      <div class="s-card"><h3>Currencies / translation / internet speed / daily portion (Quran and tafsir):</h3><p>connect to trusted public services to fetch data only (the Quran and tafsir come from <code>api.alquran.cloud</code> — al-Tafsir al-Muyassar, King Fahd Complex); no personal data is ever sent.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s-slide s-list" data-slide="privacy" data-name="Privacy" data-group="Privacy" role="group" aria-roledescription="slide">
+  <div class="s-bg"><span class="s-mark s-mark-emo" aria-hidden="true">🔒</span></div>
+  <div class="s-in">
+    <div class="s-list-h s-rise"><span class="s-emoji" aria-hidden="true">🔒</span><h2>Privacy</h2></div>
+    <div class="s-cards">
+      <div class="s-card"><p>All your notes, settings and favourites are stored in local <code>chrome.storage</code> — nothing is sent to any server.</p></div>
+      <div class="s-card"><p>The extension does not collect your browsing data.</p></div>
+      <div class="s-card"><p>Network access is limited to a fixed set of trusted domains (currency rates, translation, speed test, Quran and tafsir, and the Prof assistant) to fetch those tools' data — nothing else.</p></div>
+      <div class="s-card"><p>You can <b>export/import</b> all your settings from the “General settings” section above, or reset them completely.</p></div>
+    </div>
+    <p class="s-where h-endnote s-rise">💡 Site links open in a new tab. The QR generator, image compression, prayer times and the calculators all work with no internet connection.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="s-foot">
+  <button type="button" id="s-prev" aria-label="Previous slide">←</button>
+  <div class="s-bar"><i id="s-bar-i"></i></div>
+  <span id="s-pos" aria-live="polite"></span>
+  <span class="s-kb"><kbd>→</kbd><kbd>←</kbd></span>
+  <span class="h-ver">version <span id="help-ver">—</span></span>
+  <button type="button" id="s-next" aria-label="Next slide">→</button>
+</footer>
+<!-- MV3's extension-page CSP is `script-src 'self'` → an inline <script> here is
+     BLOCKED by the browser (that is why this page's settings panel did nothing until
+     v0.74.0). The guide + settings logic lives in src/help.js. Never inline it again.
+     src/i18n.js comes first: help.js reads the PAGE's lang and translates its own
+     runtime strings through the dictionary (§6.100). -->
+<script src="src/i18n.js"></script>
+<script src="src/btnkit.js"></script>
+<script src="src/fontkit.js"></script>
+<script src="src/storage.js"></script>
+<script src="guide-meta.js"></script>
+<script src="src/help.js"></script>
+<script src="src/sel2.js"></script>
+</body>
+</html>

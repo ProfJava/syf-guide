@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!-- data-syfs-i18n="page": src/i18n.js translates this page's STATIC markup and
+     writes lang/dir/--syfs-dir from the stored language. Every text node here is a
+     whole clause — see the notes beside the paragraphs that had to be restructured. -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>جداول الإكسيل — SYF</title>
+  <!-- The full SYF toolbox runs on this page too: rail.css supplies the floating
+       window chrome (.syfs-win) and app-dock.css the category dock — both driven by
+       the very same src/app.js as App Mode, so no tool is reimplemented here. -->
+  <link rel="stylesheet" href="rail.css">
+  <link rel="stylesheet" href="app-dock.css">
+  <style>
+    /* Always light: a spreadsheet is read as paper. Never follows the OS dark theme.
+       These vars are the SHEET's; the tool windows carry rail.css's own set inside
+       .syfs-wrap, so the two never fight. */
+    :root { color-scheme:light; --pri:#457364; --pri-d:#35594e; --bg:#fff; --card:#fff; --soft:#f4f6f5; --ink:#1f2a27; --mut:#6b7c76; --line:#e3e9e6; --danger:#c0392b; --head:#eef2f0; --hl:#fff6cc; --row-h:32px; }
+
+    /* EVERY rule below is scoped to .sh — the sheet page. The SYF toolbox renders
+       into a separate fixed overlay (.syfs-wrap, outside .sh) styled by rail.css,
+       and it uses class names this page also uses (.ic, .ico, .btn, .on…). Without
+       the .sh scope those rules would repaint the tool windows — the reset alone
+       would strip the padding off every button inside them. */
+    html, body { height:100%; }
+    /* --syfs-font comes from src/fontkit.js (`ui_font`); unset → the system stack */
+    body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 var(--syfs-font,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif); }
+    .sh, .sh * { box-sizing:border-box; margin:0; padding:0; }
+    .sh { height:100%; display:flex; flex-direction:column; }
+
+    .sh header { display:flex; align-items:center; gap:10px; padding:10px 16px; border-bottom:1px solid var(--line); background:var(--card); flex-wrap:wrap; }
+    .sh header h1 { font-size:16px; font-weight:700; white-space:nowrap; }
+    .sh .ico { width:22px; height:22px; flex:none; }
+
+    .sh .btn { background:var(--pri); color:#fff; border:none; border-radius:8px; padding:7px 12px; font:inherit; font-weight:600; cursor:pointer; white-space:nowrap; }
+    .sh .btn:hover { background:var(--pri-d); }
+    .sh .btn:disabled { opacity:.45; cursor:default; }
+    .sh .btn.sec { background:transparent; color:var(--pri); border:1px solid var(--pri); }
+    .sh .btn.mini { padding:5px 9px; font-size:13px; font-weight:500; }
+    .sh .btn.danger { background:transparent; color:var(--danger); border:1px solid var(--danger); }
+
+    .sh input[type=text], .sh input[type=search] { padding:7px 10px; border:1px solid var(--line); border-radius:8px; background:var(--soft); color:var(--ink); font:inherit; }
+    .sh .grow { flex:1; min-width:120px; }
+    .sh .spacer { flex:1; }
+    .sh .ck { display:flex; align-items:center; gap:5px; font-size:13px; color:var(--mut); white-space:nowrap; cursor:pointer; }
+
+    /* dropdown (columns) */
+    .sh .dd { position:relative; }
+    .sh .dd-menu { position:absolute; inset-inline-end:0; top:calc(100% + 4px); background:var(--card); border:1px solid var(--line); border-radius:10px; box-shadow:0 8px 26px rgba(0,0,0,.16); padding:8px; min-width:210px; max-height:320px; overflow:auto; z-index:40; }
+    .sh .dd-menu label { display:flex; align-items:center; gap:7px; padding:5px 6px; border-radius:6px; cursor:pointer; font-size:13px; }
+    .sh .dd-menu label:hover { background:var(--soft); }
+    .sh .hide { display:none !important; }
+
+    /* sheet tabs */
+    .sh .tabs { display:flex; gap:4px; padding:6px 16px 0; overflow-x:auto; background:var(--card); }
+    .sh .tab { border:1px solid var(--line); border-bottom:none; background:var(--soft); color:var(--mut); border-radius:8px 8px 0 0; padding:6px 14px; cursor:pointer; font-size:13px; white-space:nowrap; }
+    .sh .tab.on { background:var(--card); color:var(--ink); font-weight:700; box-shadow:inset 0 2px 0 var(--pri); }
+
+    /* drop zone / empty state */
+    .sh .drop { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; margin:22px; border:2px dashed var(--line); border-radius:16px; color:var(--mut); text-align:center; padding:24px; }
+    .sh .drop.over { border-color:var(--pri); background:var(--soft); }
+    .sh .drop h2 { font-size:18px; color:var(--ink); }
+    .sh .drop p { max-width:560px; font-size:13.5px; }
+
+    /* grid */
+    .sh .grid-wrap { flex:1; overflow:auto; background:var(--card); border-top:1px solid var(--line); }
+    .sh table { border-collapse:separate; border-spacing:0; table-layout:fixed; }
+    .sh th, .sh td { border-inline-end:1px solid var(--line); border-bottom:1px solid var(--line); height:var(--row-h); padding:0 8px; width:170px; max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:start; font-weight:400; }
+    .sh thead th { position:sticky; top:0; z-index:3; background:var(--head); font-weight:700; font-size:13px; }
+    /* Row-number cell: number + hide + delete. It must be wide enough for both
+       buttons — at 64px the delete button fell outside the cell's overflow:hidden
+       and was unclickable. The buttons keep their space at opacity:0, so revealing
+       them on hover never reflows the row. */
+    .sh th.num, .sh td.num { width:96px; max-width:96px; padding:0 4px; position:sticky; inset-inline-start:0; z-index:2; background:var(--head); color:var(--mut); font-size:12px; text-align:center; }
+    .sh thead th.num { z-index:4; }
+    .sh .num-in { display:flex; align-items:center; gap:2px; }
+    .sh .num-in .n { flex:1; text-align:center; }
+    .sh td[contenteditable] { cursor:text; }
+    .sh td[contenteditable]:focus { outline:2px solid var(--pri); outline-offset:-2px; background:var(--card); overflow:visible; white-space:pre-wrap; }
+    .sh tr.hit td { background:var(--hl); }
+    .sh .th-in { display:flex; align-items:center; gap:3px; }
+    .sh .th-t { flex:1; overflow:hidden; text-overflow:ellipsis; }
+    .sh .ic { border:none; background:none; color:var(--mut); cursor:pointer; font-size:12px; padding:2px 3px; border-radius:4px; opacity:0; flex:none; }
+    .sh th:hover .ic, .sh td.num:hover .ic { opacity:1; }
+    .sh .ic:hover { background:var(--soft); color:var(--ink); }
+    .sh .ic.on { opacity:1; color:var(--pri); }
+    .sh .spacer-row td { border:none; padding:0; height:0; }
+
+    .sh footer { display:flex; align-items:center; gap:14px; padding:7px 16px; border-top:1px solid var(--line); background:var(--card); font-size:12.5px; color:var(--mut); flex-wrap:wrap; }
+    .sh .dot { color:var(--danger); font-weight:700; }
+    .sh .toast { position:fixed; inset-inline:0; bottom:22px; margin:auto; width:max-content; max-width:90%; background:var(--pri-d); color:#fff; padding:9px 16px; border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,.25); opacity:0; transition:opacity .2s; pointer-events:none; z-index:60; }
+    .sh .toast.show { opacity:1; }
+    .sh .toast.bad { background:var(--danger); }
+    /* compare panel — scoped under .sh like everything else on this page */
+    .sh .cmp { position:fixed; inset:0; z-index:50; background:#fff; display:flex; flex-direction:column; }
+    .sh .cmp-bar { display:flex; align-items:center; gap:10px; padding:10px 16px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+    .sh .cmp-bar select { font:inherit; padding:5px 8px; border:1px solid var(--line); border-radius:8px; }
+    .sh .cmp-sum { display:flex; gap:14px; padding:8px 16px; font-size:13px; color:var(--mut); border-bottom:1px solid var(--line); }
+    .sh .cmp-sum b { color:var(--ink); }
+    .sh .cmp-body { flex:1; overflow:auto; padding:0 16px 24px; }
+    .sh .cmp-body table { border-collapse:collapse; width:100%; font-size:13px; margin-top:14px; }
+    .sh .cmp-body th, .sh .cmp-body td { border:1px solid var(--line); padding:4px 8px; text-align:start; white-space:nowrap; max-width:320px; overflow:hidden; text-overflow:ellipsis; }
+    .sh .cmp-body th { background:var(--soft); position:sticky; top:0; }
+    .sh .cmp-body tr.add td { background:#e6f6ea; }
+    .sh .cmp-body tr.del td { background:#fbe6e3; }
+    .sh .cmp-body td.chg { background:#fff3cd; }
+    .sh .cmp-body h3 { margin:16px 0 0; font-size:14px; }
+  </style>
+</head>
+<body>
+<div class="sh"><!-- the sheet page; the SYF toolbox lives outside it, in its own overlay -->
+  <header>
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+    <h1>جداول الإكسيل</h1>
+
+    <button class="btn mini" id="open">📂 فتح ملف</button>
+    <input type="file" id="file" class="hide" accept=".xlsx,.xlsm,.xls,.xlsb,.ods,.csv,.tsv">
+
+    <input type="search" id="search" class="grow" placeholder="🔍 بحث في كل الخلايا…" disabled>
+    <span id="hits"></span>
+
+    <div class="dd">
+      <button class="btn mini sec" id="cols-btn" disabled>الأعمدة ▾</button>
+      <div class="dd-menu hide" id="cols-menu"></div>
+    </div>
+    <button class="btn mini sec" id="showall" disabled>👁 إظهار الكل</button>
+    <button class="btn mini sec" id="undo" disabled>↩ تراجع</button>
+    <button class="btn mini sec" id="cmp" disabled title="قارن هذه الورقة بملفّ آخر">⇄ مقارنة</button>
+    <input type="file" id="cmp-file" class="hide" accept=".xlsx,.xlsm,.xls,.xlsb,.ods,.csv,.tsv">
+
+    <span class="spacer"></span>
+
+    <label class="ck"><input type="checkbox" id="hdr" checked disabled> الصف الأول رؤوس</label>
+    <label class="ck"><input type="checkbox" id="visonly" disabled> صدّر المرئي فقط</label>
+    <button class="btn mini" id="exp-xlsx" disabled>⬇ تصدير xlsx</button>
+    <button class="btn mini sec" id="exp-csv" disabled>CSV</button>
+    <button class="btn mini sec" id="exp-json" disabled>JSON</button>
+  </header>
+
+  <div class="tabs hide" id="tabs"></div>
+
+  <div class="drop" id="drop">
+    <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+    <h2>أفلت ملف إكسيل هنا، أو اضغط «فتح ملف»</h2>
+    <p>يقرأ <b>xlsx · xlsm · xls · xlsb · ods · csv · tsv</b> — ثم ابحث، أخفِ أعمدة وصفوفاً، عدّل وأضف واحذف، وصدّر <b>xlsx</b> أو <b>CSV</b> أو <b>JSON</b>.</p>
+    <p>🔒 <b>الملف لا يغادر جهازك ولا يُحفظ في أي مكان.</b> يُقرأ في ذاكرة هذا التبويب فقط — بإغلاق التبويب يزول كل شيء. صدّر عملك قبل الإغلاق.</p>
+    <p>🧰 <b>كل أدوات SYF معك هنا</b> — الدوك بالأسفل: مرّر على تصنيف لتظهر أدواته، واضغط أداة لتفتح كنافذة عائمة فوق الجدول. اسحب مقبض الدوك ⠿ لتنقله.</p>
+  </div>
+
+  <div class="grid-wrap hide" id="wrap">
+    <table id="grid">
+      <thead><tr id="head"></tr></thead>
+      <tbody id="body"></tbody>
+    </table>
+  </div>
+
+  <footer id="foot" class="hide">
+    <span id="stats"></span>
+    <button class="btn mini sec" id="add-row">+ صف</button>
+    <button class="btn mini sec" id="add-col">+ عمود</button>
+    <span class="spacer"></span>
+    <span id="dirty"></span>
+    <span>🔒 الملف لم يغادر جهازك — لا شبكة، لا حفظ.</span>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- compare panel (v0.118.0): this sheet vs. the first sheet of a second file, keyed
+       by a column the user picks. Every value written here is file data → textContent. -->
+  <div class="cmp hide" id="cmp-panel">
+    <div class="cmp-bar">
+      <b>مقارنة</b>
+      <span id="cmp-names"></span>
+      <label>مفتاح الصفّ:</label>
+      <select id="cmp-key"></select>
+      <button class="btn mini" id="cmp-run">قارن</button>
+      <button class="btn mini sec" id="cmp-csv" disabled>⬇ الفروق CSV</button>
+      <span class="spacer"></span>
+      <button class="btn mini sec" id="cmp-close">✕ إغلاق</button>
+    </div>
+    <div class="cmp-sum" id="cmp-sum"></div>
+    <div class="cmp-body" id="cmp-body"></div>
+  </div>
+</div>
+
+  <!-- app.js reads the accent/button-style theme off this node and hangs the dock +
+       tool windows on its own fixed overlay. It carries .syfs-wrap so rail.css's
+       --pri/--bg/--line vars resolve; it is display:none so it adds no layout and
+       its vars never leak into the white sheet above. data-dock-bottom lifts the
+       dock clear of the footer; data-dock-key keeps its position separate from
+       App Mode's. -->
+  <div id="syfa-root" class="syfs-wrap" data-dock-key="sheet_dock_pos" data-dock-bottom="58" hidden></div>
+
+  <script src="lib/sheetjs/xlsx.full.min.js"></script>
+  <script src="src/sheet.js"></script>
+
+  <!-- The whole toolbox, exactly as App Mode loads it (page-context tools exclude
+       themselves via PAGE_ONLY in app.js). src/app.js last — it is the dock + the
+       floating-window manager and reuses each tool's mount(body) verbatim. -->
+  <script src="src/i18n.js"></script>
+  <script src="src/btnkit.js"></script>
+  <script src="src/storage.js"></script>
+  <script src="src/dockfx.js"></script>
+  <script src="src/fontkit.js"></script>
+  <script src="lib/qr.js"></script>
+  <script src="src/tools.js"></script>
+  <script src="src/tools2.js"></script><script src="src/tools2-body.js"></script>
+  <script src="src/registry.js"></script>
+  <script src="src/azkar-data.js"></script><script src="src/islam2.js"></script><script src="src/islam2-body.js"></script>
+  <script src="src/imgkit.js"></script>
+  <script src="lib/canvas-pdf.js"></script>
+  <script src="src/calc.js"></script>
+  <script src="src/money.js"></script>
+  <script src="src/ai-chat.js"></script>
+  <script src="src/bgrm.js"></script>
+  <script src="src/media.js"></script>
+  <script src="src/extras.js"></script>
+  <script src="src/dev.js"></script>
+  <script src="src/dev2.js"></script>
+  <script src="src/vault-launch.js"></script>
+  <script src="src/sheet-launch.js"></script>
+  <script src="src/word-launch.js"></script>
+  <script src="src/slides-launch.js"></script>
+  <script src="src/mail-launch.js"></script>
+<script src="src/phones-launch.js"></script>
+<script src="src/status-launch.js"></script>
+<script src="src/frames-launch.js"></script>
+  <script src="src/calendar.js"></script>
+  <script src="src/tools3.js"></script>
+  <script src="src/app.js"></script>
+<script src="src/sel2.js"></script>
+</body>
+</html>

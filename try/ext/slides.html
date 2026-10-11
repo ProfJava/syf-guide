@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- data-syfs-i18n="page": src/i18n.js translates this page's STATIC markup and
+     writes lang/dir/--syfs-dir from the stored language. Every text node here is a
+     whole clause — see the notes beside the paragraphs that had to be restructured. -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>عروض PowerPoint — SYF</title>
+  <!-- Same pattern as sheet.html / word.html: rail.css gives the floating window
+       chrome, app-dock.css the dock, src/app.js drives both. No tool is rebuilt. -->
+  <link rel="stylesheet" href="rail.css">
+  <link rel="stylesheet" href="app-dock.css">
+  <style>
+    :root { color-scheme:light; --pri:#457364; --pri-d:#35594e; --bg:#fff; --card:#fff; --soft:#f4f6f5; --ink:#1f2a27; --mut:#6b7c76; --line:#e3e9e6; --danger:#c0392b; --page:#eef1f0; }
+
+    /* EVERY rule is scoped to .sl — the tool windows share class names with this
+       page (.ic, .btn, .on…) and a blanket reset would strip their padding.
+       Same lesson as sheet.html (v0.57.0). */
+    html, body { height:100%; }
+    /* --syfs-font comes from src/fontkit.js (`ui_font`); unset → the system stack */
+    body { margin:0; background:var(--page); color:var(--ink); font:14px/1.6 var(--syfs-font,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif); }
+    .sl, .sl * { box-sizing:border-box; margin:0; padding:0; }
+    .sl { height:100%; display:flex; flex-direction:column; }
+
+    .sl header { display:flex; align-items:center; gap:8px; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--card); flex-wrap:wrap; }
+    .sl h1 { font-size:15px; font-weight:700; white-space:nowrap; }
+    .sl .ico { width:21px; height:21px; flex:none; }
+    .sl .fname { font-size:12.5px; color:var(--mut); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .sl .btn { background:var(--pri); color:#fff; border:none; border-radius:8px; padding:6px 11px; font:inherit; font-weight:600; cursor:pointer; white-space:nowrap; }
+    .sl .btn:hover { background:var(--pri-d); }
+    .sl .btn.sec { background:transparent; color:var(--pri); border:1px solid var(--pri); }
+    .sl .btn.mini { padding:5px 9px; font-size:13px; font-weight:500; }
+    .sl .btn.danger { background:transparent; color:var(--danger); border:1px solid var(--danger); }
+    .sl .spacer { flex:1; }
+    .sl .hide { display:none !important; }
+
+    /* the design warning: the single most important thing to say before opening */
+    .sl .warn { padding:7px 14px; background:#fff8e6; border-bottom:1px solid #f0e2b8; color:#7a5a12; font-size:12.5px; }
+
+    .sl .stage { flex:1; display:flex; min-height:0; }
+
+    /* thumbnails */
+    .sl .strip { width:190px; flex:none; overflow-y:auto; padding:10px; background:var(--card); border-inline-start:1px solid var(--line); display:flex; flex-direction:column; gap:7px; }
+    .sl .thumb { display:flex; align-items:center; gap:7px; width:100%; padding:9px 8px; border:1px solid var(--line); border-radius:9px; background:var(--soft); color:var(--ink); font:inherit; font-size:12.5px; cursor:pointer; text-align:start; }
+    .sl .thumb:hover { border-color:var(--pri); }
+    .sl .thumb.on { background:var(--pri); color:#fff; border-color:var(--pri); font-weight:700; }
+    .sl .thumb .tn { flex:none; width:20px; text-align:center; opacity:.7; font-size:11.5px; }
+    .sl .thumb .tt { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .sl .thumb .tm { flex:none; font-size:11px; }
+
+    /* the slide itself: a real 16:9 page */
+    .sl .work { flex:1; overflow:auto; padding:20px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .sl .canvas { width:min(100%, 940px); aspect-ratio:16/9; background:#fff; border:1px solid var(--line); border-radius:6px; box-shadow:0 6px 26px rgba(0,0,0,.09); padding:38px 44px; display:flex; flex-direction:column; gap:14px; overflow:auto; }
+    .sl .canvas .title { font-size:30px; font-weight:800; outline:none; min-height:1.2em; border-bottom:3px solid var(--pri); padding-bottom:8px; }
+    .sl .canvas .title:empty::before { content:'عنوان الشريحة'; color:#c3ccc8; }
+    .sl .body { flex:1; display:flex; flex-direction:column; gap:10px; min-height:0; }
+    .sl .body ul { outline:none; padding-inline-start:24px; font-size:18px; }
+    .sl .body li { margin-bottom:7px; }
+    .sl .body figure { position:relative; align-self:flex-start; max-width:60%; }
+    .sl .body figure img { max-width:100%; max-height:230px; border-radius:6px; display:block; }
+    .sl .body .imgx { position:absolute; top:4px; inset-inline-start:4px; width:22px; height:22px; border:none; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; cursor:pointer; font-size:12px; line-height:1; }
+
+    .sl .notes { width:min(100%, 940px); }
+    .sl .notes label { font-size:12.5px; color:var(--mut); display:block; margin-bottom:4px; }
+    .sl textarea { width:100%; min-height:70px; padding:9px 11px; border:1px solid var(--line); border-radius:9px; background:var(--card); color:var(--ink); font:inherit; font-size:13.5px; resize:vertical; }
+
+    .sl .drop { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px; margin:22px; border:2px dashed var(--line); border-radius:16px; color:var(--mut); text-align:center; padding:24px; background:var(--card); }
+    .sl .drop.over { border-color:var(--pri); background:var(--soft); }
+    .sl .drop h2 { font-size:18px; color:var(--ink); }
+    .sl .drop p { max-width:620px; font-size:13.5px; }
+
+    .sl footer { display:flex; align-items:center; gap:12px; padding:6px 14px; border-top:1px solid var(--line); background:var(--card); font-size:12.5px; color:var(--mut); flex-wrap:wrap; }
+    .sl .dot { color:var(--danger); font-weight:700; }
+    .sl .toast { position:fixed; inset-inline:0; bottom:22px; margin:auto; width:max-content; max-width:90%; background:var(--pri-d); color:#fff; padding:9px 16px; border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,.25); opacity:0; transition:opacity .2s; pointer-events:none; z-index:60; }
+    .sl .toast.show { opacity:1; }
+    .sl .toast.bad { background:var(--danger); }
+
+    /* present mode: the slide fills the screen, everything else goes away.
+       ← moves forward (RTL), Esc leaves. */
+    body.presenting { background:#000; }
+    body.presenting .sl header, body.presenting .sl .bar, body.presenting .sl .strip,
+    body.presenting .sl footer, body.presenting .sl .notes, body.presenting .sl .warn,
+    body.presenting .syfs-wrap { display:none !important; }
+    body.presenting .sl .work { padding:0; justify-content:center; }
+    body.presenting .sl .canvas { width:100vw; max-width:none; height:100vh; aspect-ratio:auto; border:none; border-radius:0; box-shadow:none; padding:6vh 7vw; }
+    body.presenting .sl .canvas .title { font-size:5vh; }
+    body.presenting .sl .body ul { font-size:3.2vh; }
+    body.presenting .sl .body figure { max-width:70%; }
+    body.presenting .sl .body figure img { max-height:40vh; }
+    body.presenting .sl .body .imgx { display:none; }
+
+    /* PDF = the browser's print path: one slide per landscape page, real vector text
+       with correct Arabic shaping. */
+    @media print {
+      body { background:#fff; }
+      .sl header, .sl .bar, .sl .strip, .sl footer, .sl .notes, .sl .warn, .sl .toast, .syfs-wrap { display:none !important; }
+      .sl .work { padding:0; }
+      .sl .canvas { width:100%; max-width:none; border:none; border-radius:0; box-shadow:none; page-break-after:always; }
+      @page { size:A4 landscape; margin:12mm; }
+    }
+  </style>
+</head>
+<body>
+<div class="sl">
+  <header>
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    <h1>عروض PowerPoint</h1>
+    <button class="btn mini" id="open">📂 فتح ملف</button>
+    <input type="file" id="file" class="hide" accept=".pptx">
+    <span class="fname" id="fname"></span>
+    <span class="spacer"></span>
+    <button class="btn mini sec" id="present">▶ عرض</button>
+    <button class="btn mini" id="exp-pptx">⬇ تصدير pptx</button>
+    <button class="btn mini sec" id="exp-pdf">🖨 PDF</button>
+    <button class="btn mini sec" id="exp-png">صور PNG</button>
+  </header>
+
+  <div class="warn" id="warn">
+    <!-- ⚠️ The <b> around «.ppt» is gone (v0.97.0): it split «صيغة … القديمة» around
+         the token, and the adjective sits after the noun in Arabic and before it in
+         English, so the pieces cannot meet (§6.100). Same edit as word.html. -->
+    ⚠️ <b>تُقرأ النصوص والصور — لا التصميم.</b> القالب الأصلي (Master/Layout)، الخطوط المخصّصة، التدرّجات، SmartArt، الرسوم البيانية، الحركات والانتقالات <b>لا تُحفظ</b>؛ التصدير يبني شرائح نظيفة بتصميم بسيط. صيغة .ppt القديمة غير مدعومة.
+  </div>
+
+  <div class="drop" id="drop">
+    <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    <h2>أفلت ملف <b>.pptx</b> هنا، أو اضغط «فتح ملف»</h2>
+    <!-- «جديداً» moved inside the <b> for the same reason as word.html — Arabic words
+         and order unchanged, only how much is bold. -->
+    <p>يعرض كل شريحة بنصوصها وصورها وملاحظات المتحدّث — عدّل، أضف واحذف ورتّب الشرائح بالسحب، ثم <b>صدّر pptx جديداً</b> أو <b>PDF</b> أو صور PNG.</p>
+    <p>🔒 <b>الملف لا يغادر جهازك ولا يُحفظ في أي مكان.</b> يُقرأ في ذاكرة هذا التبويب فقط — بإغلاق التبويب يزول. صدّر عملك قبل الإغلاق.</p>
+    <p>🧰 كل أدوات SYF معك في هذه الصفحة — الدوك بالأسفل.</p>
+    <button class="btn" id="start">ابدأ عرضاً جديداً</button>
+  </div>
+
+  <div class="stage hide" id="stage">
+    <div class="work">
+      <div class="canvas" id="canvas">
+        <div class="title" id="title" contenteditable="true" spellcheck="false"></div>
+        <div class="body" id="body"></div>
+      </div>
+      <div class="notes">
+        <label for="notes">🎤 ملاحظات المتحدّث (تُقرأ من الملف وتظهر في PDF — لا تُكتب داخل pptx)</label>
+        <textarea id="notes" spellcheck="true"></textarea>
+      </div>
+    </div>
+    <aside class="strip" id="strip"></aside>
+  </div>
+
+  <footer>
+    <span id="stats"></span>
+    <button class="btn mini sec" id="add">+ شريحة</button>
+    <button class="btn mini sec" id="dup">⧉ تكرار</button>
+    <button class="btn mini sec" id="img">🖼 صورة</button>
+    <input type="file" id="img-file" class="hide" accept=".png,.jpg,.jpeg,.gif,.webp,.bmp">
+    <button class="btn mini danger" id="del">🗑 حذف</button>
+    <span class="spacer"></span>
+    <span id="dirty" class="dot"></span>
+    <span>🔒 الملف لم يغادر جهازك — لا شبكة، لا حفظ.</span>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<div id="syfa-root" class="syfs-wrap" data-dock-key="slides_dock_pos" data-dock-bottom="52" hidden></div>
+
+<script src="src/imgkit.js"></script>
+<script src="src/slides.js"></script>
+
+<!-- the whole toolbox, exactly as app.html loads it; src/app.js last -->
+<script src="src/i18n.js"></script>
+<script src="src/btnkit.js"></script>
+<script src="src/storage.js"></script>
+<!-- ⚠️ dockfx.js was missing from this page through v0.103.0. Without it SYFS.dockfx is
+     undefined, so every read and write of the shared dock-appearance preferences passes
+     silently and the whole «المظهر» tab disappears — a fault that shows up on this page
+     only. Its position (after storage.js, before fontkit.js) matches app.html. -->
+<script src="src/dockfx.js"></script>
+<script src="src/fontkit.js"></script>
+<script src="lib/qr.js"></script>
+<script src="src/tools.js"></script>
+<script src="src/tools2.js"></script><script src="src/tools2-body.js"></script>
+<script src="src/registry.js"></script>
+<script src="src/azkar-data.js"></script><script src="src/islam2.js"></script><script src="src/islam2-body.js"></script>
+<script src="lib/canvas-pdf.js"></script>
+<script src="src/calc.js"></script>
+<script src="src/money.js"></script>
+<script src="src/ai-chat.js"></script>
+<script src="src/bgrm.js"></script>
+<script src="src/media.js"></script>
+<script src="src/extras.js"></script>
+<script src="src/dev.js"></script>
+<script src="src/dev2.js"></script>
+<script src="src/vault-launch.js"></script>
+<script src="src/sheet-launch.js"></script>
+<script src="src/word-launch.js"></script>
+<script src="src/slides-launch.js"></script>
+<script src="src/mail-launch.js"></script>
+<script src="src/phones-launch.js"></script>
+<script src="src/status-launch.js"></script>
+<script src="src/frames-launch.js"></script>
+<script src="src/calendar.js"></script>
+<script src="src/tools3.js"></script>
+<script src="src/app.js"></script>
+<script src="src/sel2.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- data-syfs-i18n="page": src/i18n.js translates this page's STATIC markup and writes
+     lang/dir from the stored language. The mushaf area carries translate="no": the
+     Quran text is never looked up in a dictionary (nor by the browser's translator).
+
+     «مصحف الأطفال» (v0.181.0) — the Fatiha and Juz Amma for children, ayah by ayah with
+     «ردّد بعدي». The text is bundled (data/quran-kids.json) so it works offline; the
+     recitation plays through the worker's clip channel (SYFS_CLIP), the same gate and
+     the same hosts as the Daily Wird. Opened by the rail tool «مصحف الأطفال» inside an in-page
+     window (an iframe, ?host=win, v0.183.0); «افتح في تبويب كامل» asks the worker for the
+     one tab (SYFS_OPEN_KIDS). Progress and settings stay in chrome.storage.local. -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page" data-style="garden">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SYF Tools — مصحف الأطفال</title>
+  <link rel="stylesheet" href="kids.css">
+</head>
+<body>
+<header class="k-top">
+  <h1><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>مصحف الأطفال</h1>
+  <span class="chip gold" title="مجموع النجوم">★ <span id="k-tot">0</span></span>
+  <span class="sp"></span>
+  <button class="iconbtn" id="k-parent-btn" type="button" aria-label="إعدادات ولي الأمر" title="إعدادات ولي الأمر">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button>
+  <button class="iconbtn" id="k-tab" type="button" hidden aria-label="افتح في تبويب كامل" title="افتح في تبويب كامل">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button>
+  <button class="iconbtn" id="k-theme" type="button" aria-label="تبديل الوضع الفاتح/الداكن" title="تبديل الوضع الفاتح/الداكن" aria-pressed="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></button>
+</header>
+<nav class="tabs" role="tablist" aria-label="الأقسام">
+  <button role="tab" type="button" data-v="home" aria-selected="true">السور</button>
+  <button role="tab" type="button" data-v="map" aria-selected="false">رحلتي</button>
+</nav>
+
+<main>
+  <section id="v-home">
+    <div class="k-hero orn">
+      <div><h2>أهلاً يا بطل!</h2><div class="muted">اختر سورة، استمع، ثم ردّد بعد الشيخ.</div></div>
+      <div class="k-stars">★ <span id="k-tot2">0</span> <span class="muted" style="font-size:15px">نجمة</span></div>
+    </div>
+    <div class="k-grid" id="k-grid"></div>
+  </section>
+
+  <section class="k-read" id="v-read" hidden>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn ghost" type="button" id="k-back">السور</button>
+      <span class="chip brand" id="k-who"></span>
+    </div>
+    <h2 class="k-title" id="k-title" translate="no"></h2>
+    <div class="k-mushaf orn" id="k-text" translate="no" lang="ar" dir="rtl"></div>
+    <div class="k-state" aria-live="polite">
+      <span class="k-pill idle" id="k-pill">اضغط ▶ لنبدأ</span>
+      <svg class="ring" id="k-ring" viewBox="0 0 54 54" hidden aria-hidden="true"><circle class="bg" cx="27" cy="27" r="22"/><circle class="fg" id="k-ring-fg" cx="27" cy="27" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/></svg>
+    </div>
+    <div class="k-ctrl">
+      <button class="k-mid" type="button" id="k-prev" aria-label="الآية السابقة" title="الآية السابقة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button class="k-big" type="button" id="k-play" aria-label="تشغيل" title="تشغيل">
+        <svg id="k-ico-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="k-ico-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+      <button class="k-mid" type="button" id="k-next" aria-label="الآية التالية" title="الآية التالية"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="k-mid" type="button" id="k-stop" aria-label="إيقاف" title="إيقاف"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg></button>
+    </div>
+    <div class="k-reps">
+      <span>كرّر كل آية:</span>
+      <div class="seg" role="group" aria-label="عدد التكرار">
+        <button type="button" data-rep="1" aria-pressed="true">مرة</button>
+        <button type="button" data-rep="3" aria-pressed="false">3 مرات</button>
+        <button type="button" data-rep="5" aria-pressed="false">5 مرات</button>
+      </div>
+      <span class="chip" id="k-rep-at" hidden></span>
+    </div>
+    <p class="k-hint muted">اضغط أي آية لتبدأ منها. التلاوة تعمل دون إنترنت بعد أول استماع.</p>
+  </section>
+
+  <section id="v-map" hidden>
+    <div class="card orn">
+      <h2 style="margin:0 0 4px">رحلتي في جزء عمّ</h2>
+      <p class="muted" style="margin:0">كل مرة تُكمل سورة تحصل على نجمة — حتى ثلاث نجوم لكل سورة.</p>
+      <div class="k-map" id="k-map"></div>
+    </div>
+  </section>
+</main>
+
+<nav class="bnav" aria-label="الأقسام">
+  <button type="button" data-v="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>السور</button>
+  <button type="button" data-v="map" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5L12 17l-6.5 4 2-7.5L2 9h7z"/></svg>رحلتي</button>
+  <button type="button" id="k-parent-btn2" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>ولي الأمر</button>
+</nav>
+
+<div class="dlg" id="k-win" hidden role="dialog" aria-modal="true" aria-labelledby="k-win-t">
+  <div class="card k-win orn">
+    <div class="big" id="k-win-stars" aria-hidden="true"></div>
+    <h2 id="k-win-t">أحسنت!</h2>
+    <p class="muted" id="k-win-p" style="margin:0"></p>
+    <div class="row" style="justify-content:center"><button class="btn primary" type="button" id="k-again">مرة أخرى</button><button class="btn" type="button" data-close>سورة أخرى</button></div>
+  </div>
+</div>
+
+<div class="dlg" id="k-pin" hidden role="dialog" aria-modal="true" aria-labelledby="k-pin-t">
+  <form class="card" id="k-pin-form">
+    <h2 id="k-pin-t">رمز ولي الأمر</h2>
+    <label class="f">أدخل الرمز المكوّن من 4 أرقام <input id="k-pin-in" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></label>
+    <p class="k-err" id="k-pin-err" hidden>الرمز غير صحيح.</p>
+    <div id="k-forgot-box" hidden>
+      <label class="f"><span id="k-forgot-q"></span> <input id="k-forgot-in" type="number" inputmode="numeric" autocomplete="off"></label>
+      <p class="muted" style="margin:4px 0 0;font-size:13px">الإجابة الصحيحة تفتح الإعدادات وتُلغي الرمز القديم.</p>
+    </div>
+    <div class="row"><button class="btn primary" type="submit">فتح</button><button class="btn" type="button" data-close>إلغاء</button><button class="btn ghost" type="button" id="k-forgot">نسيت الرمز؟</button></div>
+  </form>
+</div>
+
+<div class="dlg" id="k-parent" hidden role="dialog" aria-modal="true" aria-labelledby="k-parent-t">
+  <form class="card" id="k-parent-form">
+    <h2 id="k-parent-t"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>إعدادات ولي الأمر</h2>
+    <label class="f">القارئ
+      <select id="k-s-reciter"><option value="minshawi">محمد صديق المنشاوي (مرتّل)</option><option value="husary">محمود خليل الحصري (مرتّل)</option></select></label>
+    <label class="f">مدة الصمت للترديد
+      <select id="k-s-gap"><option value="1">بطول الآية</option><option value="2">ضعف طول الآية</option><option value="0.5">نصف طول الآية</option><option value="0">بلا صمت</option></select></label>
+    <label class="f">سرعة التلاوة
+      <select id="k-s-rate"><option value="1">عادية</option><option value="0.85">أبطأ قليلاً</option><option value="0.75">بطيئة</option></select></label>
+    <label class="f">تكرار السورة كاملة
+      <select id="k-s-loops"><option value="1">مرة</option><option value="2">مرتين</option><option value="3">3 مرات</option></select></label>
+    <fieldset class="k-styles">
+      <legend>شكل المصحف</legend>
+      <label><input type="radio" name="k-s-style" value="garden"><i class="sw sw-garden" aria-hidden="true"></i><span>الحديقة</span></label>
+      <label><input type="radio" name="k-s-style" value="sky"><i class="sw sw-sky" aria-hidden="true"></i><span>السماء والنجوم</span></label>
+      <label><input type="radio" name="k-s-style" value="crayon"><i class="sw sw-crayon" aria-hidden="true"></i><span>أقلام التلوين</span></label>
+      <label><input type="radio" name="k-s-style" value="sea"><i class="sw sw-sea" aria-hidden="true"></i><span>البحر</span></label>
+      <label><input type="radio" name="k-s-style" value="manuscript"><i class="sw sw-manuscript" aria-hidden="true"></i><span>المخطوطة</span></label>
+    </fieldset>
+    <label class="row" style="font-weight:700"><input type="checkbox" id="k-s-lock"> قفل: الإعدادات بالرمز، وتنبيه قبل مغادرة الصفحة</label>
+    <label class="f" id="k-s-pin-row">رمز جديد من 4 أرقام <input id="k-s-pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••"></label>
+    <p class="k-err" id="k-s-err" hidden>اكتب رمزاً من 4 أرقام لتفعيل القفل.</p>
+    <button class="btn ghost" type="button" id="k-s-reset" style="justify-self:start">مسح النجوم والبدء من جديد</button>
+    <div class="row"><button class="btn primary" type="submit">حفظ</button><button class="btn" type="button" data-close>إلغاء</button></div>
+  </form>
+</div>
+
+<script src="src/i18n.js"></script>
+<script src="src/storage.js"></script>
+<script src="src/kids.js"></script>
+</body>
+</html>

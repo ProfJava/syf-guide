@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- SYF — اللوحة الجانبية (v0.136.0): موقع داخل لوحة كروم الجانبية، في نفس النافذة،
+     والصفحة تنكمش إلى جوارها (هذا ما تفعله إضافة Claude، ولا تفعله نافذة منفصلة).
+     ⚠️ لوحة كروم لا تعرض إلا صفحات الإضافة، فالموقع يعيش داخل `iframe` هنا. لهذا نتيجتان
+     يجب أن تُقالا لا أن تُكتشفا:
+       · تأطير الموقع ممنوع بترويسة `x-frame-options` ⇒ العامل يُسقطها بقاعدة جلسة تحيا مع
+         اللوحة وتموت بإغلاقها (نفس نمط «عارض المواقع»).
+       · الإطار سياق طرفٍ ثالث ⇒ تخزينه مقسَّم. لكن مفتاح التقسيم هنا هو **أصل الإضافة**
+         (صفحة اللوحة هي المستند الأعلى) لا الموقع الذي تتصفّحه — فهو ثابت على كل المواقع:
+         ربطٌ واحد يبقى، لا ربطٌ جديد مع كل صفحة. هذا هو الفرق الذي يجعل اللوحة تنجح حيث
+         يفشل إطارٌ مزروع داخل صفحة الموقع.
+     ⛔ CSP لصفحات الإضافة في `manifest.json` هو `script-src 'self'` — لا سكربت سطريّاً هنا. -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+<meta charset="utf-8">
+<title>SYF Tools — لوحة جانبية</title>
+<style>
+  :root { --pri:#457364; --pri-d:#325348; --bg:#f4f6f5; --card:#fff; --ink:#1f2a27; --mut:#6b7c76; --line:#e3e9e6; --danger:#c0392b; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { height:100%; }
+  body { display:flex; flex-direction:column; background:var(--bg); color:var(--ink);
+         font:13.5px/1.6 var(--syfs-font,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif); }
+  .bar { flex:0 0 auto; display:flex; align-items:center; gap:6px; padding:6px 8px;
+         background:var(--card); border-bottom:1px solid var(--line); }
+  .bar .host { flex:1 1 auto; min-width:0; font-size:12px; font-weight:700; color:var(--mut);
+               direction:ltr; text-align:start; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ib { flex:0 0 auto; display:grid; place-items:center; width:28px; height:28px; border:0; border-radius:8px;
+        background:transparent; color:var(--mut); cursor:pointer; }
+  .ib:hover { background:rgba(69,115,100,.12); color:var(--pri); }
+  .ib:focus-visible { outline:2px solid var(--pri); outline-offset:1px; }
+  .ib svg { width:16px; height:16px; display:block; }
+  .picker { flex:0 0 auto; display:flex; gap:4px; padding:6px 8px; background:var(--card);
+            border-bottom:1px solid var(--line); overflow-x:auto; }
+  .picker button { flex:0 0 auto; font:inherit; font-size:12px; font-weight:600; padding:4px 10px; cursor:pointer;
+                   border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--ink); }
+  .picker button.on { background:var(--pri); border-color:var(--pri); color:#fff; }
+  .wrap { position:relative; flex:1 1 auto; min-height:0; background:var(--card); }
+  iframe { width:100%; height:100%; border:0; display:block; background:var(--card); }
+  .note { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center;
+          gap:10px; padding:20px; text-align:center; background:var(--card); }
+  .note.show { display:flex; }
+  .note p { font-size:12.5px; color:var(--mut); line-height:1.75; max-width:32ch; }
+  .note .btn { font:inherit; font-weight:700; font-size:12.5px; padding:7px 14px; border-radius:9px; cursor:pointer;
+               border:1px solid var(--pri); background:var(--pri); color:#fff; }
+  .note .btn.sec { background:transparent; color:var(--pri); }
+  .note.lock { background:#0b141a; color:#e9edef; }
+  .note.lock .lk-ic { font-size:38px; }
+  .note.lock .lk-t { font-size:15px; font-weight:700; color:#e9edef; }
+  .note.lock input { width:min(230px,100%); padding:9px 12px; border-radius:8px; border:1px solid #33434e;
+                     background:#202c33; color:#e9edef; font:inherit; text-align:center; }
+  .note.lock input:focus-visible { outline:2px solid var(--pri); outline-offset:1px; }
+  .note.lock .btn { width:min(230px,100%); }
+  .note.lock .lk-msg { min-height:20px; font-size:12.5px; color:#f28b82; }
+  .urlrow { flex:0 0 auto; display:none; gap:6px; padding:6px 8px; background:var(--card); border-bottom:1px solid var(--line); }
+  .urlrow.show { display:flex; }
+  .urlrow input { flex:1 1 auto; min-width:0; font:inherit; font-size:12px; direction:ltr; text-align:start;
+                  padding:6px 9px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink); }
+  .urlrow button { font:inherit; font-size:12px; font-weight:700; padding:6px 12px; border-radius:8px; cursor:pointer;
+                   border:1px solid var(--pri); background:var(--pri); color:#fff; }
+</style>
+<link rel="stylesheet" href="controls.css"><!-- switches + glass buttons (v0.153.0/v0.154.0) -->
+</head>
+<body>
+  <div class="bar">
+    <span class="host" id="sp-host">—</span>
+    <button class="ib" id="sp-url" type="button" title="افتح موقعاً آخر"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg></button>
+    <button class="ib" id="sp-reload" type="button" title="إعادة التحميل"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button>
+    <button class="ib" id="sp-pop" type="button" title="افتح في نافذة مستقلّة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-8 8"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg></button>
+  </div>
+  <div class="urlrow" id="sp-urlrow">
+    <input type="text" id="sp-input" placeholder="https://" autocomplete="off" spellcheck="false">
+    <button id="sp-go" type="button">افتح</button>
+  </div>
+  <div class="picker" id="sp-picker"></div>
+  <div class="wrap">
+    <iframe id="sp-frame" title="المحتوى الجانبي" referrerpolicy="no-referrer-when-downgrade"
+            allow="clipboard-read; clipboard-write; microphone; camera; display-capture; fullscreen"></iframe>
+    <div class="note" id="sp-note">
+      <p id="sp-note-t">الموقع رفض العرض داخل اللوحة.</p>
+      <button class="btn" id="sp-note-pop" type="button">افتحه في نافذة جنبيّة</button>
+      <button class="btn sec" id="sp-note-retry" type="button">أعد المحاولة</button>
+    </div>
+    <!-- قفل واتساب/ماسنجر داخل اللوحة (v0.139.1): الإطار لا يصله `wa-lock.js`، فالبوّابة هنا
+         وتسبق أي طلب للموقع — انظر src/side.js. -->
+    <div class="note lock" id="sp-lock">
+      <div class="lk-ic" aria-hidden="true">🔒</div>
+      <p class="lk-t" id="sp-lock-t">واتساب ويب مقفول</p>
+      <input type="password" id="sp-lock-in" autocomplete="off" spellcheck="false" dir="ltr" aria-labelledby="sp-lock-t">
+      <button class="btn" id="sp-lock-go" type="button">فتح</button>
+      <p class="lk-msg" id="sp-lock-msg" role="alert"></p>
+    </div>
+  </div>
+  <script src="src/i18n.js"></script>
+  <script src="src/btnkit.js"></script>
+  <script src="src/storage.js"></script>
+  <script src="src/fontkit.js"></script>
+  <script src="src/side.js"></script>
+</body>
+</html>

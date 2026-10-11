@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "domainType": "thirdParty",
+      "requestDomains": [
+        "bat.bing.com",
+        "ads.linkedin.com",
+        "px.ads.linkedin.com",
+        "snap.licdn.com",
+        "sc-static.net",
+        "tr.snapchat.com",
+        "analytics.tiktok.com",
+        "ads.tiktok.com",
+        "static.ads-twitter.com",
+        "analytics.pinterest.com",
+        "ct.pinterest.com",
+        "6sc.co",
+        "pixel.wp.com",
+        "pixel.quantserve.com",
+        "px.moatads.com",
+        "trkn.us",
+        "adsymptotic.com",
+        "dotomi.com",
+        "bounceexchange.com"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "domainType": "thirdParty",
+      "urlFilter": "||facebook.com/tr^"
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "domainType": "thirdParty",
+      "urlFilter": "||t.co/i/adsct"
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "domainType": "thirdParty",
+      "urlFilter": "||q.quora.com/_/ad"
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "domainType": "thirdParty",
+      "resourceTypes": ["ping"]
+    }
+  }
+]

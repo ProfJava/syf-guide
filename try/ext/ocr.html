@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- data-syfs-i18n="page": src/i18n.js translates this page's STATIC markup and writes
+     lang/dir/--syfs-dir from the stored language (§6.102). No sentence below is split
+     mid-clause by an inline tag — that is what makes per-text-node translation safe.
+
+     WHY THIS IS A PAGE AND NOT A RAIL PANEL. OCR needs a Web Worker and WebAssembly.
+     A worker created from a content script is created in the HOST page's context, so
+     the host's own CSP (`worker-src`, `script-src`) decides whether it may run — and
+     on a bank, a code host, or any strict site it simply would not, silently. Same
+     reasoning that keeps the font engine off `url()` (§5.7/1). An extension page runs
+     under the extension's CSP, which we control, so the engine always loads. -->
+<html lang="ar" dir="rtl" data-syfs-i18n="page">
+<head>
+<meta name="syf-demo" content="1">
+<script src="__demo/stub-page.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>استخراج نصّ من صورة — SYF</title>
+  <style>
+    :root { --pri:#457364; --pri-d:#35594e; --bg:#f4f6f5; --card:#fff; --ink:#1f2a27; --mut:#6b7c76; --line:#e3e9e6; --soft:#eef2f0; --warn:#b7791f; --ok:#2f7a55; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#14100c; --card:#1e2622; --ink:#e7ece9; --mut:#9fb0aa; --line:#33403a; --soft:#243029; --ok:#6dd3a0; } }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    /* --syfs-font comes from src/fontkit.js (`ui_font`); unset → the system stack */
+    body { background:var(--bg); color:var(--ink); font:15px/1.6 var(--syfs-font,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif); }
+    .wrap { max-width:1180px; margin:0 auto; padding:22px 18px 72px; }
+    header { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+    header h1 { font-size:20px; font-weight:700; }
+    .st-ico { width:28px; height:28px; flex:0 0 auto; color:var(--pri); }
+    .lede { color:var(--mut); font-size:13.5px; margin-bottom:16px; }
+    /* v0.147.0 — the tool is marked «تجريبي» until its known problems are fixed */
+    .beta-tag { font-size:11px; font-weight:700; color:var(--warn); border:1.5px solid var(--warn); border-radius:999px; padding:1px 9px; }
+    .beta-note { border:1px solid var(--line); border-inline-start:3px solid var(--warn); border-radius:10px; background:var(--card); padding:9px 12px; font-size:12.5px; margin-bottom:14px; }
+
+    .cols { display:grid; gap:16px; grid-template-columns:minmax(0,380px) minmax(0,1fr); align-items:start; }
+    @media (max-width:880px) { .cols { grid-template-columns:1fr; } }
+
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:14px; }
+    .card h2 { font-size:14px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+    label { display:block; font-size:12.5px; color:var(--mut); margin:12px 0 5px; }
+    label:first-of-type { margin-top:0; }
+    textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--bg); color:var(--ink); font:inherit; min-height:340px; resize:vertical; line-height:1.9; }
+    .row { display:flex; gap:6px; flex-wrap:wrap; }
+    .chip { border:1.5px solid var(--line); background:transparent; color:var(--ink); border-radius:9px; padding:7px 12px; font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
+    .chip:hover { border-color:var(--pri); }
+    .chip.on { background:var(--pri); border-color:var(--pri); color:#fff; }
+    .chip:focus-visible, .btn:focus-visible, .drop:focus-visible { outline:2px solid var(--pri-d); outline-offset:2px; }
+    .btn { background:var(--pri); color:#fff; border:none; border-radius:10px; padding:10px 16px; font:inherit; font-weight:700; cursor:pointer; }
+    .btn:hover { background:var(--pri-d); }
+    .btn.sec { background:transparent; color:var(--pri); border:1.5px solid var(--pri); }
+    .btn[disabled] { opacity:.5; cursor:not-allowed; }
+    .hint { font-size:11.5px; color:var(--mut); line-height:1.6; margin-top:8px; }
+    .acts { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+
+    /* the drop target doubles as the preview frame — one box, two states */
+    .drop { border:2px dashed var(--line); border-radius:12px; background:var(--soft); min-height:190px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:14px; cursor:pointer; text-align:center; }
+    .drop:hover, .drop.over { border-color:var(--pri); }
+    .drop .big { font-size:13.5px; font-weight:700; }
+    .drop .sm { font-size:11.5px; color:var(--mut); }
+    .drop img { max-width:100%; max-height:260px; border-radius:8px; display:block; }
+
+    .bar { height:8px; border-radius:99px; background:var(--soft); overflow:hidden; margin-top:12px; }
+    .bar i { display:block; height:100%; width:0; background:var(--pri); transition:width .18s; }
+    .stat { font-size:12px; color:var(--mut); margin-top:6px; min-height:1.4em; }
+
+    .note { border:1px solid var(--line); border-inline-start:3px solid var(--ok); border-radius:10px; background:var(--soft); padding:10px 12px; font-size:12px; line-height:1.7; margin-top:12px; }
+    .note b { font-weight:700; }
+    .meta { font-size:12px; color:var(--mut); margin-top:8px; }
+    .toast { position:fixed; inset-inline-start:50%; transform:translateX(-50%); bottom:24px; background:#1f2a27; color:#fff; padding:10px 18px; border-radius:999px; font-size:13.5px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .toast.on { opacity:1; }
+    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  </style>
+<link rel="stylesheet" href="controls.css"><!-- switches + glass buttons (v0.153.0/v0.154.0) -->
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <svg class="st-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M7 9h10"/><path d="M7 13h7"/></svg>
+      <h1>استخراج نصّ من صورة</h1>
+      <span class="beta-tag">تجريبي</span>
+    </header>
+    <p class="lede">أفلت صورة أو لقطة شاشة، واحصل على نصّها قابلاً للنسخ والبحث. المحرّك يعمل داخل هذه الصفحة بالكامل — لا رفع ولا إنترنت.</p>
+    <p class="beta-note" role="note">🧪 نسخة تجريبية — قد تواجه بعض المشاكل في هذه الأداة، ونعمل على إصلاحها.</p>
+
+    <div class="cols">
+      <div>
+        <div class="card">
+          <h2>الصورة</h2>
+          <div class="drop" id="oc-drop" tabindex="0" role="button" aria-label="اختر صورة أو أفلتها هنا">
+            <div class="big">أفلت الصورة هنا</div>
+            <div class="sm">أو انقر للاختيار — ويمكنك اللصق بـ Ctrl+V</div>
+          </div>
+          <input type="file" id="oc-file" accept="image/png,image/jpeg,image/webp,image/bmp,image/gif" class="sr">
+          <p class="meta" id="oc-fname"></p>
+
+          <label>لغة النصّ في الصورة</label>
+          <div class="row" id="oc-langs"></div>
+          <p class="hint">اختيار لغتين معاً أبطأ وأقلّ دقّة من اختيار اللغة الصحيحة وحدها — لا تختره إلا إذا كانت الصورة مختلطة فعلاً.</p>
+
+          <div class="acts">
+            <button class="btn" id="oc-go" disabled>استخراج النصّ</button>
+            <button class="btn sec" id="oc-clear">مسح</button>
+          </div>
+          <div class="bar" aria-hidden="true"><i id="oc-bar"></i></div>
+          <p class="stat" id="oc-stat" role="status" aria-live="polite"></p>
+
+          <div class="note">
+            <b>لا شيء يغادر جهازك.</b> الصورة تُقرأ في هذه الصفحة والمحرّك ملفّات داخل الإضافة —
+            لا رفع ولا خدمة خارجية ولا مفتاح. أول تشغيل في كل تبويب يحمّل المحرّك (نحو ٣ ميجابايت
+            من القرص لا من الشبكة) فيستغرق ثوانيَ إضافية.
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>النصّ المستخرَج</h2>
+          <textarea id="oc-out" spellcheck="false" placeholder="سيظهر النصّ هنا بعد الاستخراج — وهو قابل للتحرير قبل النسخ."></textarea>
+          <div class="acts">
+            <button class="btn" id="oc-copy">نسخ</button>
+            <button class="btn sec" id="oc-dl">⬇ تنزيل .txt</button>
+          </div>
+          <p class="meta" id="oc-meta"></p>
+          <p class="hint">الدقّة تتبع جودة الصورة: لقطة شاشة واضحة تُقرأ شبه كاملة، وصورة مائلة أو مضغوطة أو بخطّ زخرفيّ تُخطئ. راجع النصّ قبل استعماله.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="oc-toast" role="status" aria-live="polite"></div>
+  <!-- i18n.js first (§6.102), then storage, then the font engine, then the engine and the page -->
+  <script src="src/i18n.js"></script>
+  <script src="src/btnkit.js"></script>
+  <script src="src/storage.js"></script>
+  <script src="src/fontkit.js"></script>
+  <script src="lib/tesseract/tesseract.min.js"></script>
+  <script src="src/ocr.js"></script>
+</body>
+</html>
