@@ -1,4 +1,0 @@
-sounds/adhan.mp3 — adhan recording supplied by the project owner (v0.152.1); the owner
-is responsible for its distribution rights.
-
-sounds/pre-adhan.wav — a three-note chime synthesized for SYF Tools (no third-party material).
